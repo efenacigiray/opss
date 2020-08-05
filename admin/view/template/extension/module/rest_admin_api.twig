@@ -1,0 +1,154 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}"
+                        class="save-changes btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {#{% if error_warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}#}
+        {% if install_success %}
+            <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ install_success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                {#{% if module_rest_admin_api_licensed_on is empty %}
+                    {{ xcDLOMddkCV }}
+                {% endif %}#}
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module"
+                      class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_rest_admin_api_status" id="input-status" class="restapi_status form-control">
+                                {% if module_rest_admin_api_status %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-entry-key">
+                      <span data-toggle="tooltip" title="" data-original-title="{{ text_secret_key }}">
+                        {{ entry_key }}
+                      </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="input-key" type="text" name="module_rest_admin_api_key" value="{{ module_rest_admin_api_key }}"
+                                   required="required"/>
+                            <br>
+                            <button type="button" id="button-generate" class="btn btn-primary"><i class="fa fa-refresh"></i> {{ button_generate_api_key }}</button>
+                        </div>
+                    </div>
+                    {#<div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-entry-order-id">
+                      <span data-toggle="tooltip" title="" data-original-title="{{ text_order_id }}">
+                        {{ entry_order_id }}
+                      </span>
+                        </label>
+                        <div class="col-sm-10">
+                            {% if module_rest_admin_api_licensed_on is empty %}
+                                <div class="restAPILicenseError"></div>
+                                <div class="restAPILicenseSuccess"></div>
+                                <div class="restAPILicenseInfo"></div>
+                                <table class="table">
+                                    <tr>
+                                        <td colspan="2" style="border: none;">
+                                            <input type="text" class="form-control rest_api_ord_id" placeholder="REST-XXX-XXX" name="module_rest_admin_api_order_id" id="module_rest_admin_api_order_id" value="{{ module_rest_admin_api_order_id }}" required="required" />
+                                            <br>
+                                            <button type="button" class="btn btn-success activateLicenseButton"><i class="icon-ok"></i> Activate License</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <script type="text/javascript">
+                                    var domain='{{ hostname }}';
+                                    var timenow={{ 'now'|date('U') }};
+                                </script>
+                                <script type="text/javascript" src="//license.opencart-api.com/validate.js?v={{ 'now'|date('U') }}"></script>
+                            {% endif %}
+
+                            {% if module_rest_admin_api_licensed_on is not empty %}
+                                <input type="hidden" class="form-control rest_api_ord_id" name="module_rest_admin_api_order_id" id="module_rest_admin_api_order_id" value="{{ module_rest_admin_api_order_id }}" required="required" />
+                                <input name="nJvNVJoMHcQVIuHk" type="hidden" value="{{ module_rest_admin_api_licensed_on }}" />
+                                <table class="table licensedTable">
+                                    <tr>
+                                        <td style="border:none;"><b>{{ module_rest_admin_api_order_id }}</b>
+                                            <span style="text-align:center;background-color:#c0f7a5;display: inline-block;padding: 5px 10px;">VALID LICENSE</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            {% endif %}
+                        </div>
+                    </div>#}
+                    {#<div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-entry-allowed-ip">
+                    <span data-toggle="tooltip" title="" data-original-title="{{ text_allowed_ip }}">
+                      {{ entry_allowed_ip }}
+                    </span>
+                        </label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="module_rest_admin_api_allowed_ip"
+                                   value="{{ module_rest_admin_api_allowed_ip }}"/>
+                        </div>
+                    </div>#}
+                    <input type="hidden" class="form-control rest_api_ord_id" name="module_rest_admin_api_order_id" id="module_rest_admin_api_order_id" value="{{ module_rest_admin_api_order_id }}" required="required" />
+                                <input name="nJvNVJoMHcQVIuHk" type="hidden" value="{{ module_rest_admin_api_licensed_on }}" />
+                    <input class="form-control" type="hidden" name="module_rest_admin_api_allowed_ip"
+                                   value="{{ module_rest_admin_api_allowed_ip }}"/>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-entry-key">{{ text_thumb_width }}</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="module_rest_admin_api_thumb_width"
+                                   value="{{ module_rest_admin_api_thumb_width }}" required="required"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-entry-key">{{ text_thumb_height }}</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="module_rest_admin_api_thumb_height"
+                                   value="{{ module_rest_admin_api_thumb_height }}" required="required"/>
+                        </div>
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"><!--
+    $('#button-generate').on('click', function() {
+        rand = '';
+
+        string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        for (i = 0; i < 32; i++) {
+            rand += string[Math.floor(Math.random() * (string.length - 1))];
+        }
+
+        $('#input-key').val(rand);
+    });
+    //--></script>
+{{ footer }}

@@ -1,0 +1,77 @@
+<div class="row">
+  <div id="filter-report" class="col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group col-md-3">
+          <label class="control-label" for="input-store-id">Okul</label>
+          <select name="filter_store_id" id="input-store-id" class="form-control">
+            <option value="0" {% if filter_store_id == "" %}selected="selected"{% endif %}></option>
+            {% for store in stores %}
+            {% if store.store_id == filter_store_id %}
+            <option value="{{ store.store_id }}" selected="selected">{{ store.name }}</option>
+            {% else %}
+            <option value="{{ store.store_id }}">{{ store.name }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group text-right">
+          <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-bar-chart"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-left">Paket</td>
+                <td class="text-left">Satılan Adet</td>
+                <td class="text-left">Öğrenci Mevcudu</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if orders %}
+            {% for order in orders %}
+            <tr>
+              <td class="text-left package-name">{{ order.name }}</td>
+              <td class="text-left">{{ order.total }}</td>
+              <td class="text-left"></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="6">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+  var url = '';
+
+  var filter_store_id = $('select[name=\'filter_store_id\']').val();
+
+  if (filter_store_id) {
+    url += '&filter_store_id=' + encodeURIComponent(filter_store_id);
+  }
+
+  location = 'index.php?route=report/report&code=package_sale&user_token={{ user_token }}' + url;
+});
+//--></script>

@@ -1,0 +1,52 @@
+    {% if logged %}
+
+      {% set show_theme_name_footer = FALSE %}
+      {% set show_opencart_footer = FALSE %}
+      {% set show_copyright_footer = FALSE %}
+      {% set show_company_name_footer = FALSE %}
+
+      {% if b5b_qore_engine_white_label and b5b_qore_engine_white_label and  b5b_qore_engine_white_label.enable_white_label %}
+
+        {% if b5b_qore_engine_white_label.show_theme_name_footer %}
+          {% set show_theme_name_footer = TRUE %}
+        {% endif %}
+
+        {% if b5b_qore_engine_white_label.show_opencart_footer %}
+          {% set show_opencart_footer = TRUE %}
+        {% endif %}
+
+        {% if b5b_qore_engine_white_label.show_copyright_footer%}
+          {% set show_copyright_footer = TRUE %}
+        {% endif %}
+
+        {% if b5b_qore_engine_white_label.show_company_name_footer%}
+          {% set show_company_name_footer = TRUE %}
+        {% endif %}
+      {% else %}
+        {% set show_theme_name_footer = TRUE %}
+        {% set show_opencart_footer = TRUE %}
+        {% set show_copyright_footer = TRUE %}
+        {% set show_company_name_footer = TRUE %}
+      {% endif %}
+      {% if show_theme_name_footer or show_opencart_footer or show_copyright_footer %}
+      <footer id="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="footer-inner">
+                {% if show_copyright_footer %}
+                  OPSS 2019 © V3.2.1
+                {% endif %}
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      {% endif %}
+    {% endif %}
+  </div>
+<script src="http://iamdanfox.github.io/anno.js/anno.js" type="text/javascript"></script>
+<script src="http://iamdanfox.github.io/anno.js/scrollintoview/jquery.scrollintoview.min.js" type="text/javascript"></script>
+</body>
+</html>

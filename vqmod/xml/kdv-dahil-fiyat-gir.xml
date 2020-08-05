@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <name>Kdv Dahil Fiyat Gir</name>
+    <author>OpencartUzman</author>
+    <version>3.0</version>
+
+    <file name="admin/view/template/catalog/product_form.twig">
+        <operation error="skip">
+            <search position="before" index="4"><![CDATA[<div class="form-group">]]></search>
+            <add><![CDATA[<div class="form-group">
+                <label class="col-sm-2 control-label" for="input-kdvli">KDV'li Fiyat</label>
+                <div class="col-sm-10">
+                  <input type="text" name="kdvli" value="{{ taxed_price }} " onchange="hesapla();" id="input-kdvli" class="form-control" />
+              </div>
+          </div>]]></add>
+      </operation>
+      <operation error="skip">
+        <search position="before" index="1"><![CDATA[<script type="text/javascript"><!--]]></search>
+        <add><![CDATA[<script type="text/javascript" language="javascript">
+            function hesapla() {
+            var sayi = parseFloat(document.getElementById("input-kdvli").value);
+            var sayi1 = parseFloat(document.getElementById("input-tax-class").value);
+            if(sayi1==11){ var kdv = "1"; }
+
+            else if(sayi1==9){ var kdv = "1.08"; }
+
+            else if(sayi1==10){ var kdv = "1.18"; }
+            var sonuc = sayi / kdv;
+            document.getElementById("input-price").value = sonuc;
+            }
+        </script>]]></add>
+    </operation>
+    <operation error="skip">
+        <search position="replace"><![CDATA[<select name="tax_class_id" id="input-tax-class" class="form-control">]]></search>
+        <add><![CDATA[<select name="tax_class_id" id="input-tax-class" class="form-control" onchange="hesapla();">]]></add>
+    </operation>
+</file>
+<file name="admin/view/template/catalog/hizliurun.twig">
+    <operation error="skip">
+        <search position="before" index="5"><![CDATA[<div class="form-group">]]></search>
+        <add><![CDATA[<div class="form-group">
+            <label class="col-sm-2 control-label" for="input-kdvli">KDV'li Fiyat</label>
+            <div class="col-sm-10">
+              <input type="text" name="kdvli" onchange="hesapla();" id="input-kdvli" class="form-control" />
+          </div>
+      </div>]]></add>
+  </operation>
+  <operation error="skip">
+    <search position="before" index="1"><![CDATA[<script type="text/javascript"><!--]]></search>
+        <add><![CDATA[<script type="text/javascript" language="javascript">
+            function hesapla() {
+            var sayi = parseFloat(document.getElementById("input-kdvli").value);
+            var sayi1 = parseFloat(document.getElementById("input-tax-class").value);
+            if(sayi1==11){ var kdv = "1"; }
+
+            else if(sayi1==9){ var kdv = "1.08"; }
+
+            else if(sayi1==10){ var kdv = "1.18"; }
+            var sonuc = sayi / kdv;
+            document.getElementById("input-price").value = sonuc;
+            }
+        </script>]]></add>
+</operation>
+<operation error="skip">
+    <search position="replace"><![CDATA[<select name="tax_class_id" id="input-tax-class" class="form-control">]]></search>
+    <add><![CDATA[<select name="tax_class_id" id="input-tax-class" class="form-control" onchange="hesapla();">]]></add>
+</operation>
+</file>
+</modification>

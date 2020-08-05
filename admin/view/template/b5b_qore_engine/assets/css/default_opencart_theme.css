@@ -1,0 +1,9 @@
+.profile_details{
+    float: none;
+}
+.profile_details .well{
+	padding: 19px 0;
+}
+.profile_details h4.brief{
+	padding: 0 15px;
+}

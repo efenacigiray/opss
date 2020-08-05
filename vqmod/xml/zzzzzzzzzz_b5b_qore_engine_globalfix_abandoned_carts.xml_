@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Abandoned Carts (iSenseLabs)</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/view/template/extension/module/abandonedcarts.twig">
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				</head>
+				]]></search>
+			<add><![CDATA[
+      			<style type="text/css">
+      				.table-header{
+      					background: transparent;
+      				}
+      			</style>
+				]]></add>
+		</operation>
+	</file>
+</modification>

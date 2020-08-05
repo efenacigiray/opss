@@ -1,0 +1,352 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+	<!-- // Load Switchery: Switchery is loaded here ALONE since it isn't needed anywhere else on the site -->
+	{% for css_style in b5b_qore_engine.css_styles %}
+	<link href="{{ css_style }}" rel="stylesheet">
+	{% endfor %}
+
+	{% for js_script in b5b_qore_engine.js_scripts %}
+	<script src="{{ js_script }}"></script>
+	{% endfor %}
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<a href="{{ back }}" data-toggle="tooltip" title="{{ b5b_qore_engine.language.button_done }}" class="btn btn-success"><i class="fa fa-reply"></i></a>
+				<button type="button" id="button-setting" data-toggle="tooltip" title="{{ button_setting }}" data-loading-text="{{ text_loading }}" class="btn btn-info"><i class="fa fa-cog"></i></button>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+				<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<i class="fa fa-pencil"></i> {{ b5b_qore_engine.language.text_edit_settings }}
+				</h3>
+			</div>
+			<div class="panel-body">
+				{% if b5b_qore_engine.language.text_theme_does_not_exist is not defined %}
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#theme-settings" data-toggle="tab">
+							{{ b5b_qore_engine.language.text_theme_settings }}
+						</a>
+					</li>
+					<li>
+						<a href="#theme-extensions" data-toggle="tab">
+							{{ b5b_qore_engine.language.text_theme_extensions }}
+						</a>
+					</li>
+					<li>
+						<a href="#qore-engine-extensions" data-toggle="tab">
+							{{ b5b_qore_engine.language.text_qore_engine_extensions }}
+						</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="theme-settings">
+						<table class="table table-responsive">
+							<thead>
+								<tr>
+									<th>{{ b5b_qore_engine.language.text_color_presets }}</th>
+									<th class="actions text-right"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for color_preset in color_presets %}
+								<tr data-color-preset="{{ color_preset }}">
+									<td>{{ color_preset|capitalize }}</td>
+									<td class="color-preset-control text-right">
+										{% if color_preset == b5b_qore_engine_color_preset %}
+										<input type="checkbox" class="js-switch js-switch-color-preset js-switch-disabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-color-preset js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						<table class="table table-responsive">
+							<thead>
+								<tr>
+									<th>{{ b5b_qore_engine.language.text_white_label }}</th>
+									<th class="actions text-right"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-white-label-name="enable_white_label">
+									<td>{{ b5b_qore_engine.language.text_enable_white_label }}</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.enable_white_label %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								<tr data-white-label-name="use_own_logo">
+									<td>{{ b5b_qore_engine.language.text_use_own_logo }}</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.use_own_logo %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								<tr data-white-label-name="upload_own_logo_light_bg">
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_upload_own_logo_light_bg }}">
+											{{ b5b_qore_engine.language.text_upload_own_logo_light_bg }}
+										</span>
+									</td>
+									<td class="white-label-control text-right">
+										<img class="sample-image-light-bg" src="" />
+										<br />
+										<br />
+										<form enctype="multipart/form-data" action="index.php?route=b5b_qore_engine/theme_settings/upload_logo&logo_type=light_bg&user_token={{ b5b_qore_engine.user_token }}&active_theme={{ active_theme }}" class="dropzone customized-dropzone" id="file-upload-light">
+											<div class="dz-message">
+												<span class="main-text">{{ b5b_qore_engine.language.text_drop_files_here }}</span>
+											</div>
+											<div class="fallback">
+												<input name="file" type="file" />
+											</div>
+										</form>
+										<div id="customized-dropzone-results-light">
+										</div>
+									</td>
+								</tr>
+								<tr data-white-label-name="upload_own_logo_dark_bg">
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_upload_own_logo_dark_bg }}">
+											{{ b5b_qore_engine.language.text_upload_own_logo_dark_bg }}
+										</span>
+									</td>
+									<td class="white-label-control text-right" style="background-color: #252525;">
+										<img class="sample-image-dark-bg" src="" />
+										<br />
+										<br />
+										<form enctype="multipart/form-data" action="index.php?route=b5b_qore_engine/theme_settings/upload_logo&logo_type=dark_bg&user_token={{ b5b_qore_engine.user_token }}&active_theme={{ active_theme }}" class="dropzone customized-dropzone" id="file-upload-dark">
+											<div class="dz-message">
+												<span class="main-text">{{ b5b_qore_engine.language.text_drop_files_here }}</span>
+											</div>
+											<div class="fallback">
+												<input name="file" type="file" />
+											</div>
+										</form>
+										<div id="customized-dropzone-results-dark">
+										</div>
+									</td>
+								</tr>
+								<tr data-white-label-name="show_theme_name_footer">
+									<td>{{ b5b_qore_engine.language.text_show_theme_name_footer }}</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.show_theme_name_footer %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								<tr data-white-label-name="show_opencart_footer">
+									<td>{{ b5b_qore_engine.language.text_show_opencart_footer }}</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.show_opencart_footer %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								<tr data-white-label-name="show_copyright_footer">
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_show_copyright_footer }}">
+											{{ b5b_qore_engine.language.text_show_copyright_footer }}
+										</span>
+									</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.show_copyright_footer %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								<tr data-white-label-name="show_company_name_footer">
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_show_company_name_footer }}">
+											{{ b5b_qore_engine.language.text_show_company_name_footer }}
+										</span>
+									</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.show_company_name_footer %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+								<tr data-white-label-name="powered_by">
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_powered_by }}">
+											{{ b5b_qore_engine.language.text_powered_by }}
+										</span>
+									</td>
+									<td class="white-label-control text-right">
+										<div class="form-group">
+											<div class="input-group">
+												{% if white_label_settings.powered_by != '' %}
+												<input type="text" class="form-control white-label-text-input" name="powered_by" id="powered-by" placeholder="{{ b5b_qore_engine.language.text_enter_company_name }}" value="{{ white_label_settings.powered_by }}" />
+												{% else %}
+												<input type="text" class="form-control white-label-text-input" name="powered_by" id="powered-by" placeholder="{{ b5b_qore_engine.language.text_enter_company_name }}" value="" />
+												{% endif %}
+												
+												<div class="input-group-btn">
+													<button class="btn btn-success white-label-text-input-button" type="button" data-loading-text="Saving" data-toggle="tooltip" data-original-title="Save">
+														<i class="fa fa-save"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr data-white-label-name="show_b5b_support_header">
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_show_b5b_support_header }}">
+											{{ b5b_qore_engine.language.text_show_b5b_support_header }}
+										</span>
+									</td>
+									<td class="white-label-control text-right">
+										{% if white_label_settings.show_b5b_support_header %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" checked />
+										{% else %}
+										<input type="checkbox" class="js-switch js-switch-white-label js-switch-enabled" />
+										{% endif %}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane" id="theme-extensions">
+						<table class="table table-responsive">
+							<thead>
+								<tr>
+									<th>{{ b5b_qore_engine.language.text_extension_compatibility_theme_specific }}</th>
+									<th class="actions text-right"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% if theme_specific_extension_fixes.enabled_files is defined %}
+									{% for theme_fix_enabled in theme_specific_extension_fixes.enabled_files %}
+										<tr data-file-name="{{ theme_fix_enabled.filename }}">
+											<td>{{ theme_fix_enabled.title }}</td>
+											<td class="extension-fix-control text-right">
+												<input type="checkbox" class="js-switch js-switch-extension-fix js-switch-enabled" checked />
+											</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+
+								{% if theme_specific_extension_fixes.disabled_files is defined %}
+									{% for theme_fix_disabled in theme_specific_extension_fixes.disabled_files %}
+										<tr data-file-name="{{ theme_fix_disabled.filename }}">
+											<td>{{ theme_fix_disabled.title }}</td>
+											<td class="extension-fix-control text-right">
+												<input type="checkbox" class="js-switch js-switch-extension-fix js-switch-enabled" />
+											</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+
+
+								{% if theme_specific_extension_fixes.enabled_files is not defined and theme_specific_extension_fixes.disabled_files is not defined %}
+									<tr>
+										<td colspan="2" class="text-center">{{ b5b_qore_engine.language.text_no_extension_fixes }}</td>
+									</tr>
+								{% endif %}
+							</tbody>
+						</table>
+						{% if 1 == 2 %}
+						<table class="table table-responsive">
+							<thead>
+								<tr>
+									<th>{{ b5b_qore_engine.language.text_miscellaneous_features }}</th>
+									<th class="actions text-right"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<span data-toggle="tooltip" data-original-title="{{ b5b_qore_engine.language.help_generate_compatibility_fix }}">
+											{{ b5b_qore_engine.language.text_generate_compatibility_fix }} 
+											<br />
+											<i>({{ compatibility_fix_generated_date }})</i>
+										</span>
+									</td>
+									<td class="text-right">
+										<button id="generate-compatibility-fix" type="button" class="btn btn-default">{{ b5b_qore_engine.language.text_generate }}</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						{% endif %}
+					</div>
+					<div class="tab-pane" id="qore-engine-extensions">
+						<table class="table table-responsive">
+							<thead>
+								<tr>
+									<th>{{ b5b_qore_engine.language.text_extension_compatibility_qore_engine }}</th>
+									<th class="actions text-right"></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% if qore_engine_extension_fixes.enabled_files is defined %}
+									{% for qore_engine_fix_enabled in qore_engine_extension_fixes.enabled_files %}
+										<tr data-file-name="qore_engine_fix_enabled.filename">
+											<td>{{ qore_engine_fix_enabled.title }}</td>
+											<td class="extension-fix-control text-right">
+												<input type="checkbox" class="js-switch js-switch-extension-fix js-switch-enabled" checked />
+											</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+
+								{% if qore_engine_extension_fixes.disabled_files is defined %}
+									{% for qore_engine_fix_disabled in qore_engine_extension_fixes.disabled_files %}
+										<tr data-file-name="{{ qore_engine_fix_disabled.filename }}">
+											<td>{{ qore_engine_fix_disabled.title }}</td>
+											<td class="extension-fix-control text-right">
+												<input type="checkbox" class="js-switch js-switch-extension-fix js-switch-enabled" />
+											</td>
+										</tr>
+									{% endfor %}
+								{% endif %}
+
+								{% if qore_engine_extension_fixes.enabled_files is not defined and qore_engine_extension_fixes.disabled_files is not defined %}
+									<tr>
+										<td colspan="2" class="text-center">{{ b5b_qore_engine.language.text_no_extension_fixes }}</td>
+									</tr>
+								{% endif %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				{% else %}
+				<div class="row">
+					<div class="col-md-12">
+						<p class="text-center">{{ error_theme_does_not_exist }}</p>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}

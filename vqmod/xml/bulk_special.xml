@@ -1,0 +1,27 @@
+<modification>
+	<id>TOPLU İNDİRİM</id>
+	<version>3.x</version>
+	<author>OpencartUzman</author>
+	
+  	 	<file path="admin/controller/common/column_left.php">
+    <operation error="skip">
+      <search><![CDATA[$moduller = array();]]></search>
+      <add position="after"><![CDATA[
+        $moduller[] = array(
+          'name'     => $this->language->get('bulk_special'),
+          'href'     => $this->url->link('extension/module/bulk_special', 'user_token=' . $this->session->data['user_token'], true),
+          'children' => array()
+        );
+      ]]></add>
+    </operation>
+  </file>
+  <file path="admin/language/tr-tr/common/column_left.php">
+		<operation>
+			<search><![CDATA[$_['text_backup']]]></search>
+			<add position="after"><![CDATA[
+			$_['bulk_special']             = 'Toplu İndirim';
+			]]></add>
+		</operation>
+	</file>	
+	
+</modification>

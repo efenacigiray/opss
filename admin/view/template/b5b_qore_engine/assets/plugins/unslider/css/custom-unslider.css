@@ -1,0 +1,15 @@
+.promo-slider{
+	margin: 0 0 10px;
+}
+.promo-slider ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.unslider .unslider-nav{
+	display: none;
+	height: 50px;
+}
+.unslider .unslider-arrow{
+	display: none;
+}

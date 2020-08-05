@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - VQMod Manager Fix</id>
+	<version>1.1</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/view/template/extension/module/vqmod_manager.twig">
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				<ul class="breadcrumb">
+				]]></search>
+			<add><![CDATA[
+      			<h1><?php echo $heading_title; ?></h1>
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="bottom"><![CDATA[
+				// DO NOT DELETE - INTENTIONALLY LEFT BLANK BECAUSE OF 'position="bottom"'
+				]]></search>
+			<add><![CDATA[
+				<?php echo $footer; ?>
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				<th class="left">
+				]]></search>
+			<add><![CDATA[
+				<th>
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				<td class="left">
+				]]></search>
+			<add><![CDATA[
+				<td>
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				button btn-success
+				]]></search>
+			<add><![CDATA[
+				btn btn-success
+				]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Auto Translate</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/view/template/b5b_qore_engine/themes/*/*/template/common/header.twig">
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				</head>
+				]]></search>
+			<add><![CDATA[
+				<?php if (isset($auto_translate)) { ?>
+				<script type="text/javascript" src="<?php echo $auto_translate; ?>"></script>
+				<style type="text/css">
+				.auto-translate {
+					padding: 4px;
+					background: #aaaaaa;
+					color: #ffffff;
+					text-decoration: none;
+					border-radius: 2px;
+					vertical-align: top;
+					margin-left: 2px;
+					display: inline-block;
+					font-weight: bold;
+					cursor: pointer;
+				}
+				.auto-translate:hover {
+					background: #0099ff;
+				}
+				</style>
+				<?php } ?>
+				]]></add>
+		</operation>
+	</file>
+</modification>

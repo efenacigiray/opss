@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Main Menu</id>
+	<version>2.0.0.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/controller/common/column_left.php">
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-dashboard']]></search>
+			<add><![CDATA['icon-grid-big']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-tags']]></search>
+			<add><![CDATA['icon-cube']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-puzzle-piece']]></search>
+			<add><![CDATA['icon-triple-points']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-television']]></search>
+			<add><![CDATA['icon-brush']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-shopping-cart']]></search>
+			<add><![CDATA['icon-dollar']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-user']]></search>
+			<add><![CDATA['icon-user']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-share-alt']]></search>
+			<add><![CDATA['icon-star']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-cog']]></search>
+			<add><![CDATA['icon-settings']]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA['fa-bar-chart-o']]></search>
+			<add><![CDATA['icon-bars']]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/common/column_left.twig">
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				<div id="stats">
+				]]></search>
+			<add><![CDATA[
+				</div>
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				<ul id="menu">
+				]]></search>
+			<add><![CDATA[
+				<div id="menu">
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				<ul id="menu">
+				]]></search>
+			<add><![CDATA[
+				<ul class="menu">
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[<i class="fa ]]></search>
+			<add><![CDATA[<i class="icon ]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[ fw]]></search>
+			<add><![CDATA[]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				{% for menu in menus %}
+				]]></search>
+			<add><![CDATA[
+				{% for key, menu in menus %}
+					{% set menu_active = '' %}
+
+					{% set current_menu = menu.id|join(',') %}
+					{% if (current_section.0 == current_menu.1) or (current_section.1 == 'dashboard') and key == 0 %}
+						{% set menu_active = 'active_2' %}
+					{% endif %}
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[data-toggle="collapse"]]></search>
+			<add><![CDATA[]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[collapsed]]></search>
+			<add><![CDATA[]]></add>
+		</operation>
+	</file>
+</modification>

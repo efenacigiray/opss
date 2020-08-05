@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Fastor Fix</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="system/engine/loader.php">
+		<!-- <operation error="skip">
+			<search position="replace"><![CDATA[
+				$route . '.twig');
+				]]></search>
+			<add><![CDATA[
+      			$route . '.twig', $registry);
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace" index="2"><![CDATA[
+				$output = null;
+				]]></search>
+			<add><![CDATA[
+      			$registry = $this->registry;
+				]]></add>
+		</operation> -->
+	</file>
+</modification>

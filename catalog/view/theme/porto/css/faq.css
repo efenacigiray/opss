@@ -1,0 +1,20 @@
+.faq-area .faq-section .panel-faq .panel-heading .panel-title {
+     position: relative;
+}
+
+.faq-area .faq-section .panel-faq .panel-heading .panel-title > a:after {
+    content: "\f068";
+    font-family: fontawesome;
+    position: absolute;
+    right: 5px;
+    top: 2px;
+    font-size: 13px;
+}
+
+.faq-area .faq-section .panel-faq .panel-heading .panel-title > a.collapsed:after {
+    content: "\f067";
+}
+
+h2.section-title {
+     padding-bottom: 10px;
+}

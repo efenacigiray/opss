@@ -1,0 +1,122 @@
+<div class="row">
+  <div id="filter-report" class="col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="form-group col-md-5">
+          <label class="control-label" for="input-product-name">Ürün</label>
+            <input type="text" name="filter_product_name" value="" placeholder="Ürün" id="input-product-name" class="form-control" />
+            <input type="hidden" name="filter_product_id" value="{{filter_product_id}}">
+        </div>
+        <div class="form-group col-md-5">
+          <label class="control-label" for="filter-store-id">Okul</label>
+            <select class="form-control" id="filter-store-id" name="filter_store_id">
+                {% if filter_store_id == -1 %}
+                <option value="" selected="selected"></option>
+                {% else %}
+                <option value=""></option>
+                {% endif %}
+                {% for store_id, name in stores %}
+                {% if filter_store_id == store_id %}
+                <option value="{{ store_id }}" selected="selected">{{name}}</option>
+                {% else %}
+                <option value="{{ store_id }}">{{name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-md-2 text-right">
+          <label class="control-label">&nbsp;</label>
+          <button type="button" id="button-filter" class="btn btn-default form-control"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-bar-chart"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-left">Müşteri</td>
+                <td class="text-left">Okul</td>
+                <td class="text-right">Tarih</td>
+                <td class="text-right">Adet</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if orders %}
+            {% for order in orders %}
+            <tr>
+              <td class="text-left">{{ order.customer }}</td>
+              <td class="text-left">{{ order.store }}</td>
+              <td class="text-left">{{ order.date_added }}</td>
+              <td class="text-right">{{ order.quantity }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="6">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('input[name=\'filter_product_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request) + '&add_manu_name=1',
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_product_name\']').val(item['label'])
+    $('input[name=\'filter_product_id\']').val(item['value']);
+  }
+});
+
+$('#button-filter').on('click', function() {
+    var url = '';
+
+    var filter_product_id = $('input[name=\'filter_product_id\']').val();
+
+    if (filter_product_id) {
+        url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+    }
+
+    var filter_store_id = $('select[name=\'filter_store_id\']').val();
+
+    if (filter_store_id) {
+        url += '&filter_store_id=' + encodeURIComponent(filter_store_id);
+    }
+
+    location = 'index.php?route=report/report&code=product_customer&user_token={{ user_token }}' + url;
+});
+//--></script>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+    language: '{{ datepicker }}',
+    pickTime: false
+});
+//--></script>

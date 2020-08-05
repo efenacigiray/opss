@@ -1,0 +1,153 @@
+<modification>
+    <name>Admin Kategori Filtreleme</name>
+    <author>OpencartUzman</author>
+    <version>3.0</version>
+
+<file name="admin/controller/catalog/category.php">
+       <operation error="skip">
+           <search position="after"><![CDATA[protected function getList() {]]></search>
+           <add>
+               <![CDATA[
+                    if (isset($this->request->get['filter_category_id'])) {
+            $filter_category_id = $this->request->get['filter_category_id'];
+        } else {
+            $filter_category_id = '';
+        }
+        if (isset($this->request->get['filter_category_name'])) {
+            $filter_category_name = $this->request->get['filter_category_name'];
+        } else {
+            $filter_category_name = '';
+        }
+
+               ]]>
+           </add>
+        </operation>
+        <operation error="skip">
+           <search position="before"><![CDATA[$data['add'] = $this->url->link('catalog/category/add', 'token=' . $this->session->data['token'] . $url, true);]]></search>
+           <add>
+               <![CDATA[
+        if (isset($this->request->get['filter_category_id'])) {
+            $url .= '&filter_category_id=' . $this->request->get['filter_category_id'];
+        }
+        if (isset($this->request->get['filter_category_name'])) {
+            $url .= '&filter_category_name=' . $this->request->get['filter_category_name'];
+        }]]>
+        </add>
+        </operation>
+
+        <operation error="skip">
+           <search position="after"><![CDATA[$category_total = $this->model_catalog_category->getTotalCategories();]]></search>
+           <add>
+               <![CDATA[if  (!empty($filter_category_id)){
+            $category_total = 0;
+                }
+        ]]>
+           </add>
+        </operation>
+        <operation error="skip">
+           <search position="before"><![CDATA['start' => ($page - 1) * $this->config->get('config_limit_admin')]]></search>
+           <add>
+               <![CDATA['filter_category_id' => $filter_category_id,]]>
+           </add>
+        </operation>
+
+        <operation error="skip">
+           <search position="before"><![CDATA[if (isset($this->request->post['selected'])) {]]></search>
+           <add>
+               <![CDATA[////******* category search start ***********//
+        $data['entry_name'] = $this->language->get('entry_name');
+        if (isset($this->request->get['filter_category_name'])) {
+            $filter_category_name = $this->request->get['filter_category_name'];
+        } else {
+            $filter_category_name = null;
+        }
+        if (isset($this->request->get['filter_category_id'])) {
+            $filter_category_id = $this->request->get['filter_category_id'];
+        } else {
+            $filter_category_id = null;
+        }
+        $data['filter_category_name'] = $filter_category_name;
+        $data['filter_category_id'] = $filter_category_id;
+        $data['token'] = $this->session->data['user_token'];
+
+        ////******* category search end ***********//
+]]>
+           </add>
+        </operation>
+    </file>
+        <file name="admin/view/template/catalog/category_list.twig">
+       <operation error="skip">
+           <search position="after"><![CDATA[<div class="panel-body" id="search-panel">]]></search>
+           <add>
+               <![CDATA[<!----category search start --->
+          <div class="form-group col-md-2">
+            <input type="text" name="filter_category_name" value="{{ filter_category_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+            <input type="hidden" name="filter_category_id" value="{{ filter_category_id }}" >
+          </div>
+        <div class="form-group col-md-1"><button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button></div>
+      </div>
+        <!----category search end --->
+]]>
+           </add>
+        </operation>
+       <operation error="skip">
+           <search position="before"><![CDATA[{{ footer }}]]></search>
+           <add>
+               <![CDATA[<!------- category search js code start ---------->
+<script type="text/javascript"><!--
+$('input[name=\'filter_category_name\']').autocomplete({
+    'source': function(request, response) {
+        $.ajax({
+            url: 'index.php?route=catalog/category/autocomplete&user_token={{ token }}&filter_name=' +  encodeURIComponent(request),
+            dataType: 'json',
+            success: function(json) {
+                response($.map(json, function(item) {
+                    return {
+                        label: item['name'],
+                        value: item['category_id']
+                    }
+                }));
+            }
+        });
+    },
+    'select': function(item) {
+        $('input[name=\'filter_category_name\']').val(item['label']);
+        $('input[name=\'filter_category_id\']').val(item['value']);
+    }
+});
+
+//--></script>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+    var url = 'index.php?route=catalog/category&user_token={{ token }}';
+
+    var filter_category_name = $('input[name=\'filter_category_name\']').val();
+    var filter_category_id = $('input[name=\'filter_category_id\']').val();
+
+    if (filter_category_id) {
+        url += '&filter_category_id=' + encodeURIComponent(filter_category_id);
+        url += '&filter_category_name=' + encodeURIComponent(filter_category_name);
+    }
+
+    location = url;
+});
+//--></script>
+<!------- category search js code end ---------->
+]]>
+           </add>
+        </operation>
+    </file>
+    <file name="admin/model/catalog/category.php">
+       <operation error="skip">
+           <search position="before"><![CDATA[$sql .= " GROUP BY cp.category_id";]]></search>
+           <add>
+               <![CDATA[
+        if (!empty($data['filter_category_id'])) {
+            $sql .= " AND cd2.category_id = '" . $this->db->escape($data['filter_category_id']) . "'";
+        }]]>
+           </add>
+        </operation>
+    </file>
+
+
+</modification>

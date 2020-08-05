@@ -1,0 +1,191 @@
+<div class="row">
+  <div id="filter-report" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="control-label" for="input-date-start">{{ entry_date_start }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_start" value="{{ filter_date_start }}" placeholder="{{ entry_date_start }}" data-date-format="YYYY-MM-DD" id="input-date-start" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-date-end">{{ entry_date_end }}</label>
+          <div class="input-group date">
+            <input type="text" name="filter_date_end" value="{{ filter_date_end }}" placeholder="{{ entry_date_end }}" data-date-format="YYYY-MM-DD" id="input-date-end" class="form-control" />
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+            </span></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-status">{{ entry_status }}</label>
+          <select name="filter_order_status_id" id="input-status" class="form-control">
+            <option value="0">{{ text_all_status }}</option>
+            {% for order_status in order_statuses %}
+            {% if order_status.order_status_id == filter_order_status_id %}
+            <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+            {% else %}
+            <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-category">Kategori</label>
+          <input type="text" name="filter_category" value="{{ filter_category_name }}" placeholder="Kategori" id="input-category" class="form-control" />
+          <input type="hidden" value="{{ filter_category }}" id="filter-category-id">
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="input-manufacturer">Marka</label>
+          <input type="text" name="filter_manufacturer" value="{{ filter_manufacturer_name }}" placeholder="Marka" id="input-manufacturer" class="form-control" />
+          <input type="hidden" value="{{ filter_manufacturer }}" id="filter-manufacturer-id">
+        </div>
+        <div class="form-group text-right">
+          <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+          <button type="button" id="button-filter-excel" class="btn btn-success"><i class="fa fa-file-excel-o"></i> Excel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 col-md-pull-3 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-bar-chart"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <td class="text-left">{{ column_name }}</td>
+                <td class="text-left">{{ column_model }}</td>
+                <td class="text-right">{{ column_quantity }}</td>
+                <td class="text-right">Iade Edilen</td>
+                <td class="text-right">Iade Oncesi Toplam</td>
+                <td class="text-right">{{ column_total }}</td>
+              </tr>
+            </thead>
+            <tbody>
+            {% if products %}
+            {% for product in products %}
+            <tr>
+              <td class="text-left">{{ product.name }}</td>
+              <td class="text-left">{{ product.model }}</td>
+              <td class="text-right">{{ product.quantity }}</td>
+              <td class="text-right">{{ product.return }}</td>
+              <td class="text-right">{{ product.pre_return }}</td>
+              <td class="text-right">{{ product.total }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="4">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('#button-filter, #button-filter-excel').on('click', function() {
+  if ($(this).attr('id') == 'button-filter-excel') {
+    var url = '&excel=true';
+  } else {
+    var url = '';
+  }
+
+	var filter_date_start = $('input[name=\'filter_date_start\']').val();
+	
+	if (filter_date_start) {
+		url += '&filter_date_start=' + encodeURIComponent(filter_date_start);
+	}
+
+  var filter_manufacturer = $('#filter-manufacturer-id').val();
+
+  if (filter_manufacturer) {
+    url += '&filter_manufacturer=' + encodeURIComponent(filter_manufacturer);
+    url += '&filter_manufacturer_name=' + encodeURIComponent($('input[name=\'filter_manufacturer\']').val());
+  }
+
+  var filter_category = $('#filter-category-id').val();
+
+  if (filter_category) {
+    url += '&filter_category=' + encodeURIComponent(filter_category);
+    url += '&filter_category_name=' + encodeURIComponent($('input[name=\'filter_category\']').val());
+  }
+
+	var filter_date_end = $('input[name=\'filter_date_end\']').val();
+	
+	if (filter_date_end) {
+		url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+	}
+	
+	var filter_order_status_id = $('select[name=\'filter_order_status_id\']').val();
+	
+	if (filter_order_status_id != 0) {
+		url += '&filter_order_status_id=' + encodeURIComponent(filter_order_status_id);
+	}	
+
+	location = 'index.php?route=report/report&code=product_purchased&user_token={{ user_token }}' + url;
+});
+
+
+$('input[name=\'filter_category\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['category_id']
+          }
+        }));
+      }
+    })
+  },
+  'select': function(item) {
+    $('input[name=\'filter_category\']').val(item['label']);
+    $('#filter-category-id').val(item['value']);
+  }
+});
+
+$('input[name=\'filter_manufacturer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['manufacturer_id']
+          }
+        }));
+      }
+    })
+  },
+  'select': function(item) {
+    $('input[name=\'filter_manufacturer\']').val(item['label']);
+    $('#filter-manufacturer-id').val(item['value']);
+  }
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+//--></script>

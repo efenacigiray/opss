@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<name>Hızlı Ürün Ekleme</name>
+	<version>3.0</version>
+	<author>OpencartUzman</author>
+	<file path="admin/controller/common/column_left.php" error="skip">
+		<operation error="skip">
+			<search><![CDATA[$moduller = array();]]></search>
+			<add position="after"><![CDATA[
+			if ($this->user->hasPermission('access', 'catalog/hizliurun')) {
+				$moduller[] = array(
+					'name'	   => 'Hızlı Ürün Ekle',
+					'href'     => $this->url->link('catalog/hizliurun', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()		
+				);
+			}
+			
+			]]></add>
+		</operation>		
+	</file>	
+	</modification>

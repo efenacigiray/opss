@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Cart5</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/controller/module/cart5.php">
+		<!-- Disables QoreEngine for Cart5 -->
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				/* B5B - QoreEngine - Start */
+				]]></search>
+			<add><![CDATA[
+			/*
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				/* B5B - QoreEngine - End */
+				]]></search>
+			<add><![CDATA[
+				*/
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				/* B5B - BETA FEATURE - END */
+				]]></search>
+			<add><![CDATA[
+				*/
+				/* B5B - BETA FEATURE - END */
+				/*
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				/* B5B - BETA FEATURE - START */
+				]]></search>
+			<add><![CDATA[
+				/*
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="after" offset="1"><![CDATA[
+				$custom_compatible_pages = "";
+				]]></search>
+			<add><![CDATA[
+				/*
+			]]></add>
+		</operation>
+	</file>
+</modification>

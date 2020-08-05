@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Paketler</title>
+  <link rel="stylesheet" href="/admin/view/template/b5b_qore_engine/themes/circloid_2/default/plugins/bootstrap/bootstrap.min.css">
+  <style type="text/css">
+    body {
+        font-size: 12px
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <div class="table-responsive">
+      {% for package in packages %}
+      <h5>{{package.name}}</h5>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <td style="width: 30%"><b>Ürün Kodu<b></td>
+            <td style="width: 30%"><b>Ürün Adı<b></td>
+            <td style="width: 10%" class="text-center"><b>Miktar</b></td>
+            <td class="text-right" style="width: 10%"><b>Birim Fiyat</b></td>
+            <td class="text-right" style="width: 10%"><b>İndirimli Fiyat</b></td>
+            <td class="text-right" style="width: 10%"><b>Toplam Fiyat</b></td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in package.products %}
+          <tr>
+            <td>{{product.model}}</td>
+            <td>{{ product.name }}</td>
+            <td class="text-center">{{ product.quantity }}</td>
+            <td class="text-right" >{{product.price}}</td>
+            <td class="text-right" >{{product.package_price}}</td>
+            <td class="text-right" ><b>{{product.total}}</b></td>
+          </tr>
+          {% endfor %}
+          <tr><td colspan="6" class="text-right"><b>Toplam: {{package.package_total}}</b></td></tr>
+        </tbody>
+      </table>
+      {% endfor %}
+      <div class="col-md-12"><h5 class="text-right"><b>Genel Toplam: {{overall}}</b></h5></div>
+    </div>
+  </div>
+</body>
+</html>

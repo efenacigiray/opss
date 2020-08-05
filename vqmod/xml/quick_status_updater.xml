@@ -1,0 +1,1414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+<name>Full Sipariş Yönetimi</name>
+<version>3.0</version>
+<author>OpencartUzman</author>
+
+  <file path="admin/controller/module/quick_status_updater.php">
+    <operation eror="skip">
+      <search position="replace"><![CDATA[$modification_active = false;]]></search>
+      <add position="replace"><![CDATA[$modification_active = true;]]></add>
+    </operation>
+  </file>
+
+  <!-- Fix api - not useful anymore -->
+	<!--file path="catalog/controller/api/order.php" error="skip">
+
+		<operation error="skip">
+			<search position="after"><![CDATA[public function history() {]]></search>
+			<add position="after"><![CDATA[
+			if (version_compare(VERSION, '2.1', '>=')) {
+				if (!isset($this->session->data['api_id']) && isset($this->request->get['api_key'])) {
+					$this->load->model('account/api');
+
+					$api_info = $this->model_account_api->getApiByKey($this->request->get['api_key']);
+
+					if ($api_info) {
+						$this->session->data['api_id'] = $api_info['api_id'];
+					}
+				}
+			}
+			]]></add>
+		</operation>
+
+	</file-->
+
+	<file path="admin/view/template/sale/order_history.twig" error="skip">
+
+		<operation error="skip">
+			<search position="after"><![CDATA[<td class="text-left">{{ column_notify }}</td>]]></search>
+			<add position="after"><![CDATA[<td style="width:1px"></td>]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="after"><![CDATA[<td class="text-left">{{ history.notify }}</td>]]></search>
+			<add position="after"><![CDATA[<td class="text-left"><button class="btn btn-sm btn-danger" onclick="qosuDeleteStatus('{{history['id']}}')"><i class="fa fa-trash-o"></i></button></td>]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="after" index="1"><![CDATA[</table>]]></search>
+			<add position="after" index="1"><![CDATA[
+      <script type="text/javascript"><!--
+        var qosuDeleteStatus = function(os_id) {
+          if (window.confirm('{{text_qosu_confirm}}')) {
+            $('#history').load('index.php?route=sale/order/history&reverse&{{token}}&order_id={{qosu_order_id}}&delete_id='+os_id);
+          }
+        }
+      --></script>
+      ]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_history.tpl" error="skip">
+
+		<operation error="skip">
+			<search position="after"><![CDATA[<td class="text-left"><?php echo $column_notify; ?></td>]]></search>
+			<add position="after"><![CDATA[<td style="width:1px"></td>]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="after"><![CDATA[<td class="text-left"><?php echo $history['notify']; ?></td>]]></search>
+			<add position="after"><![CDATA[<td class="text-left"><button class="btn btn-sm btn-danger" onclick="qosuDeleteStatus('<?php echo $history['id']; ?>')"><i class="fa fa-trash-o"></i></button></td>]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="after" index="1"><![CDATA[</table>]]></search>
+			<add position="after" index="1"><![CDATA[
+      <script type="text/javascript"><!--
+        var qosuDeleteStatus = function(os_id) {
+          if (window.confirm('<?php echo $text_qosu_confirm; ?>')) {
+            $('#history').load('index.php?route=sale/order/history&reverse&<?php echo $token; ?>&order_id=<?php echo $qosu_order_id; ?>&delete_id='+os_id);
+          }
+        }
+      --></script>
+      ]]></add>
+		</operation>
+
+  </file>
+
+	<file path="admin/view/template/sale/order_info.tpl" error="skip">
+
+		<operation eror="skip">
+			<search position="replace"><![CDATA[<option value="<?php echo $order_statuses['order_status_id']; ?>"]]></search>
+			<add position="replace"><![CDATA[<option value="<?php echo $order_statuses['order_status_id']; ?>" <?php if(isset($order_statuses['color']) && $order_statuses['color'] != '#000000') { ?>style="color:<?php echo $order_statuses['color']; ?>"<?php } ?>]]></add>
+		</operation>
+
+    <operation error="skip" version="1.5 - 2">
+			<search position="before" offset="1"><![CDATA[<td><?php echo $text_store_name; ?></td>]]></search>
+			<add position="before" offset="1"><![CDATA[
+        <?php if (isset($tracking_no)) { ?>
+				<tr>
+					<td><?php echo $text_qosu_tracking_number; ?>:</td>
+					<td><a href="<?php echo $tracking_url; ?>" target="new"><?php echo $tracking_no; ?></a></td>
+				</tr>
+        <?php } ?>
+			]]></add>
+		</operation>
+
+    </file><file path="admin/view/template/sale/order_info.tpl" error="skip">
+
+    <operation error="skip" version="2.1">
+			<search position="after" offset="3"><![CDATA[<td><button data-toggle="tooltip" title="<?php echo $text_shipping_method; ?>" class="btn btn-info btn-xs"><i class="fa fa-truck fa-fw"></i></button></td>]]></search>
+			<add position="after" offset="3"><![CDATA[
+        <?php if (isset($tracking_no)) { ?>
+        <tr>
+          <td><button data-toggle="tooltip" title="<?php echo $text_qosu_tracking_number; ?>" class="btn btn-info btn-xs"><i class="fa fa-map-marker fa-fw"></i></button></td>
+          <td><a href="<?php echo $tracking_url; ?>" target="new"><?php echo $tracking_no; ?></td>
+        </tr>
+        <?php } ?>
+			]]></add>
+		</operation>
+
+	</file>
+
+  <file path="admin/controller/dashboard/recent.php" v="2.0 - 2.2" error="skip">
+
+    <operation error="skip">
+      <search position="before"><![CDATA[return $this->load->view('dashboard/recent.tpl', $data);]]></search>
+      <add position="before"><![CDATA[
+        $this->load->model('tool/gkd_lib');
+
+        $data['gkd_qosu_parts'] = $this->model_tool_gkd_lib->fetch('module/quick_status_updater_inc', $data, 'all');
+      ]]></add>
+    </operation>
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[
+    $this->load->language('module/quick_status_updater');
+
+    $this->load->model('localisation/order_status');
+
+    if (version_compare(VERSION, '2', '>=')) {
+      $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+    } else {
+      $this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+    }
+
+		if (version_compare(VERSION, '2', '>=')) {
+			$data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$data['button_save'] = $this->config->get('button_save');
+			$data['button_cancel'] = $this->config->get('button_cancel');
+			$data['button_close'] = $this->config->get('button_close');
+			$data['text_wait'] = $this->config->get('text_wait');
+
+      $data['qosu_direction'] = $this->language->get('direction');
+
+      // API login - v2.1+
+      if (version_compare(VERSION, '2.1', '>=')) {
+        $this->load->model('user/api');
+
+        $api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+
+        if ($api_info) {
+          $data['api_id'] = $api_info['api_id'];
+          $data['api_key'] = $api_info['key'];
+          $data['api_ip'] = $this->request->server['REMOTE_ADDR'];
+        } else {
+          $data['api_id'] = '';
+          $data['api_key'] = '';
+          $data['api_ip'] = '';
+        }
+      }
+		} else {
+			$this->data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$this->data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$this->data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$this->data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$this->data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$this->data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$this->data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$this->data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$this->data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$this->data['button_save'] = $this->config->get('button_save');
+			$this->data['button_cancel'] = $this->config->get('button_cancel');
+			$this->data['button_close'] = $this->config->get('button_close');
+			$this->data['text_wait'] = $this->config->get('text_wait');
+
+      $this->data['qosu_direction'] = $this->language->get('direction');
+		}
+			]]></add>
+		</operation>
+
+		<!-- buttons -->
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[=> $result['order_id'],]]></search>
+			<add position="after"><![CDATA[			'order_status_id'        => $result['order_status_id'],]]></add>
+		</operation>
+
+  </file>
+
+  <file path="admin/controller/extension/dashboard/recent.php" v="2.3" error="skip">
+
+    <operation error="skip">
+      <search position="before"><![CDATA[return $this->load->view('extension/dashboard/recent_info', $data);]]></search>
+      <add position="before"><![CDATA[
+        $this->load->model('tool/gkd_lib');
+
+        $data['gkd_qosu_parts'] = $this->model_tool_gkd_lib->fetch('module/quick_status_updater_inc', $data, 'all');
+      ]]></add>
+    </operation>
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[public function dashboard() {]]></search>
+			<add position="after"><![CDATA[
+    $this->load->language('module/quick_status_updater');
+
+    $this->load->model('localisation/order_status');
+
+    if (version_compare(VERSION, '2', '>=')) {
+      $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+    } else {
+      $this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+    }
+
+		if (version_compare(VERSION, '2', '>=')) {
+			$data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$data['button_save'] = $this->config->get('button_save');
+			$data['button_cancel'] = $this->config->get('button_cancel');
+			$data['button_close'] = $this->config->get('button_close');
+			$data['text_wait'] = $this->config->get('text_wait');
+
+      $data['qosu_direction'] = $this->language->get('direction');
+
+      // API login - v2.1+
+      if (version_compare(VERSION, '2.1', '>=')) {
+        $this->load->model('user/api');
+
+        $api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+
+        if ($api_info) {
+          $data['api_id'] = $api_info['api_id'];
+          $data['api_key'] = $api_info['key'];
+          $data['api_ip'] = $this->request->server['REMOTE_ADDR'];
+        } else {
+          $data['api_id'] = '';
+          $data['api_key'] = '';
+          $data['api_ip'] = '';
+        }
+      }
+		} else {
+			$this->data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$this->data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$this->data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$this->data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$this->data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$this->data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$this->data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$this->data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$this->data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$this->data['button_save'] = $this->config->get('button_save');
+			$this->data['button_cancel'] = $this->config->get('button_cancel');
+			$this->data['button_close'] = $this->config->get('button_close');
+			$this->data['text_wait'] = $this->config->get('text_wait');
+
+      $this->data['qosu_direction'] = $this->language->get('direction');
+		}
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[=> $result['order_id'],]]></search>
+			<add position="after"><![CDATA[			'order_status_id'        => $result['order_status_id'],]]></add>
+		</operation>
+
+  </file>
+
+  <file path="admin/controller/common/home.php" v="1.x" error="skip">
+
+    <operation error="skip">
+      <search position="before"><![CDATA[$this->response->setOutput($this->render());]]></search>
+      <add position="before"><![CDATA[
+        $this->load->model('tool/gkd_lib');
+
+        $this->data['gkd_qosu_parts'] = $this->model_tool_gkd_lib->fetch('module/quick_status_updater_inc', $this->data, 'all');
+      ]]></add>
+    </operation>
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[
+    $this->load->language('module/quick_status_updater');
+
+    $this->load->model('localisation/order_status');
+
+    if (version_compare(VERSION, '2', '>=')) {
+      $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+    } else {
+      $this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+    }
+
+		if (version_compare(VERSION, '2', '>=')) {
+			$data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$data['button_save'] = $this->config->get('button_save');
+			$data['button_cancel'] = $this->config->get('button_cancel');
+			$data['button_close'] = $this->config->get('button_close');
+			$data['text_wait'] = $this->config->get('text_wait');
+
+      $data['qosu_direction'] = $this->language->get('direction');
+
+      // API login - v2.1+
+      if (version_compare(VERSION, '2.1', '>=')) {
+        $this->load->model('user/api');
+
+        $api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
+
+        if ($api_info) {
+          $data['api_id'] = $api_info['api_id'];
+          $data['api_key'] = $api_info['key'];
+          $data['api_ip'] = $this->request->server['REMOTE_ADDR'];
+        } else {
+          $data['api_id'] = '';
+          $data['api_key'] = '';
+          $data['api_ip'] = '';
+        }
+      }
+		} else {
+			$this->data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$this->data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$this->data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$this->data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$this->data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$this->data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$this->data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$this->data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$this->data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$this->data['button_save'] = $this->config->get('button_save');
+			$this->data['button_cancel'] = $this->config->get('button_cancel');
+			$this->data['button_close'] = $this->config->get('button_close');
+			$this->data['text_wait'] = $this->config->get('text_wait');
+
+      $this->data['qosu_direction'] = $this->language->get('direction');
+		}
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[=> $result['order_id'],]]></search>
+			<add position="after"><![CDATA[			'order_status_id'        => $result['order_status_id'],]]></add>
+		</operation>
+
+  </file>
+
+  <file path="admin/view/template/extension/dashboard/recent_info.twig" v="3" error="skip">
+		<operation error="skip">
+			<search position="before"><![CDATA[<div class="panel panel-default">]]></search>
+			<add position="before"><![CDATA[{{gkd_qosu_parts['dialog_div']}}{{gkd_qosu_parts['scripts']}}]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/extension/dashboard/recent_info.tpl" v="2.3" error="skip">
+		<operation error="skip">
+			<search position="before"><![CDATA[<div class="panel panel-default">]]></search>
+			<add position="before"><![CDATA[<?php echo isset($gkd_qosu_parts['dialog_div']) ? $gkd_qosu_parts['dialog_div'] : ''; ?>]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/dashboard/recent.tpl" v="2.0 - 2.2" error="skip">
+		<operation error="skip">
+			<search position="before"><![CDATA[<div class="panel panel-default">]]></search>
+			<add position="before"><![CDATA[<?php echo isset($gkd_qosu_parts['dialog_div']) ? $gkd_qosu_parts['dialog_div'] : ''; ?>]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/common/home.tpl" v="1.x" error="skip">
+		<operation error="skip">
+			<search position="before"><![CDATA[<div class="panel panel-default">]]></search>
+			<add position="before"><![CDATA[<?php echo isset($gkd_qosu_parts['dialog_div']) ? $gkd_qosu_parts['dialog_div'] : ''; ?>]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/dashboard/recent.tpl" v="2.0 - 2.2" error="skip">
+    <operation error="skip">
+			<search position="after"><![CDATA[<div id="content">]]></search>
+			<add position="after"><![CDATA[<?php echo isset($gkd_qosu_parts['dialog_div']) ? $gkd_qosu_parts['dialog_div'] : ''; ?>]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/common/home.tpl" v="1.x" error="skip">
+    <operation error="skip">
+			<search position="after"><![CDATA[<div id="content">]]></search>
+			<add position="after"><![CDATA[
+			<?php if (version_compare(VERSION, '2', '>=')) { ?>
+				<div class="modal fade" id="quick-status-dialog" tabindex="-1" role="dialog"><div class="modalContent"></div></div>
+			<?php } else { ?>
+				<div id="quick-status-dialog" title="<?php echo isset($text_qosu_add_history) ? $text_qosu_add_history : ''; ?>" style="display:none"><div class="modalContent"></div></div>
+			<?php }  ?>
+			]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/extension/dashboard/recent_info.twig" v="3" error="skip">
+    <operation eror="skip">
+			<search position="replace" offset="1"><![CDATA[{% for order in orders %}]]></search>
+			<add position="replace" offset="1"><![CDATA[{% for order in orders %}
+        <tr {% if qosu_bg_mode == 'row' and qosu_os[order.order_status_id]['color'] != '#000000' %} style="background-color:{{qosu_os[order.order_status_id]['color']}} "{% endif %}>
+			]]></add>
+		</operation>
+
+    <operation error="skip">
+      <search position="replace"><![CDATA[<td>{{ order.status }}</td>]]></search>
+			<add position="replace"><![CDATA[<td class="text-left qosu-cell {% if qosu_bg_mode == 'label' %}qosu-label-cell{% endif %}" order_id="{{order['order_id']}}" {% if qosu_bg_mode == 'cell' and qosu_os[order.order_status_id]['color'] != '#000000' %} style="background-color:{{qosu_os[order.order_status_id]['color']}}"{% endif %} title="{{text_qosu_add_history}}">
+				{% if not qosu_bg_mode and qosu_os[order.order_status_id]['color'] != '#000000' %}
+					<font color="{{qosu_os[order.order_status_id]['color']}}">{{order['status']}}</font>
+				{% elseif qosu_bg_mode == 'label' %}
+					<span class="label qosu-label" style="background:{{qosu_os[order.order_status_id]['color'] != '#000000' ? qosu_os[order.order_status_id]['color'] : '#444'}}">{{order['status']|upper}}</span>
+				{% else %}
+					{{order['status']}}
+				{% endif %}
+			</td>
+			]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="replace"><![CDATA[<div class="table-responsive">]]></search>
+			<add position="replace"><![CDATA[<div class="table-responsive qosuTable">]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/extension/dashboard/recent_info.tpl" v="2.3" error="skip">
+		<operation eror="skip">
+			<search position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>]]></search>
+			<add position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>
+        <tr <?php if (!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'row') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?>>
+			]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="replace"><![CDATA[<div class="table-responsive">]]></search>
+			<add position="replace"><![CDATA[<div class="table-responsive qosuTable">]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/dashboard/recent.tpl" v="2.0 - 2.2" error="skip">
+		<operation eror="skip">
+			<search position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>]]></search>
+			<add position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>
+        <tr <?php if (!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'row') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?>>
+			]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="replace"><![CDATA[<div class="table-responsive">]]></search>
+			<add position="replace"><![CDATA[<div class="table-responsive qosuTable">]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/common/home.tpl" v="1.x" error="skip">
+		<operation eror="skip">
+			<search position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>]]></search>
+			<add position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>
+        <tr <?php if (!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'row') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?>>
+			]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="replace"><![CDATA[<div class="table-responsive">]]></search>
+			<add position="replace"><![CDATA[<div class="table-responsive qosuTable">]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/dashboard/recent.tpl" v="2.0 - 2.2" error="skip">
+    <operation error="skip">
+			<search position="replace" regex="true"><![CDATA[~left"><\?php echo \$order\['(order_status|status)'\]; \?></td>~]]></search>
+			<add position="replace"><![CDATA[left qosu-cell <?php if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>qosu-label-cell<?php } ?>" order_id="<?php echo $order['order_id']; ?>" <?php if (!empty($qosu_bg_mode) && ($qosu_bg_mode == 'cell') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?> title="<?php echo isset($text_qosu_add_history) ? $text_qosu_add_history : ''; ?>">
+				<?php if(empty($qosu_bg_mode) && isset($order['order_status_id']) && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { ?>
+					<font color="<?php echo $qosu_os[$order['order_status_id']]['color']; ?>"><?php echo $order['$1']; ?></font>
+				<?php } else if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>
+					<span class="label qosu-label" style="background:<?php echo (isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') ? $qosu_os[$order['order_status_id']]['color'] : '#444'; ?>"><?php echo strtoupper($order['$1']); ?></span>
+				<?php } else { ?>
+					<?php echo $order['$1']; ?>
+				<?php } ?>
+			</td>
+			]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/common/home.tpl" v="1.x" error="skip">
+    <operation error="skip">
+			<search position="replace"><![CDATA[left"><?php echo $order['status']; ?></td>]]></search>
+			<add position="replace"><![CDATA[left qosu-cell <?php if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>qosu-label-cell<?php } ?>" order_id="<?php echo $order['order_id']; ?>" <?php if (!empty($qosu_bg_mode) && ($qosu_bg_mode == 'cell') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?> title="<?php echo isset($text_qosu_add_history) ? $text_qosu_add_history : ''; ?>">
+				<?php if(empty($qosu_bg_mode) && isset($order['order_status_id']) && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { ?>
+					<font color="<?php echo $qosu_os[$order['order_status_id']]['color']; ?>"><?php echo $order['status']; ?></font>
+				<?php } else if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>
+					<span class="label qosu-label" style="background:<?php echo (isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') ? $qosu_os[$order['order_status_id']]['color'] : '#444'; ?>"><?php echo strtoupper($order['$1']); ?></span>
+				<?php } else { ?>
+					<?php echo $order['status']; ?>
+				<?php } ?>
+			</td>
+			]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/extension/dashboard/recent_info.tpl" v="2.3" error="skip">
+		<operation error="skip">
+			<search position="replace"><![CDATA[<td><?php echo $order['status']; ?></td>]]></search>
+			<add position="replace"><![CDATA[<td class="qosu-cell <?php if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>qosu-label-cell<?php } ?>" order_id="<?php echo $order['order_id']; ?>" <?php if (!empty($qosu_bg_mode) && ($qosu_bg_mode == 'cell') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?> title="<?php echo isset($text_qosu_add_history) ? $text_qosu_add_history : ''; ?>">
+				<?php if(empty($qosu_bg_mode) && isset($order['order_status_id']) && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { ?>
+					<font color="<?php echo $qosu_os[$order['order_status_id']]['color']; ?>"><?php echo $order['status']; ?></font>
+				<?php } else if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>
+					<span class="label qosu-label" style="background:<?php echo (isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') ? $qosu_os[$order['order_status_id']]['color'] : '#444'; ?>"><?php echo strtoupper($order['status']); ?></span>
+				<?php } else { ?>
+					<?php echo $order['status']; ?>
+				<?php } ?>
+			</td>
+			]]></add>
+		</operation>
+
+    <operation eror="skip">
+			<search position="before" index="1"><![CDATA[<div]]></search>
+			<add position="before" index="1"><![CDATA[<?php echo isset($gkd_qosu_parts['scripts']) ? $gkd_qosu_parts['scripts'] : ''; ?>]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/dashboard/recent.tpl" v="2.0 - 2.2" error="skip">
+		<operation error="skip">
+			<search position="replace"><![CDATA[<td><?php echo $order['status']; ?></td>]]></search>
+			<add position="replace"><![CDATA[<td class="qosu-cell <?php if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>qosu-label-cell<?php } ?>" order_id="<?php echo $order['order_id']; ?>" <?php if (!empty($qosu_bg_mode) && ($qosu_bg_mode == 'cell') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?> title="<?php echo isset($text_qosu_add_history) ? $text_qosu_add_history : ''; ?>">
+				<?php if(empty($qosu_bg_mode) && isset($order['order_status_id']) && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { ?>
+					<font color="<?php echo $qosu_os[$order['order_status_id']]['color']; ?>"><?php echo $order['status']; ?></font>
+				<?php } else if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>
+					<span class="label qosu-label" style="background:<?php echo (isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') ? $qosu_os[$order['order_status_id']]['color'] : '#444'; ?>"><?php echo strtoupper($order['status']); ?></span>
+				<?php } else { ?>
+					<?php echo $order['status']; ?>
+				<?php } ?>
+			</td>
+			]]></add>
+		</operation>
+
+    <operation eror="skip">
+			<search position="before" index="1"><![CDATA[<div]]></search>
+			<add position="before" index="1"><![CDATA[<?php echo isset($gkd_qosu_parts['scripts']) ? $gkd_qosu_parts['scripts'] : ''; ?>]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/common/home.tpl" v="1.x" error="skip">
+		<operation error="skip">
+			<search position="replace"><![CDATA[<td><?php echo $order['status']; ?></td>]]></search>
+			<add position="replace"><![CDATA[<td class="qosu-cell <?php if(!empty($qosu_bg_mode) && ($qosu_bg_mode == 'label')) { ?>qosu-label-cell<?php } ?>" order_id="<?php echo $order['order_id']; ?>" <?php if (!empty($qosu_bg_mode) && ($qosu_bg_mode == 'cell') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?> title="<?php echo $text_qosu_add_history; ?>">
+				<?php if(empty($qosu_bg_mode) && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { ?>
+					<font color="<?php echo $qosu_os[$order['order_status_id']]['color']; ?>"><?php echo $order['status']; ?></font>
+				<?php } else if(!empty($qosu_bg_mode) && ($qosu_bg_mode == 'label')) { ?>
+					<span class="label qosu-label" style="background:<?php echo (isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') ? $qosu_os[$order['order_status_id']]['color'] : '#444'; ?>"><?php echo strtoupper($order['$1']); ?></span>
+				<?php } else { ?>
+					<?php echo $order['status']; ?>
+				<?php } ?>
+			</td>
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="before" index="1"><![CDATA[<div]]></search>
+			<add position="before" index="1"><![CDATA[<?php echo isset($gkd_qosu_parts['scripts']) ? $gkd_qosu_parts['scripts'] : ''; ?>]]></add>
+		</operation>
+	</file>
+
+  <file path="admin/view/template/sale/order_info.twig" error="skip" v="3">
+		<operation error="skip">
+			<search position="before" offset="1"><![CDATA[<label class="col-sm-2 control-label" for="input-notify">{{ entry_notify }}</label>]]></search>
+			<add position="before" offset="1"><![CDATA[
+        {% if qosu_shipping %}
+          <div class="form-group">
+            <label for="tracking_no" class="col-sm-2 control-label">{{text_qosu_tracking_number}}</label>
+            <div class="col-sm-10 row" style="padding-right:0">
+              <div class="col-sm-8" style="padding-right:5px">
+                <input type="text" name="tracking_no" id="tracking_no" class="form-control input-small" placeholder="{{text_qosu_tracking_number}}"/>
+              </div>
+              <div class="col-sm-4" style="padding:0">
+                <select name="shipping_method" class="form-control">
+                  {% for k, v in qosu_shipping %}
+                  <option value="{{k}}" {% if k == 1 %} selected="selected"{% endif %}>{{v['title']}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+      ]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="replace"><![CDATA[+ '&comment=' + encodeURIComponent($('textarea[name=\'comment\']').val())]]></search>
+			<add position="replace"><![CDATA[+ '&comment=' + encodeURIComponent($('textarea[name=\'comment\']').val()) + '&shipping_method=' + encodeURIComponent($('select[name=\'shipping_method\']').val()) + '&tracking_no=' + encodeURIComponent($('input[name=\'tracking_no\']').val())]]></add>
+		</operation>
+
+    <operation error="skip">
+			<search position="after" offset="3"><![CDATA[<td><button data-toggle="tooltip" title="{{ text_shipping_method }}"]]></search>
+			<add position="after" offset="3"><![CDATA[
+      {% if tracking_no %}
+      <tr>
+        <td><button data-toggle="tooltip" title="{{ text_qosu_tracking_number }}" class="btn btn-info btn-xs"><i class="fa fa-map-marker fa-fw"></i></button></td>
+        <td><a href="{{tracking_url}}" target="new">{{tracking_no}}</td>
+      </tr>
+      {% endif %}
+			]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/sale/order_info.tpl" error="skip">
+		<operation error="skip" v="2">
+			<search position="before" offset="1"><![CDATA[<label class="col-sm-2 control-label" for="input-notify"><?php echo $entry_notify; ?></label>]]></search>
+			<add position="before" offset="1"><![CDATA[
+        <?php if ($qosu_shipping) { ?>
+          <div class="form-group">
+            <label for="tracking_no" class="col-sm-2 control-label"><?php echo $text_qosu_tracking_number; ?></label>
+            <div class="col-sm-10 row" style="padding-right:0">
+              <div class="col-sm-8" style="padding-right:5px">
+                <input type="text" name="tracking_no" id="tracking_no" class="form-control input-small" placeholder="<?php echo $text_qosu_tracking_number; ?>"/>
+              </div>
+              <div class="col-sm-4" style="padding:0">
+                <select name="shipping_method" class="form-control">
+                  <?php foreach($qosu_shipping as $k => $v) { ?>
+                  <option value="<?php echo $k; ?>" <?php if($k == 1) { ?> selected="selected"<?php } ?>><?php echo $v['title']; ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+          </div>
+        <?php } ?>
+      ]]></add>
+		</operation>
+    <operation error="skip" v="1.5">
+			<search position="before" offset="1"><![CDATA[<td><?php echo $entry_notify; ?></td>]]></search>
+			<add position="before" offset="1"><![CDATA[
+        <?php if ($qosu_shipping) { ?>
+          <tr>
+            <td><?php echo $text_qosu_tracking_number; ?></td>
+            <td>
+              <input style="width:250px" type="text" name="tracking_no" id="tracking_no" class="form-control input-small" placeholder="<?php echo $text_qosu_tracking_number; ?>"/>
+              <select name="shipping_method" class="form-control">
+                <?php foreach($qosu_shipping as $k => $v) { ?>
+                <option value="<?php echo $k; ?>" <?php if($k == 1) { ?> selected="selected"<?php } ?>><?php echo $v['title']; ?></option>
+                <?php } ?>
+              </select>
+            </td>
+          </tr>
+        <?php } ?>
+      ]]></add>
+		</operation>
+  </file><file path="admin/view/template/sale/order_info.tpl" error="skip">
+    <operation error="skip" v="2">
+			<search position="replace"><![CDATA[+ '&comment=' + encodeURIComponent($('textarea[name=\'comment\']').val())]]></search>
+			<add position="replace"><![CDATA[+ '&comment=' + encodeURIComponent($('textarea[name=\'comment\']').val()) + '&shipping_method=' + encodeURIComponent($('select[name=\'shipping_method\']').val()) + '&tracking_no=' + encodeURIComponent($('input[name=\'tracking_no\']').val())]]></add>
+		</operation>
+  </file>
+
+  <file path="admin/view/template/sale/order_list.twig" v="3" error="skip">
+
+		<!-- tracking column -->
+		<operation error="skip">
+			<search position="before"><![CDATA[<td class="text-right">{% if sort == 'o.total' %}]]></search>
+			<add position="before"><![CDATA[{{gkd_qosu_parts.tracking_col}}]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.twig" error="skip">
+
+    <operation error="skip">
+			<search position="before"><![CDATA[<td class="text-right">{{ order.total }}</td>]]></search>
+			<add position="before"><![CDATA[{% if qosu_tracking_column %}<td data-tracking="{{order['order_id']}}"><a href="{{order['tracking_url']}}" target="new">{{order['tracking_no']}}</a></td>{% endif %}]]></add>
+		</operation>
+
+		<!-- buttons -->
+
+  </file><file path="admin/view/template/sale/order_list.twig" error="skip">
+
+		<operation error="skip">
+			<search position="before"><![CDATA[<button type="submit" id="button-shipping"]]></search>
+			<add position="before"><![CDATA[{{gkd_qosu_parts['button']}}]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.twig" error="skip">
+
+		<operation error="skip">
+			<search position="after"><![CDATA[$('#button-shipping, #button-invoice').prop('disabled', true);]]></search>
+			<add position="after"><![CDATA[$('#btn-qosu-multiple').prop('disabled', true);]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.twig" error="skip">
+
+		<operation error="skip">
+			<search position="after"><![CDATA[$('#button-invoice').prop('disabled', false);]]></search>
+			<add position="after"><![CDATA[$('#btn-qosu-multiple').prop('disabled', false);]]></add>
+		</operation>
+
+		<!-- end buttons -->
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[<div id="content">]]></search>
+			<add position="after"><![CDATA[{{gkd_qosu_parts['dialog_div']}}]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="replace" offset="1"><![CDATA[{% for order in orders %}]]></search>
+			<add position="replace" offset="1"><![CDATA[{% for order in orders %}
+        <tr {% if qosu_bg_mode == 'row' and qosu_os[order.order_status_id]['color'] != '#000000' %} style="background-color:{{qosu_os[order.order_status_id]['color']}} "{% endif %}>
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+      <search position="replace"><![CDATA[<td class="text-left">{{ order.order_status }}</td>]]></search>
+			<add position="replace"><![CDATA[<td class="text-left qosu-cell {% if qosu_bg_mode == 'label' %}qosu-label-cell{% endif %}" order_id="{{order['order_id']}}" {% if qosu_bg_mode == 'cell' and qosu_os[order.order_status_id]['color'] != '#000000' %} style="background-color:{{qosu_os[order.order_status_id]['color']}}"{% endif %} title="{{text_qosu_add_history}}">
+				{% if not qosu_bg_mode and qosu_os[order.order_status_id]['color'] != '#000000' %}
+					<font color="{{qosu_os[order.order_status_id]['color']}}">{{order['order_status']}}</font>
+				{% elseif qosu_bg_mode == 'label' %}
+					<span class="label qosu-label" style="background:{{qosu_os[order.order_status_id]['color'] != '#000000' ? qosu_os[order.order_status_id]['color'] : '#444'}}">{{order['order_status']|upper}}</span>
+				{% else %}
+					{{order['order_status']}}
+				{% endif %}
+			</td>
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="replace"><![CDATA[<option value="{{ order_status.order_status_id }}"]]></search>
+			<add position="replace"><![CDATA[<option value="{{ order_status.order_status_id }}" {% if order_status['color'] != '#000000' %}style="color:{{order_status['color']}}"{% endif %}]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.twig" error="skip">
+
+    <!--Barcode button-->
+
+    <operation error="skip">
+			<search position="after"><![CDATA[<h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>]]></search>
+			<add position="after"><![CDATA[{{gkd_qosu_parts['barcode_button']}}]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="before"><![CDATA[{{ footer }}]]></search>
+			<add position="before"><![CDATA[{{gkd_qosu_parts['scripts']}}]]></add>
+		</operation>
+
+	</file>
+
+	<file path="admin/view/template/sale/order_list.tpl" error="skip" v="1,2">
+
+		<!-- tracking column -->
+		<operation error="skip">
+			<search position="before"><![CDATA[right"><?php if ($sort == 'o.total') { ?>]]></search>
+			<add position="before"><![CDATA[<?php echo isset($gkd_qosu_parts['tracking_col']) ? $gkd_qosu_parts['tracking_col'] : ''; ?>]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+    <operation error="skip">
+			<search position="before"><![CDATA[right"><?php echo $order['total']; ?>]]></search>
+			<add position="before"><![CDATA[<?php if (!empty($qosu_tracking_column)) { ?><td data-tracking="<?php echo $order['order_id']; ?>"><a href="<?php echo $order['tracking_url']; ?>" target="new"><?php echo $order['tracking_no']; ?></a></td><?php } ?>]]></add>
+		</operation>
+
+		<!-- buttons -->
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+		<operation error="skip"><!--1.5-->
+			<search position="replace"><![CDATA[<div class="buttons">]]></search>
+			<add position="replace"><![CDATA[<div class="buttons"><a class="button quick-update-multiple"><img src="<?php echo defined('_JEXEC') ? 'admin/' : ''; ?>view/quick_status_updater/img/update.png" alt="" style="vertical-align:top;margin-left:-4px"/> <?php echo $text_qosu_add_history; ?></a>]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+		<operation error="skip"><!--2.0-->
+			<search position="before"><![CDATA[<button type="submit" id="button-shipping"]]></search>
+			<add position="before"><![CDATA[<?php echo isset($gkd_qosu_parts['button']) ? $gkd_qosu_parts['button'] : ''; ?>]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+		<operation error="skip"><!--2.0-->
+			<search position="after"><![CDATA[$('#button-shipping, #button-invoice').prop('disabled', true);]]></search>
+			<add position="after"><![CDATA[$('#btn-qosu-multiple').prop('disabled', true);]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+		<operation error="skip"><!--2.0-->
+			<search position="after"><![CDATA[$('#button-invoice').prop('disabled', false);]]></search>
+			<add position="after"><![CDATA[$('#btn-qosu-multiple').prop('disabled', false);]]></add>
+		</operation>
+
+		<!-- end buttons -->
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[<div id="content">]]></search>
+			<add position="after"><![CDATA[<?php echo isset($gkd_qosu_parts['dialog_div']) ? $gkd_qosu_parts['dialog_div'] : ''; ?>]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>]]></search>
+			<add position="replace" offset="1"><![CDATA[<?php foreach ($orders as $order) { ?>
+        <tr <?php if (!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'row') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?>>
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+      <search position="replace" regex="true"><![CDATA[~left"><\?php echo \$order\['(order_status|status)'\]; \?></td>~]]></search>
+			<add position="replace"><![CDATA[left qosu-cell <?php if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>qosu-label-cell<?php } ?>" order_id="<?php echo $order['order_id']; ?>" <?php if (!empty($qosu_bg_mode) && ($qosu_bg_mode == 'cell') && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { echo ' style="background-color:' . (isset($qosu_os[$order['order_status_id']]['color']) ? $qosu_os[$order['order_status_id']]['color'] : '') . '"'; } ?> title="<?php echo isset($text_qosu_add_history) ? $text_qosu_add_history : ''; ?>">
+				<?php if(empty($qosu_bg_mode) && isset($order['order_status_id']) && isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') { ?>
+					<font color="<?php echo $qosu_os[$order['order_status_id']]['color']; ?>"><?php echo $order['$1']; ?></font>
+				<?php } else if(!empty($qosu_bg_mode) && isset($order['order_status_id']) && ($qosu_bg_mode == 'label')) { ?>
+					<span class="label qosu-label" style="background:<?php echo (isset($qosu_os[$order['order_status_id']]['color']) && $qosu_os[$order['order_status_id']]['color'] != '#000000') ? $qosu_os[$order['order_status_id']]['color'] : '#444'; ?>"><?php echo strtoupper($order['$1']); ?></span>
+				<?php } else { ?>
+					<?php echo $order['$1']; ?>
+				<?php } ?>
+			</td>
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="replace"><![CDATA[<option value="<?php echo $order_status['order_status_id']; ?>"]]></search>
+			<add position="replace"><![CDATA[<option value="<?php echo $order_status['order_status_id']; ?>" <?php if(isset($order_status['color']) && $order_status['color'] != '#000000') { ?>style="color:<?php echo $order_status['color']; ?>"<?php } ?>]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+    <!--Barcode button-->
+    <operation error="skip"><!--1.5-->
+			<search position="after"><![CDATA[<img src="view/image/order.png" alt="" /> <?php echo $heading_title; ?></h1>]]></search>
+			<add position="after"><![CDATA[<?php echo isset($gkd_qosu_parts['barcode_button']) ? $gkd_qosu_parts['barcode_button'] : ''; ?>]]></add>
+		</operation>
+
+  </file><file path="admin/view/template/sale/order_list.tpl" error="skip">
+
+    <operation error="skip"><!--2.0-->
+			<search position="after"><![CDATA[<?php echo $text_list; ?></h3>]]></search>
+			<add position="after"><![CDATA[<?php echo isset($gkd_qosu_parts['barcode_button']) ? $gkd_qosu_parts['barcode_button'] : ''; ?>]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="before"><![CDATA[<?php echo $footer; ?>]]></search>
+			<add position="before"><![CDATA[<?php echo isset($gkd_qosu_parts['scripts']) ? $gkd_qosu_parts['scripts'] : ''; ?>]]></add>
+		</operation>
+
+	</file>
+
+	<file path="admin/model/sale/order.php">
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[public function getOrders(]]></search>
+			<add position="after"><![CDATA[
+      $qosu_query = '';
+      if ($this->config->get('qosu_order_statuses')) {
+        $qosu_query = ' o.order_status_id, o.tracking_no, o.tracking_url,';
+      } else {
+        $qosu_query = ' o.order_status_id,';
+      }
+      ]]></add>
+		</operation>
+
+    <operation eror="skip">
+			<search position="replace"><![CDATA[o.date_added,]]></search>
+			<add position="replace"><![CDATA[o.date_added, ".$qosu_query."]]></add>
+		</operation>
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[=> $order_query->row['order_id'],]]></search>
+			<add position="after"><![CDATA[
+      'tracking_no' => isset($order_query->row['tracking_no']) ? $order_query->row['tracking_no'] : '',
+      'tracking_url' => isset ($order_query->row['tracking_url']) ? $order_query->row['tracking_url'] : '',
+      'tracking_carrier' => isset ($order_query->row['tracking_carrier']) ? $order_query->row['tracking_carrier'] : '',
+      ]]></add>
+		</operation>
+
+    <operation eror="skip">
+			<search position="replace"><![CDATA[oh.notify FROM " . DB_PREFIX . "order_history]]></search>
+			<add position="replace"><![CDATA[oh.notify, oh.order_history_id FROM " . DB_PREFIX . "order_history]]></add>
+		</operation>
+
+	</file>
+
+	<file path="admin/model/localisation/order_status.php">
+
+		<operation error="skip">
+			<search position="after"><![CDATA[$query = $this->db->query($sql);]]></search>
+			<add position="after"><![CDATA[
+			// get order status options and order
+			$qosu_os = $this->config->get('qosu_order_statuses');
+			if ($qosu_os) {
+
+				foreach ($query->rows as &$s) {
+					if (isset($qosu_os[$s['order_status_id']])) {
+						$s = array_merge($s, $qosu_os[$s['order_status_id']]);
+					}
+				}
+
+				usort($query->rows, array($this, 'cmp'));
+			}
+			]]></add>
+		</operation>
+
+    </file><file path="admin/model/localisation/order_status.php">
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[$order_status_data = $query->rows;]]></search>
+			<add position="after"><![CDATA[
+			// get order status options and order
+			$qosu_os = $this->config->get('qosu_order_statuses');
+			if($qosu_os) {
+
+				foreach($order_status_data as &$s) {
+					if(isset($qosu_os[$s['order_status_id']])) {
+						$s = $s + $qosu_os[$s['order_status_id']];
+					}
+				}
+
+				usort($order_status_data, array($this, 'cmp'));
+			}
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="before"><![CDATA[public function getOrderStatuses($data = array()) {]]></search>
+      <ignoreif><![CDATA[private function cmp($a, $b)]]></ignoreif>
+			<add position="before"><![CDATA[
+		private function cmp($a, $b) {
+			if (!isset($a['sort_order']) || !isset($b['sort_order'])) return 0;
+			if ($a['sort_order'] == $b['sort_order']) return 0;
+			return ($a['sort_order'] < $b['sort_order']) ? -1 : 1;
+		}
+			]]></add>
+		</operation>
+
+	</file>
+
+	<file path="catalog/controller/api/order.php" error="skip">
+
+    <!-- tracking no from default function - v2 only  -->
+		<operation eror="skip">
+			<search position="before"><![CDATA[$this->model_checkout_order->addOrderHistory($order_id, $this->request->post['order_status_id']]]></search>
+			<add position="before"><![CDATA[
+      // custom inputs
+      if (isset($this->request->post['custom_inputs'])) {
+        foreach($this->request->post['custom_inputs'] as $k => $v) {
+          $this->request->post['comment'] = str_replace('{'.$k.'}', $v, $this->request->post['comment']);
+
+          if ($v) {
+            $this->request->post['comment'] = str_replace(array('{if_'.$k.'}', '{/if_'.$k.'}'), '', $this->request->post['comment']);
+          } else {
+            $this->request->post['comment'] = preg_replace('/{if_'.$k.'}(.*){\/if_'.$k.'}/isU', '', $this->request->post['comment']);
+          }
+        }
+      }
+
+      // tracking number
+      $qosu_shipping = $this->config->get('qosu_shipping');
+      $tracking_url = '';
+      if(isset($this->request->post['shipping_method']) && isset($qosu_shipping[$this->request->post['shipping_method']])) {
+        $order_info['tracking_title'] = $qosu_shipping[$this->request->post['shipping_method']]['title'];
+        $tracking_url = str_replace('&amp;', '&', $qosu_shipping[$this->request->post['shipping_method']]['url']);
+      }
+
+      // fill customer name in case of guest checkout
+      if (empty($order_info['customer'])) {
+        $order_info['customer'] = $order_info['firstname'] . ' ' . $order_info['lastname'];
+      }
+
+      if (strpos($tracking_url, '{lang}') !== false || strpos($tracking_url, '{LANG}') !== false) {
+        $this->load->model('localisation/language');
+        $lang = $this->model_localisation_language->getLanguage($order_info['language_id']);
+
+        $order_info['lang'] = strtolower($lang['code']);
+        $order_info['LANG'] = strtoupper($lang['code']);
+      }
+
+      if (strpos($tracking_url.$this->request->post['comment'], '{shipping_postcode_uk}') !== false) {
+        $ukpostcode = strtoupper(preg_replace("/[^A-Za-z0-9]/", '', $order_info['shipping_postcode']));
+
+        if(strlen($ukpostcode) == 5) {
+          $ukpostcode = substr($ukpostcode,0,2).' '.substr($ukpostcode,2,3);
+        } elseif(strlen($ukpostcode) == 6) {
+          $ukpostcode = substr($ukpostcode,0,3).' '.substr($ukpostcode,3,3);
+        } elseif(strlen($ukpostcode) == 7) {
+          $ukpostcode = substr($ukpostcode,0,4).' '.substr($ukpostcode,4,3);
+        }
+
+        $order_info['shipping_postcode_uk'] = $ukpostcode;
+      }
+
+      foreach ($order_info as $k => $v) {
+        if (!in_array($k, array('tracking_no', 'tracking_url'))) {
+          $this->request->post['comment'] = str_replace('{'.$k.'}', is_string($v) ? $v : '', $this->request->post['comment']);
+          $tracking_url = str_replace('{'.$k.'}', is_string($v) ? $v : '', $tracking_url);
+        }
+      }
+
+      if(isset($this->request->post['tracking_no']) && $this->request->post['tracking_no']) {
+        $this->request->post['comment'] = str_replace(array('{if_tracking}', '{/if_tracking}'), '', $this->request->post['comment']);
+        $this->request->post['comment'] = str_replace('{tracking_no}', $this->request->post['tracking_no'], $this->request->post['comment']);
+
+        $tracking_url = str_replace('{tracking_no}', $this->request->post['tracking_no'], $tracking_url);
+
+        $tracking_url = str_replace(array('&amp;', ' '), array('&', '%20'), $tracking_url);
+
+        $this->request->post['comment'] = str_replace('{tracking_url}', $tracking_url, $this->request->post['comment']);
+
+        // save tracking url
+        /*
+        if (strpos($tracking_url, '{tracking_no}') !== false) {
+          $tracking_url = str_replace('{tracking_no}', $this->request->post['tracking_no'], $tracking_url);
+        } else {
+          $tracking_url .= $this->request->post['tracking_no'];
+        }
+        */
+
+        if ($tracking_url) {
+          $this->db->query("UPDATE `" . DB_PREFIX . "order` SET tracking_no = '" . $this->db->escape($this->request->post['tracking_no']) . "', tracking_url = '" . $this->db->escape($tracking_url) . "' WHERE order_id = '" . (int)$order_id . "'");
+        } else {
+          $this->request->post['comment'] = preg_replace('/{if_tracking}(.*){\/if_tracking}/isU', '', $this->request->post['comment']);
+        }
+      }
+      ]]></add>
+		</operation>
+
+  </file>
+
+	<file path="admin/controller/sale/order.php">
+    <!-- order history -->
+    <operation error="skip">
+      <search position="before"><![CDATA[data['histories'] = array();]]></search>
+      <add position="before"><![CDATA[
+      if (!empty($this->request->get['delete_id'])) {
+        if ($this->user->hasPermission('modify', 'sale/order')) {
+          $query = $this->db->query("DELETE FROM " . DB_PREFIX . "order_history WHERE order_history_id = '" . (int)$this->request->get['delete_id'] . "'");
+        } else {
+          echo '<div class="alert alert-danger"><i class="fa fa-warning"></i> You have no permissions to edit orders.</div>';
+        }
+      }
+
+      if (version_compare(VERSION, '2', '>=')) {
+        $data['token'] = isset($this->session->data['user_token']) ? 'user_token='.$this->session->data['user_token'] : 'token='.$this->session->data['token'];
+        $data['text_qosu_confirm'] = $this->language->get('text_confirm');
+        $data['qosu_order_id'] = $this->request->get['order_id'];
+      } else {
+        $data['token'] = 'token='.$this->session->data['token'];
+        $this->data['text_qosu_confirm'] = $this->language->get('text_confirm');
+        $this->data['qosu_order_id'] = $this->request->get['order_id'];
+      }
+      ]]></add>
+    </operation>
+
+    <operation error="skip">
+      <search position="after"><![CDATA[$data['histories'][] = array(]]></search>
+      <add position="after"><![CDATA[     'id' => $result['order_history_id'],]]></add>
+    </operation>
+
+    <!-- snippets -->
+    <operation error="skip">
+      <search position="before"><![CDATA[$this->response->setOutput($this->load->view('sale/order_list]]></search>
+      <add position="before"><![CDATA[
+        $this->load->model('tool/gkd_lib');
+
+        $data['gkd_qosu_parts'] = $this->model_tool_gkd_lib->fetch('module/quick_status_updater_inc', $data, 'all');
+      ]]></add>
+    </operation>
+
+    <!-- tracking column -->
+    <operation eror="skip">
+			<search position="after"><![CDATA[data['orders'][] = array(]]></search>
+			<add position="after"><![CDATA[
+      'tracking_no'      => isset($result['tracking_no']) ? $result['tracking_no'] : '',
+      'tracking_url'      => isset($result['tracking_url']) ? $result['tracking_url'] : '',
+      'tracking_carrier' => isset ($result['tracking_carrier']) ? $result['tracking_carrier'] : '',
+      ]]></add>
+		</operation>
+
+    <!-- info -->
+		<operation eror="skip">
+			<search position="after"><![CDATA[public function info() {]]></search>
+			<add position="after"><![CDATA[
+      if (version_compare(VERSION, '3', '>=')) {
+        $this->load->language('extension/module/quick_status_updater');
+      } else {
+        $this->load->language('module/quick_status_updater');
+      }
+
+      if (version_compare(VERSION, '2', '>=')) {
+        $data['qosu_shipping'] = $this->config->get('qosu_shipping');
+        $data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+      } else {
+        $this->data['qosu_shipping'] = $this->config->get('qosu_shipping');
+        $this->data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+      }
+      ]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="before"><![CDATA[data['store_name'] = $order_info['store_name'];]]></search>
+			<add position="before"><![CDATA[
+      if (version_compare(VERSION, '2', '>=')) {
+        $data['tracking_no'] = isset($order_info['tracking_no']) ? $order_info['tracking_no'] : '';
+        $data['tracking_url'] = isset($order_info['tracking_url']) ? $order_info['tracking_url'] : '';
+        $data['tracking_carrier'] = isset($order_info['tracking_carrier']) ? $order_info['tracking_carrier'] : '';
+      } else {
+        $this->data['tracking_no'] = isset($order_info['tracking_no']) ? $order_info['tracking_no'] : '';
+        $this->data['tracking_url'] = isset($order_info['tracking_url']) ? $order_info['tracking_url'] : '';
+        $data['tracking_carrier'] = isset($order_info['tracking_carrier']) ? $order_info['tracking_carrier'] : '';
+      }
+      ]]></add>
+		</operation>
+
+		<!-- buttons -->
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[
+      if (version_compare(VERSION, '3', '>=')) {
+        $this->load->language('extension/module/quick_status_updater');
+      } else {
+        $this->load->language('module/quick_status_updater');
+      }
+    ]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[function getList() {]]></search>
+			<add position="after"><![CDATA[
+		if (version_compare(VERSION, '2', '>=')) {
+			$data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+			$data['text_qosu_column_tracking'] = $this->language->get('text_qosu_column_tracking');
+			$data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$data['qosu_tracking_column'] = $this->config->get('qosu_tracking_column');
+			$data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$data['button_save'] = $this->config->get('button_save');
+			$data['button_cancel'] = $this->config->get('button_cancel');
+			$data['button_close'] = $this->config->get('button_close');
+			$data['text_wait'] = $this->config->get('text_wait');
+
+      if (version_compare(VERSION, '3', '>=')) {
+        $this->load->model('setting/extension');
+        $extensions = $this->model_setting_extension->getInstalled('feed');
+      } else {
+        $this->load->model('extension/extension');
+        $extensions = $this->model_extension_extension->getInstalled('feed');
+      }
+
+      if (version_compare(VERSION, '3', '<') && in_array('openbaypro', $extensions)) {
+        $data['qosu_openbay'] = true;
+      }
+		} else {
+			$this->data['qosu_os'] = $qosu_os = $this->config->get('qosu_order_statuses');
+      $this->data['text_qosu_column_tracking'] = $this->language->get('text_qosu_column_tracking');
+			$this->data['text_qosu_add_history'] = $this->language->get('text_qosu_add_history');
+			$this->data['text_qosu_dialog_title'] = $this->language->get('text_qosu_dialog_title');
+			$this->data['text_qosu_tracking_number'] = $this->language->get('text_qosu_tracking_number');
+			$this->data['text_qosu_select_checkbox'] = $this->language->get('text_qosu_select_checkbox');
+			$this->data['text_qosu_barcode'] = $this->language->get('text_qosu_barcode');
+			$this->data['qosu_tracking_column'] = $this->config->get('qosu_tracking_column');
+			$this->data['qosu_bg_mode'] = $this->config->get('qosu_bg_mode');
+			$this->data['qosu_barcode'] = $this->config->get('qosu_barcode');
+			$this->data['qosu_barcode_enabled'] = $this->config->get('qosu_barcode_enabled');
+
+			$this->data['button_save'] = $this->config->get('button_save');
+			$this->data['button_cancel'] = $this->config->get('button_cancel');
+			$this->data['button_close'] = $this->config->get('button_close');
+			$this->data['text_wait'] = $this->config->get('text_wait');
+
+      $this->load->model('setting/extension');
+      $extensions = $this->model_setting_extension->getInstalled('feed');
+      if (version_compare(VERSION, '3', '<') && in_array('openbaypro', $extensions)) {
+        $this->data['qosu_openbay'] = true;
+      }
+		}
+			]]></add>
+		</operation>
+
+		<!-- buttons -->
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[=> $result['order_id'],]]></search>
+			<add position="after"><![CDATA[			'order_status_id'        => $result['order_status_id'],]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[public function index() {]]></search>
+			<add position="after"><![CDATA[
+			$this->load->model('localisation/order_status');
+			if (version_compare(VERSION, '2', '>=')) {
+				$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+			} else {
+				$this->data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+			}
+			]]></add>
+		</operation>
+
+		<operation eror="skip">
+			<search position="after"><![CDATA[$pagination->url = $this->url->link('sale/order/history']]></search>
+			<add position="after"><![CDATA[
+			if(isset($this->request->get['reverse'])) {
+				$pagination->url = $this->url->link('sale/order/history', 'reverse&' . (isset($this->session->data['user_token']) ? 'user_token='.$this->session->data['user_token'] : 'token='.$this->session->data['token']) . '&order_id=' . $this->request->get['order_id'] . '&page={page}', 'SSL');
+			}
+			]]></add>
+		</operation>
+
+	</file><file path="admin/controller/sale/order.php" v="1.5">
+    <!-- snippets -->
+    <operation error="skip">
+      <search position="after"><![CDATA[$this->template = 'sale/order_list.tpl';]]></search>
+      <add position="after"><![CDATA[
+        $this->load->model('tool/gkd_lib');
+
+        $this->data['gkd_qosu_parts'] = $this->model_tool_gkd_lib->fetch('module/quick_status_updater_inc', $this->data, 'all');
+      ]]></add>
+    </operation>
+
+	</file>
+
+   <file path="catalog/model/account/order.php">
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[=> $order_query->row['order_id'],]]></search>
+			<add position="after"><![CDATA[
+      'tracking_url'                => isset($order_query->row['tracking_url']) ? $order_query->row['tracking_url'] : '',
+      'tracking_no'                => isset($order_query->row['tracking_no']) ? $order_query->row['tracking_no'] : '',
+			]]></add>
+		</operation>
+
+	</file>
+
+  <file path="catalog/model/checkout/order.php">
+
+    <operation eror="skip">
+      <search position="replace" index="1"><![CDATA[if ($fraud_status_id) {]]></search>
+      <add position="replace" index="1"><![CDATA[if (!$this->config->get('qosu_fraud_coupon_off') && $fraud_status_id) {]]></add>
+    </operation>
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[=> $order_query->row['store_id'],]]></search>
+			<add position="after"><![CDATA[
+      'tracking_no' => isset($order_query->row['tracking_no']) ? $order_query->row['tracking_no'] : '',
+      'tracking_url' => isset($order_query->row['tracking_url']) ? $order_query->row['tracking_url'] : '',
+      'tracking_carrier' => isset($order_query->row['tracking_carrier']) ? $order_query->row['tracking_carrier'] : '',
+			]]></add>
+		</operation>
+
+    <operation error="skip" i="fix OC2 notify issue">
+			<search position="replace"><![CDATA[if ($order_info['order_status_id'] && $order_status_id) {]]></search>
+			<add position="replace"><![CDATA[if ($notify && $order_info['order_status_id'] && $order_status_id) {]]></add>
+		</operation>
+
+	</file>
+
+  <file path="catalog/controller/account/order.php">
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[public function info() {]]></search>
+			<add position="after"><![CDATA[
+      $this->language->load('module/quick_status_updater');
+			]]></add>
+		</operation>
+
+    <operation eror="skip">
+			<search position="after"><![CDATA[data['comment'] = nl2br($order_info['comment']);]]></search>
+			<add position="after"><![CDATA[
+      if (version_compare(VERSION, '2', '>=')) {
+				$data['text_tracking'] = $this->language->get('text_tracking');
+				$data['tracking_url'] = $order_info['tracking_url'];
+				$data['tracking_no'] = $order_info['tracking_no'];
+			} else {
+        $this->data['text_tracking'] = $this->language->get('text_tracking');
+				$this->data['tracking_url'] = $order_info['tracking_url'];
+			}
+			]]></add>
+		</operation>
+
+	</file>
+
+  <file path="catalog/view/theme/*/template/account/order_info.twig" error="skip" v="3">
+
+    <operation error="skip">
+			<search position="before" index="1"><![CDATA[{% if histories %}]]></search>
+			<add position="before" index="1"><![CDATA[
+  {% if tracking_url %}
+  <table class="table table-bordered table-hover list">
+    <thead>
+      <tr>
+        <td class="text-left left">{{text_tracking}}</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-left left">Takip Numaranız: <a href="{{tracking_url}}" target="new">{{tracking_no}} Sorgulamak için tıklayınız.</a></td>
+      </tr>
+    </tbody>
+  </table>
+  {% endif %}
+			]]></add>
+		</operation>
+
+	</file>
+
+  <file path="catalog/view/theme/*/template/account/order_info.tpl" error="skip">
+
+    <operation error="skip">
+			<search position="before" index="1"><![CDATA[<?php if ($histories) { ?>]]></search>
+			<add position="before" index="1"><![CDATA[
+	<?php if ($tracking_url) { ?>
+  <table class="table table-bordered table-hover list">
+    <thead>
+      <tr>
+        <td class="text-left left"><?php echo $text_tracking; ?></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-left left"><a href="<?php echo $tracking_url; ?>" target="new"><?php echo $tracking_url; ?></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <?php } ?>
+			]]></add>
+		</operation>
+
+	</file>
+
+  <file path="admin/controller/extension/extension/module.php" error="skip">
+
+    <operation error="skip">
+			<search position="after"><![CDATA[$files = glob(DIR_APPLICATION . 'controller/extension/module/*.php');]]></search>
+			<add position="after"><![CDATA[
+    if (version_compare(VERSION, '3', '>=')) {
+      $files[] = 'quick_status_updater';
+    }
+			]]></add>
+		</operation>
+
+  </file><file path="admin/controller/extension/extension/module.php" i="fix 2.3 link" error="skip">
+
+    <operation error="skip">
+			<search position="before" index="1"><![CDATA[$data['extensions'][] = array(]]></search>
+			<add position="before" index="1"><![CDATA[
+        if ($extension == 'quick_status_updater') {
+          ${'data'}['extensions'][] = array(
+            'name'      => (version_compare(VERSION, '3', '>=') ? $this->language->get('extension')->get('heading_title') : $this->language->get('heading_title')),
+            'module'    => $module_data,
+            'install'   => $this->url->link('extension/extension/module/install', (isset($this->session->data['user_token']) ? 'user_token='.$this->session->data['user_token'] : 'token='.$this->session->data['token']) . '&extension=' . $extension, true),
+            'uninstall' => $this->url->link('extension/extension/module/uninstall', (isset($this->session->data['user_token']) ? 'user_token='.$this->session->data['user_token'] : 'token='.$this->session->data['token']) . '&extension=' . $extension, true),
+            'installed' => in_array($extension, $extensions),
+            'edit'      => $this->url->link('module/' . $extension, (isset($this->session->data['user_token']) ? 'user_token='.$this->session->data['user_token'] : 'token='.$this->session->data['token']), true)
+          );
+
+          continue;
+        }
+			]]></add>
+		</operation>
+
+	</file>
+
+  	<file path="admin/controller/common/column_left.php">
+    <operation error="skip">
+      <search><![CDATA[$moduller = array();]]></search>
+      <add position="after"><![CDATA[
+        $moduller[] = array(
+          'name'     => $this->language->get('quick_status_updater'),
+          'href'     => $this->url->link('module/quick_status_updater', 'user_token=' . $this->session->data['user_token'], true),
+          'children' => array()
+        );
+      ]]></add>
+    </operation>
+  </file>
+  <file path="admin/language/tr-tr/common/column_left.php">
+		<operation>
+			<search><![CDATA[$_['text_backup']]]></search>
+			<add position="after"><![CDATA[
+			$_['quick_status_updater']             = 'Gelişmiş Sipariş Yönetimi';
+			]]></add>
+		</operation>
+
+	</file>
+</modification>

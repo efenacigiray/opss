@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Circloid 2.0 (Language - English)</id>
+	<version>2.3.0.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/controller/common/header.php">
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				$data['text_support'] = $this->language->get('text_support');
+				]]></search>
+			<add><![CDATA[
+				$data['b5b_qore_engine']['language']['text_menu'] = $this->language->get('text_menu');
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/controller/common/header.php">
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				$this->document->setTitle($this->language->get('heading_title'));
+				]]></search>
+			<add><![CDATA[
+				$this->load->language('b5b_qore_engine/dashboard/general');
+				$data['button_setting'] = $this->language->get('button_setting');
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/language/en-gb/common/header.php">
+		<operation error="skip">
+			<search position="bottom"><![CDATA[
+				$_['text_logout']            = 'Logout';
+				]]></search>
+			<add><![CDATA[
+				$_['text_menu']              = 'Menu';
+				]]></add>
+		</operation>
+	</file>
+	<!-- Adds Language Text - Footer -->
+	<file name="admin/language/en-gb/common/footer.php">
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				$_['text_version']
+				]]></search>
+			<add><![CDATA[
+				$_['text_created_by'] = 'Developed for OpenCart by: <a href="https://base5builder.com/?click_source=circloid_2_footer_link" target="blank" style="color: rgb(255, 255, 255); background: rgb(29, 29, 29) none repeat scroll 0% 0%; display: inline-block; font-weight: bold; font-family: roboto; opacity: 0.83; padding: 0px 4px 1px;">Base<span style="color:#ffa733;font-weight:bold">5</span>Builder</a>. All Rights Reserved.';
+				$_['text_theme_version'] = 'Circloid v%s';
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				$_['text_version'] = 'Version %s';
+				]]></search>
+			<add><![CDATA[
+				$_['text_version'] = 'OpenCart v%s';
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/controller/common/footer.php">
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				return $this->load->view('common/footer', $data);
+				]]></search>
+			<add><![CDATA[
+				$data['b5b_qore_engine']['language']['text_created_by'] = $this->language->get('text_created_by');
+				$data['b5b_qore_engine']['language']['text_theme_version'] = sprintf($this->language->get('text_theme_version'), $data['b5b_qore_engine_active_theme_version']);
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/language/en-gb/b5b_qore_engine/settings/settings.php">
+		<operation error="skip">
+			<search position="replace"><![CDATA[<b>120px x 37px</b>]]></search>
+			<add><![CDATA[154px x 44px]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[<b>light backgrounds</b>]]></search>
+			<add><![CDATA[light backgrounds]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[<b>dark backgrounds</b>]]></search>
+			<add><![CDATA[dark backgrounds]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="replace"><![CDATA[.<br />Ideal]]></search>
+			<add><![CDATA[. Ideal]]></add>
+		</operation>
+	</file>
+</modification>

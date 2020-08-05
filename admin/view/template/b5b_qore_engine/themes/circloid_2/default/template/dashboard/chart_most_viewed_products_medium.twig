@@ -1,0 +1,96 @@
+<div class="col-md-12 chart-top-widget-medium" id="chart-most-viewed-products-medium" data-controller-path="dash_chart_most_viewed_products_medium">
+	<div class="panel panel-default block-size-normal">
+		<div class="panel-heading">
+			<div class="pull-right">
+				<span class="status-selector">
+					({{ b5b_qore_engine.language.all_time }})
+				</span>
+				<span class="range-selector hidden">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<span class="range-text">{{ b5b_qore_engine.language.this_month }} </span> 
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu pull-right">
+						<li>
+							<a href="day">
+								{{ b5b_qore_engine.language.today }}
+							</a>
+						</li>
+						<li>
+							<a href="week">
+								{{ b5b_qore_engine.language.this_week }}
+							</a>
+						</li>
+						<li class="active">
+							<a href="month">
+								{{ b5b_qore_engine.language.this_month }}
+							</a>
+						</li>
+						<li>
+							<a href="year">
+								{{ b5b_qore_engine.language.this_year }}
+							</a>
+						</li>
+					</ul>
+				</span>
+			</div>
+			<h3 class="panel-title">{{ b5b_qore_engine.language.heading_most_viewed_products }}</h3>
+		</div>
+		<div class="panel-body">
+			<div class="top-ranking-items">
+				<div class="top-ranking-items-intro">
+					{{ b5b_qore_engine.language.text_most_viewed_products_intro }}
+				</div>
+				<div class="top-ranking-items-content clearfix">
+					<div class="top-ranking-items-graph">
+						<div id="most-viewed-products-graph" class="graph graph-pie graph-size-normal" data-graph-colors="#82D14D,#f17d45,#FEC007,#4596f1,#ef006d" data-canvas-width="230" data-canvas-height="230" ></div>
+					</div>
+					<div class="top-ranking-items-legend">
+						<ul>
+							<li class="top-ranking-item">
+								<div class="top-ranking-item-legend-color">
+									<div class="top-ranking-item-legend-color-box"></div>
+								</div>
+								<div class="top-ranking-item-legend-text" data-raw-value="">
+									<a href="#"><span class="item-name">--</span></a> - <span class="count"></span> {{ b5b_qore_engine.language.text_views }}
+								</div>
+							</li>
+							<li class="top-ranking-item">
+								<div class="top-ranking-item-legend-color">
+									<div class="top-ranking-item-legend-color-box"></div>
+								</div>
+								<div class="top-ranking-item-legend-text" data-raw-value="">
+									<a href="#"><span class="item-name">--</span></a> - <span class="count"></span> {{ b5b_qore_engine.language.text_views }}
+								</div>
+							</li>
+							<li class="top-ranking-item">
+								<div class="top-ranking-item-legend-color">
+									<div class="top-ranking-item-legend-color-box"></div>
+								</div>
+								<div class="top-ranking-item-legend-text" data-raw-value="">
+									<a href="#"><span class="item-name">--</span></a> - <span class="count"></span> {{ b5b_qore_engine.language.text_views }}
+								</div>
+							</li>
+							<li class="top-ranking-item">
+								<div class="top-ranking-item-legend-color">
+									<div class="top-ranking-item-legend-color-box"></div>
+								</div>
+								<div class="top-ranking-item-legend-text" data-raw-value="">
+									<a href="#"><span class="item-name">--</span></a> - <span class="count"></span> {{ b5b_qore_engine.language.text_views }}
+								</div>
+							</li>
+							<li class="top-ranking-item">
+								<div class="top-ranking-item-legend-color">
+									<div class="top-ranking-item-legend-color-box"></div>
+								</div>
+								<div class="top-ranking-item-legend-text" data-raw-value="">
+									<a href="#"><span class="item-name">--</span></a> - <span class="count"></span> {{ b5b_qore_engine.language.text_views }}
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

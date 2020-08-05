@@ -1,0 +1,72 @@
+{% if b5b_qore_engine_color_preset %}
+	{% if b5b_qore_engine_color_preset == 'mixed' %}
+		{% set preset_colors = '#4596f1,#f17d45' %}
+	{% else %}
+		{% set preset_colors = '#4596f1,#f17d45' %}
+	{% endif %}
+{% else %}
+	{% set preset_colors = '#4596f1,#f17d45' %}
+{% endif %}
+
+<div class="col-md-12 chart-widget-large" id="sales-analytics-large" data-controller-path="dash_chart_sales_analytics_large">
+	<div class="widget-large">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="pull-right">
+					<span class="status-selector">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<span class="status-text">{{ b5b_qore_engine.language.all_statuses }} </span> 
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu pull-right">
+							<li class="active">
+								<a href="all">
+									{{ b5b_qore_engine.language.all_statuses }}
+								</a>
+							</li>
+							{% for order_status in order_statuses %}
+							<li>
+								<a href="{{ order_status.order_status_id }}">
+									{{ order_status.name }}
+								</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</span>
+					<span class="range-selector">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<span class="range-text">{{ b5b_qore_engine.language.this_month }} </span>
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu pull-right">
+							<li>
+								<a href="day">
+									{{ b5b_qore_engine.language.today }}
+								</a>
+							</li>
+							<li>
+								<a href="week">
+									{{ b5b_qore_engine.language.this_week }}
+								</a>
+							</li>
+							<li class="active">
+								<a href="month">
+									{{ b5b_qore_engine.language.this_month }}
+								</a>
+							</li>
+							<li>
+								<a href="year">
+									{{ b5b_qore_engine.language.this_year }}
+								</a>
+							</li>
+						</ul>
+					</span>
+				</div>
+				<h3 class="panel-title">{{ heading_title }}</h3>
+			</div>
+			<div class="panel-body">
+				<div id="sales-analytics-large-canvas" class="graph graph-size-normal" data-graph-colors="{{ preset_colors }}"></div>
+			</div>
+		</div>
+	</div>
+</div>

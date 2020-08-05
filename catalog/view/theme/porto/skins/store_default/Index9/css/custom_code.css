@@ -1,0 +1,6 @@
+ .single-add-to-compare {display:none !important;}
+.widget.contact-info li i,
+#footer .widget .links li > i {
+   color: #d0205e;
+}
+.widget.contact-info li i {margin-top: 0px; }

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - QoreEngine: OpenCart Admin Theme Engine</id>
+	<version>2.1b</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/view/template/b5b_qore_engine/themes/*/*/template/common/header.twig">
+		<!-- Adds the javascript file to the header of other themes when on the QoreEngine page -->
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				<script src="view/template/b5b_qore_engine/themes/{{ b5b_qore_engine_active_theme_path }}/plugins/jquery/jquery.min.js"></script>
+				]]></search>
+			<add><![CDATA[
+				<!-- QoreEngine -->
+				<script src="view/template/b5b_qore_engine/assets/js/script.js"></script>
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/common/header.twig">
+		<!-- Adds the javascript file to the header of the default theme when on the QoreEngine page -->
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				<script src="view/javascript/common.js" type="text/javascript"></script>
+				]]></search>
+			<add><![CDATA[
+				<!-- QoreEngine -->
+				<script src="view/template/b5b_qore_engine/assets/js/script.js"></script>
+				<script src="view/template/b5b_qore_engine/assets/plugins/mCustomScrollbar/jquery.mCustomScrollbar.min.js"></script>
+				<script src="view/template/b5b_qore_engine/assets/plugins/velocity/velocity-1.3.1.min.js"></script>
+				<link type="text/css" href="view/template/b5b_qore_engine/assets/plugins/mCustomScrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" media="screen" />
+				<link type="text/css" href="view/template/b5b_qore_engine/assets/css/default_opencart_theme.css" rel="stylesheet" media="screen" />
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/controller/common/footer.php">
+		<!-- Adds the $logged variable to the footer -->
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				$this->load->language('common/footer');
+				]]></search>
+			<add><![CDATA[
+				if (!isset($this->request->get['user_token']) || !isset($this->session->data['user_token']) || ($this->request->get['user_token'] != $this->session->data['user_token'])) {
+					$data['logged'] = '';
+				}else{
+					$data['logged'] = TRUE;
+				}
+				]]></add>
+		</operation>
+	</file>
+	<!-- Adds all QoreEngine required variables to each controller file and also gets the currently active admin theme and stores it in a variable -->
+	<file name="admin/controller/common/header.php,admin/controller/common/footer.php,admin/controller/common/dashboard.php,admin/controller/catalog/product.php,admin/controller/catalog/review.php,admin/controller/sale/order.php,admin/controller/customer/customer.php,admin/controller/marketing/marketing.php,admin/controller/tool/upload.php,admin/controller/report/online.php,admin/controller/report/report.php,admin/controller/report/statistics.php,admin/controller/b5b_qore_engine/*.php,admin/controller/common/*.php">
+		<!-- For normal files -->
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				$this->load->view
+				]]></search>
+			<ignoreif regex="true"><![CDATA['((public)( +function)( +)([A-Za-z0-9]+)( *)([A-Za-z0-9_ ]*)(\()([$A-Za-z0-9_,=\) ]*)( *)([\n]))|((__construct)( *)(\()( *)([$A-Za-z]+)( *)(\)))']]></ignoreif>
+			<add><![CDATA[
+				/* B5B - QoreEngine - Start */
+				$this->load->language('b5b_qore_engine/general/general');
+
+				$data['b5b_qore_engine']['language']['error_incompatible_version'] = $this->language->get('error_incompatible_version');
+				$data['b5b_qore_engine']['language']['text_base5builder'] = $this->language->get('text_base5builder');
+				$data['b5b_qore_engine']['language']['text_base5builder_support'] = $this->language->get('text_base5builder_support');
+				$data['b5b_qore_engine']['language']['error_error_occured'] = $this->language->get('error_error_occured');
+				$data['b5b_qore_engine']['language']['text_refreshing_page'] = $this->language->get('text_refreshing_page');
+				$data['b5b_qore_engine']['language']['text_powered_by'] = $this->language->get('text_powered_by');
+
+				$this->load->model('b5b_qore_engine/general/settings');
+
+				$table_exists = $this->model_b5b_qore_engine_general_settings->tableExsits('b5b_qore_engine_settings');
+
+				if($table_exists){
+					if(isset($this->request->get['route'])){
+						$data['b5b_qore_engine_route'] = $this->request->get['route'];
+					}else{
+						$data['b5b_qore_engine_route'] = '';
+					}
+
+					$data['b5b_qore_engine_is_admin'] = 1;
+					$data['b5b_qore_engine_active_theme'] = $this->model_b5b_qore_engine_general_settings->getSettings('active_theme');
+
+					$info_path = DIR_TEMPLATE . 'b5b_qore_engine/themes/' . $data['b5b_qore_engine_active_theme'] . '/info.xml';
+
+					if(file_exists($info_path)){
+						$xml = simplexml_load_file($info_path);
+						$data['b5b_qore_engine_active_theme_version'] = (string)$xml->version;
+					}else{
+						$data['b5b_qore_engine_active_theme_version'] = "";
+					}
+
+					$data['b5b_qore_engine_color_preset'] = $this->model_b5b_qore_engine_general_settings->getSettings('color_preset_' . $data['b5b_qore_engine_active_theme']);
+
+					$data['b5b_qore_engine_white_label'] = unserialize($this->model_b5b_qore_engine_general_settings->getSettings('white_label_' . $data['b5b_qore_engine_active_theme'] . '_settings'));
+				}
+
+				/* B5B - QoreEngine - End */
+				]]></add>
+		</operation>
+	</file>
+	<!-- Adds the fallback option for the admin theme -->
+	<!-- MUST BE PLACED LAST -->
+	<file name="system/engine/loader.php">
+		<!-- DO NOT DELETE - START -->
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				public function view
+				]]></search>
+			<add><![CDATA[
+				/* B5B - QoreEngine - Start */
+
+				public function view($route, $data = array()) {
+					$opencart_version = (int)substr(str_replace('.', '', VERSION), 0, 4); // stringyfied
+
+					if($opencart_version >= 3000){
+
+						$route = preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route);
+
+						// Keep the original trigger
+						$trigger = $route;
+
+						// Template contents. Not the output!
+						$template = '';
+
+						// Trigger the pre events
+						$result = $this->registry->get('event')->trigger('view/' . $trigger . '/before', array(&$route, &$data, &$template));
+
+						// Make sure its only the last event that returns an output if required.
+						if ($result && !$result instanceof Exception) {
+							$output = $result;
+						} else {
+							$template = new Template($this->registry->get('config')->get('template_engine'));
+								
+							if((isset($data['b5b_qore_engine_is_admin'])) && ($data['b5b_qore_engine_is_admin'] == 1)){
+
+								if(isset($data['custom_page_is_compatible']) && $data['custom_page_is_compatible']){
+
+									foreach ($data as $key => $value) {
+										$template->set($key, $value);
+									}
+
+									$output = $template->render($this->registry->get('config')->get('template_directory') . $route, $this->registry, $this->registry->get('config')->get('template_cache'));
+
+								}elseif(file_exists(DIR_TEMPLATE . 'b5b_qore_engine/themes/' . $data['b5b_qore_engine_active_theme'] . '/user_override/template/' . $route . '.twig')){
+
+									// Adds the additional 'user_override' to the path for use in twig files
+									$data['b5b_qore_engine_active_theme_path'] = $data['b5b_qore_engine_active_theme'] . '/user_override';
+
+									foreach ($data as $key => $value) {
+										$template->set($key, $value);
+									}	
+
+									$output = $template->render('b5b_qore_engine/themes/' . $data['b5b_qore_engine_active_theme'] . '/user_override/template/' . $route, $this->registry, $this->registry->get('config')->get('template_cache'));
+
+								}elseif(file_exists(DIR_TEMPLATE . 'b5b_qore_engine/themes/' . $data['b5b_qore_engine_active_theme'] . '/default/template/' . $route . '.twig')){
+
+									// Adds the 'default' to the path for use in twig files
+									$data['b5b_qore_engine_active_theme_path'] = $data['b5b_qore_engine_active_theme'] . '/default';
+
+									foreach ($data as $key => $value) {
+										$template->set($key, $value);
+									}
+
+									$output = $template->render('b5b_qore_engine/themes/' . $data['b5b_qore_engine_active_theme'] . '/default/template/' . $route, $this->registry, $this->registry->get('config')->get('template_cache'));
+
+								}else{
+
+									foreach ($data as $key => $value) {
+										$template->set($key, $value);
+									}
+
+									$output = $template->render($this->registry->get('config')->get('template_directory') . $route, $this->registry, $this->registry->get('config')->get('template_cache'));
+
+								}
+							}else{
+
+								foreach ($data as $key => $value) {
+									$template->set($key, $value);
+								}
+								
+								$output = $template->render($this->registry->get('config')->get('template_directory') . $route, $this->registry,  $this->registry->get('config')->get('template_cache'));
+
+							}	
+						}
+
+						// Trigger the post events
+						$result = $this->registry->get('event')->trigger('view/' . $trigger . '/after', array(&$route, &$data, &$output));
+
+						if ($result && !$result instanceof Exception) {
+							$output = $result;
+						}
+
+						return $output;
+					}
+				}
+
+				public function view_old]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="after"><![CDATA[
+				public function view_old
+				]]></search>
+			<add><![CDATA[
+				/* B5B - QoreEngine - End */
+				]]></add>
+		</operation>
+		<!-- DO NOT DELETE - END -->
+	</file>
+</modification>

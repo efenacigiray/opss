@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+<name>Admin Hızlı Ürün Düzenleme</name>
+              <author>OpencartUzman</author>
+              <version>3.0</version>
+    <file path="admin/view/template/common/header.twig">
+        <operation eror="skip">
+            <search trim="true" index="1"><![CDATA[
+		    </head>
+            ]]></search>
+            <add position="before" trim="false" offset="0"><![CDATA[
+             <link href="view/javascript/bootstrap/css/bootstrap-editable.css" rel="stylesheet"/>
+             <script src="view/javascript/bootstrap/js/bootstrap-editable.min.js"></script>
+             <script src="view/javascript/main-editable.js"></script>
+             <link href="view/javascript/bootstrap/css/bootstrap-toggle.min.css" rel="stylesheet">
+            <script src="view/javascript/bootstrap/js/bootstrap-toggle.min.js"></script>
+            ]]></add>
+        </operation>
+    </file>
+
+
+    <file path="admin/view/template/common/filemanager.twig">
+     <operation eror="skip">
+     <search trim="true"><![CDATA[
+	 $('#modal-image').load($(this).attr('href'));
+     ]]></search>
+     <add position="replace" trim="false" offset="0"><![CDATA[
+  $('.tooltip').hide().remove();
+     $('#modal-image').load($(this).attr('href'), function() {
+       $('.modal-backdrop').remove(); $('.modal-dialog').css('z-index','1400'); $(this).prepend('<div class="modal-backdrop  in" data-dismiss="modal" style="min-height: 100%;z-index:1300;"></div>');
+       });]]></add>
+     </operation>
+
+     <operation eror="skip">
+     <search trim="true"><![CDATA[
+	 $('#modal-image').load(url);
+     ]]></search>
+     <add position="replace" trim="false" offset="0"><![CDATA[
+     $('.tooltip').hide().remove();
+     $('#modal-image').load(url, function() {
+       $('.modal-backdrop').remove(); $('.modal-dialog').css('z-index','1400'); $(this).prepend('<div class="modal-backdrop in" data-dismiss="modal" style="min-height: 100%;z-index:1300;"></div>');
+       });]]></add>
+     </operation>
+
+      <operation eror="skip">
+      <search trim="true"><![CDATA[
+    	$('#{{ thumb }}').find('img').attr('src', $(this).find('img').attr('src'));
+    ]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[
+    {% if 'imageedit-' in thumb %}
+    var dataid = $('#{{ thumb }}').attr('data-id');
+    var img_100 = $(this).find('img').attr('src');
+    var img_40 =  img_100.replace("-100x100", "-40x40");
+    var img = img_100.replace("-100x100", "");
+    var imginsert = $(this).parent().find('input').val();
+    $.post("index.php?route=catalog/product/quickeditopencartsu&user_token={{ user_token }}", {name: "image", pk: dataid, value: imginsert}, function(data, textStatus, jqXHR){
+             if(jqXHR.status!=200) {alert('error update img:'+jqXHR.status+'|'+textStatus);}
+             else { $('#{{ thumb }}').find('img').attr('src',img_100).css({'max-width':'50px','max-height':'50px'});  }
+             }).fail(function() { window.location.replace('index.php?route=catalog/product'); });
+
+	{% else %}
+	$('#{{ thumb }}').find('img').attr('src', $(this).find('img').attr('src'));
+	{% endif %}
+            ]]></add>
+        </operation>
+    </file>
+
+
+
+
+
+    <file path="admin/controller/catalog/product.php">
+        <operation eror="skip">
+            <search trim="true"><![CDATA[
+	public function edit() {
+    ]]></search>
+            <add position="before" trim="false" offset="0"><![CDATA[
+public function quickeditopencartsu() {
+
+if(isset($_POST['pk'])) { $setid=$_POST['pk']; }
+if(isset($_POST['name'])) { $setname=$_POST['name']; } else { $setname="";}
+if(isset($_POST['value'])) { $setvalue=$_POST['value'];
+    $setvalue = stripslashes($setvalue);
+    $setvalue = trim($setvalue);
+    $setvalue = htmlspecialchars($setvalue);
+    $setvalue = str_replace("'","`", $setvalue);
+    $setvalue = str_replace('"',' ', $setvalue);
+}
+if(isset($_POST['lang'])) { $lang=$_POST['lang']; }
+$dbname="product";
+$idname="product_id";
+$andset=""; $andlang="";
+
+  function Getfloat($str) {
+  $str = preg_replace("/[^0-9\.]/", '', $str);
+  return $str;
+}
+
+if(strstr($setname,"name:")) { $arrsetname=explode(":",$setname); $setname=$arrsetname[0]; $lang=$arrsetname[1]; $dbname="product_description";
+  if($lang=="alllang") { $andset=",`meta_title`='$setvalue'"; }
+  elseif($lang>=1){ $andlang=" AND `language_id`='$lang'"; }
+}
+elseif($setname=="special") { $dbname="product_special"; $setname="price"; $setvalue=Getfloat($setvalue);   }
+elseif($setname=="price") { $setvalue=Getfloat($setvalue); }
+
+if(!isset($setid,$setname,$setvalue)) { header("HTTP/1.1 400 not set value $setid,$setname,$setvalue"); }
+elseif (!$this->user->hasPermission('modify', 'catalog/product')) {
+            header("HTTP/1.1 400 access denied for demo");
+}
+else {
+// Set setname
+if($this->db->query("UPDATE " . DB_PREFIX . "$dbname SET `$setname`='$setvalue' $andset WHERE `$idname`='$setid' $andlang") == 1) { header("HTTP/1.1 200 ok"); }
+else { header("HTTP/1.1 400 mysql error on update (see log)"); }
+}
+}
+            ]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[
+	$this->response->setOutput($this->load->view('catalog/product_list
+    ]]></search>
+            <add position="before" trim="false" offset="0"><![CDATA[
+		$this->load->model('localisation/language');
+        if(!isset($data)) { $data=array(); }
+		$data['languages'] = $this->model_localisation_language->getLanguages();
+		$data['active_language'] = $this->config->get('config_admin_language');
+        $data['tab_special'] = $this->language->get('tab_special');
+        $data['entry_image'] = $this->language->get('entry_image');
+        $data['entry_meta_title'] = $this->language->get('entry_meta_title');
+
+        $data['text_enabled'] = $this->language->get('text_enabled');
+        $data['text_disabled'] = $this->language->get('text_disabled');
+            ]]></add>
+        </operation>
+    </file>
+
+
+
+
+    <file path="admin/view/template/catalog/product_list.twig">
+        <operation eror="skip">
+            <search trim="true" index="1"><![CDATA[<div id="content">]]></search>
+            <add position="after" trim="false" offset="0"><![CDATA[<script type="text/javascript"><!--
+$(document).ready(function(){
+	// Image Manager
+	$(document).delegate('a[data-toggle=\'imageedit\']', 'click', function(e) {
+		e.preventDefault();
+
+        $('.popover').hide();
+        $('.popover').remove();
+            $(element).popover('hide', function() {
+				$('.popover').remove();
+			});
+
+
+		var element = this;
+        var idelement = $(element).attr('data-id');
+
+		$(element).popover({
+			html: true,
+			placement: 'right',
+			trigger: 'manual',
+			content: function() {
+				return '<button type="button" id="button-image-edit" data-id='+idelement+' class="btn btn-primary"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clear-edit-image" data-id='+idelement+' class="btn btn-danger"><i class="fa fa-trash-o"></i></button>&nbsp;<button type="button" id="button-close-edit-image" class="btn btn-default btn-sm editable-cancel" style="margin-top:-50px;margin-right:-25px;"><i class="fa fa-close"></i></button>';
+			}
+		});
+
+		$(element).popover('toggle');
+
+		$('#button-image-edit').on('click', function() {
+			$('#modal-image').remove();
+
+			$.ajax({
+				url: 'index.php?route=common/filemanager&user_token={{user_token}}&target=null&thumb=imageedit-' + idelement,
+				dataType: 'html',
+				beforeSend: function() {
+					$('#button-image-edit i').replaceWith('<i class="fa fa-circle-o-notch fa-spin"></i>');
+					$('#button-image-edit').prop('disabled', true);
+				},
+				complete: function() {
+					$('#button-image-edit i').replaceWith('<i class="fa fa-pencil"></i>');
+					$('#button-image-edit').prop('disabled', false);
+				},
+				success: function(html) {
+				  var str = html.toString();
+                  if(str.indexOf('<title>') + 1) { window.location.replace('index.php?route=catalog/product'); }
+                   else {
+					$('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+					$('#modal-image').modal('show');
+                    }
+				}
+			});
+
+			$(element).popover('hide', function() {
+				$('.popover').remove();
+			});
+		});
+
+		$('#button-clear-edit-image').on('click', function() {
+		   if (confirm("{{button_delete}} {{entry_image}} ?")) {
+             $.post("index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}", {name: "image", pk: idelement, value: "no_image.png"}, function(data, textStatus, jqXHR){
+             if(jqXHR.status!=200) {alert('error delete img:'+jqXHR.status+'|'+textStatus);}
+             else { $('#img'+idelement).attr('src', '../image/cache/no_image-40x40.png'); }
+             }).fail(function() { window.location.replace('index.php?route=catalog/product'); });
+
+			 $(element).popover('hide', function() {
+				$('.popover').remove();
+			 });
+           }
+		});
+
+	$('#button-close-edit-image').on('click', function() {
+	 $(element).popover('hide', function() {
+	   $('.popover').remove();
+	 });
+    });
+
+
+  $('body').on('click', function (e) {
+    $(element).popover('hide', function() {
+	  $('.popover').remove();
+	});
+  });
+
+ });
+
+});
+//--></script>
+<style>
+.label h3 {
+  color: #555;
+}
+.label a {
+ color: #fff;
+ border-bottom: dashed 1px #fff;
+}
+</style>
+]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[<td class="text-left">{{ product.name }}</td>]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[
+            <td class="text-left">
+<a href="javascript:" class="ocedit" data-name="name:alllang" data-pk="{{ product.product_id }}" data-url="index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}" data-type="text" data-placement="right"
+data-title="{{ column_name }} && {{ entry_meta_title }} (
+{% if active_language matches '/^ru.*/' %}
+будет обновлено на всех языках:
+{% else %}
+will update on all languages:
+{% endif %}
+{% for language in languages %} {{language.code}} {% if loop.last==false %},{% endif %}  {% endfor %})">{{product.name}}</a><br>
+</td>
+            ]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[{{ product.model }}]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[<a href="javascript:" class="ocedit" data-name="model" data-pk="{{ product.product_id }}" data-url="index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}" data-type="text" data-placement="right" data-title="{{ column_model }}">{{ product.model }}</a>]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[{{ product.price }}]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[<a href="javascript:" class="ocedit" data-name="price" data-pk="{{ product.product_id }}" data-url="index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}" data-type="text" data-placement="right" data-title="{{ column_price }}">{{ product.price }}</a>]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[{{ product.special }}]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[<a href="javascript:" class="ocedit" data-name="special" data-pk="{{ product.product_id }}" data-url="index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}" data-type="text" data-placement="right" data-title="{{ tab_special }}">{{ product.special }}</a>]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[{{ product.quantity }}]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[<a href="javascript:" class="ocedit" data-name="quantity" data-pk="{{ product.product_id }}" data-url="index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}" data-type="text" data-placement="right" data-title="{{ column_quantity }}">{{ product.quantity }}</a>]]></add>
+        </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[{{ product.status }}]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[
+<input class="toggle-event-status" data-onstyle="success" data-on="{{text_enabled}}" data-off="{{text_disabled}}" {% if product.status==text_enabled %} checked=checked {% endif %} type="checkbox" data-toggle="toggle" data-name="status" data-pk="{{ product.product_id }}" data-url="index.php?route=catalog/product/quickeditopencartsu&user_token={{user_token}}">
+    ]]></add>
+       </operation>
+        <operation eror="skip">
+            <search trim="true"><![CDATA[<img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail" />]]></search>
+            <add position="replace" trim="false" offset="0"><![CDATA[
+            <a href="javascript:" id="imageedit-{{ product.product_id }}" data-id="{{ product.product_id }}" data-toggle="imageedit" class="img-thumbnail"><img id="img{{ product.product_id }}" src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail" /></a>
+            ]]></add>
+        </operation>
+    </file>
+</modification>

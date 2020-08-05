@@ -1,0 +1,25 @@
+<modification>
+  <name>Enter ile Arama</name>
+  <version>3.0</version>
+  <author>OpencartUzman</author>
+  <file name="admin/view/template/sale/order_list.twig,admin/view/template/customer/customer_list.twig,admin/view/template/catalog/product_list.twig">
+    <operation error="skip">
+        <search position="before">
+        <![CDATA[
+          {{ footer }}
+        ]]>
+        </search>
+        <add>
+         <![CDATA[
+            <script type="text/javascript"><!--
+			 $(document).keypress(function(e) {
+				if(e.which == 13) {
+				   $("#button-filter").click();
+				}
+			});
+			//--></script>
+          ]]>
+        </add>  
+      </operation>
+  </file>
+</modification>

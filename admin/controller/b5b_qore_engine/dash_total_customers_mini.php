@@ -1,0 +1,49 @@
+<?php
+class ControllerB5bQoreEngineDashTotalCustomersMini extends Controller{
+	private $error = array();
+
+	public function index() {
+		$this->load->language('extension/dashboard/customer');
+
+		$data['heading_title'] = $this->language->get('heading_title');
+
+		$data['text_view'] = $this->language->get('text_view');
+
+		$data['user_token'] = $this->session->data['user_token'];
+
+		// Total Customers
+		$this->load->model('customer/customer');
+
+		$today = $this->model_customer_customer->getTotalCustomers(array('filter_date_added' => date('Y-m-d', strtotime('-1 day'))));
+
+		$yesterday = $this->model_customer_customer->getTotalCustomers(array('filter_date_added' => date('Y-m-d', strtotime('-2 day'))));
+
+		$difference = $today - $yesterday;
+
+		if ($difference && $today) {
+			$data['percentage'] = round(($difference / $today) * 100);
+		} else {
+			$data['percentage'] = 0;
+		}
+
+		$customer_total = $this->model_customer_customer->getTotalCustomers();
+
+		if ($customer_total >= 1000000000000) {
+			$data['total'] = round($customer_total / 1000000000000, 2) . 'T';
+		} elseif ($customer_total >= 1000000000) {
+			$data['total'] = round($customer_total / 1000000000, 2) . 'B';
+		} elseif ($customer_total >= 1000000) {
+			$data['total'] = round($customer_total / 1000000, 2) . 'M';
+		} elseif ($customer_total >= 10000) {
+			$data['total'] = round($customer_total / 1000, 2) . 'K';
+		} elseif ($customer_total >= 1000) {
+			$data['total'] = number_format($customer_total);
+		} else {
+			$data['total'] = $customer_total;
+		}
+
+		$data['customer'] = $this->url->link('customer/customer', 'user_token=' . $this->session->data['user_token'], true);
+
+		return $this->load->view('dashboard/total_customers_mini', $data);
+	}
+}

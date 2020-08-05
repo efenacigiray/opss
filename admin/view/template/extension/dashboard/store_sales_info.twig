@@ -1,0 +1,99 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Okul Satışları</h3>
+    </div>
+    <div class="panel-body">
+      {% for store in stores %}
+      <div class="store-main col-md-6" data-id="{{ store.store_id }}">
+        <div class="well"  style="max-height: 380px; height: 380px; font-size: 10px; padding: 7px">
+            <h3>
+                {{ store.name }}
+                <span class="dates pull-right">
+                    <input style="font-size: 10px; width: 100px; display: inline-block; font-size: 11px; height: 25px" class="start-date-{{store.store_id}} date form-control" type="text"></input>&nbsp;-&nbsp;
+                    <input style="font-size: 10px; width: 100px; display: inline-block; font-size: 11px; height: 25px" class="end-date-{{store.store_id}} date form-control" type="text"></input>&nbsp;
+                    <button onclick="refresh_{{store.store_id}}();" class="btn btn-success" style="width: 25px !important;height: 25px;border-radius: 0px !important;padding: 0px !important;min-width: 0px;box-shadow: none !important;border: 1px solid #ddd !important; font-size: 12px" data-id="{{ store.store_id }}" class="refresh-data"><i class="fa fa-refresh"></i></button>
+                </span>
+            </h3>
+            <div>
+                <table class="table table-condensed table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <td>Satış Tipi</td>
+                            <td>Sipariş Adeti</td>
+                            <td>Toplam Tutar</td>
+                        </tr>
+                    </thead>
+                    <tbody id="{{ store.store_id }}">
+                    </tbody>
+                </table>
+            </div>
+            <div style="max-height: 210px; overflow-y: scroll;">
+                <table class="table table-condensed table-success highlight-color-yellow">
+                    <thead>
+                        <tr>
+                            <td>Paket Adı</td>
+                            <td>Sipariş Adeti</td>
+                            <td>Kayıtlı Ögrenci</td>
+                        </tr>
+                    </thead>
+                    <tbody id="{{ store.store_id }}_2">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+      $('.date').datetimepicker({
+        format: 'YYYY-MM-DD',
+        language: '{{ datepicker }}',
+        pickTime: false
+      });
+      $('.start-date-{{store.store_id}}').val(moment().format('YYYY-MM-01'));
+      $('.end-date-{{store.store_id}}').val(moment().format('YYYY-MM-DD'));
+      $(document).ready(function() {
+        refresh_{{store.store_id}}();
+        setInterval(
+            function(){refresh_{{store.store_id}}()},
+            20000
+        );
+      });
+
+      function refresh_{{store.store_id}}() {
+        var date_start = $('.start-date-{{store.store_id}}').val();
+        var date_end = $('.end-date-{{store.store_id}}').val();
+        $.ajax({
+            url: 'index.php?route=catalog/product/getStoreSales&user_token={{ user_token }}&id={{ store.store_id }}&date_start=' + date_start + '&date_end=' + date_end,
+            dataType: 'json',
+            beforeSend: function() {
+            },
+            complete: function() {
+            },
+            success: function(data) {
+                html = "\
+                    <tr>\
+                        <td style='width: 33%'>Toplam Satış</td>\
+                        <td style='width: 33%'>" + data['total_orders'] + "</td>\
+                        <td style='width: 33%'>" + data['total'] + "</td>\
+                    </tr>";
+                    $.each(data['total_with_type'], function(key, value) {
+                        html += "<tr><td>"+key+"</td>\
+                                 <td>"+value['count']+"</td>\
+                                 <td>"+value['total']+"</td><tr>";
+                    });
+                    $(document).find("#{{store.store_id}}").html(html);
+                    html = "";
+                    $.each(data['package_orders'], function(key, value) {
+                        html += "<tr><td style='width: 33%'>"+key+"</td>\
+                                 <td style='width: 33%'>"+value['order']+" Adet Sipariş</td>\
+                                 <td style='width: 33%'>"+value['students']+" Kayıtlı Öğrenci</td><tr>";
+                    })
+                    $(document).find("#{{store.store_id}}_2").html(html);
+            }
+        });
+      }
+      </script>
+      {% endfor %}
+    </div>
+  </div>
+</div>

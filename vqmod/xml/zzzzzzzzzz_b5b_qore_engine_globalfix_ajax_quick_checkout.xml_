@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Ajax Quick Checkout</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/view/template/module/d_quickcheckout.twig">
+		<operation error="log">
+			<search position="after"><![CDATA[
+				<?php echo $column_left; ?>
+				]]></search>
+			<add><![CDATA[
+				<style type="text/css">
+					#create_setting .tile-body h3{
+						font-size: 20px;
+						position: absolute;
+						right: 16px;
+						top: 26px;
+						z-index: 999;
+					}
+				</style>
+				]]></add>
+		</operation>
+	</file>
+</modification>

@@ -1,0 +1,22 @@
+<modification>
+	<name>Moduller Menusu</name>
+	<version>3.0</version>
+	<author>OpencartUzman</author>
+
+  	<file path="admin/controller/common/column_left.php">
+    <operation error="skip">
+      <search><![CDATA[// Stats]]></search>
+      <add position="before"><![CDATA[
+        $moduller = array();
+
+        $data['menus'][] = array(
+          'id'       => 'menu-moduller',
+          'icon'     => 'icon-layers',
+          'name'     => 'Moduller',
+          'href'     => '',
+          'children' => $moduller
+        );
+      ]]></add>
+    </operation>
+  </file>
+</modification>

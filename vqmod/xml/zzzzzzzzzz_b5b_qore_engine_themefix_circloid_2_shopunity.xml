@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - ShopUnity</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/view/template/b5b_qore_engine/themes/circloid_2/*/template/common/header.twig">
+		<!-- Adds the javascript file to the header of other themes when on the QoreEngine page -->
+		<operation error="skip">
+			<search position="before"><![CDATA[
+				<li role="presentation" class="dropdown notification-box <?php echo $has_alert; ?>">
+				]]></search>
+			<add><![CDATA[
+			<li><a href="<?php echo $d_shopunity; ?>" title="Shopunity"><i class="fa fa-flask fa-lg"></i></a></li>
+			]]></add>
+		</operation>
+	</file>
+</modification>

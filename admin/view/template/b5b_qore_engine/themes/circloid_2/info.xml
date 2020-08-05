@@ -1,0 +1,16 @@
+<?xml version='1.0'?>
+<theme>
+	<name>Circloid 2.0</name>
+	<cleanname>circloid_2</cleanname>
+	<version>2.2.0.0</version>
+	<developer>Base5Builder</developer>
+	<website>https://base5builder.com</website>
+	<description>
+		Circloid is back with a vengeance! The most beloved and robust OpenCart Admin Theme is back with it's unique style and more widgets.
+	</description>
+	<settings>
+		<colorpresets>
+			<colorpreset>mixed</colorpreset>
+		</colorpresets>
+	</settings>
+</theme>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - ShopUnity</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/controller/d_shopunity/extension.php">
+		<operation error="skip">
+			<search position="after" index="7,8"><![CDATA[
+				/* B5B - QoreEngine - Start */
+				]]></search>
+			<add><![CDATA[
+      			/*
+				]]></add>
+		</operation>
+		<operation error="skip">
+			<search position="before" index="7,8"><![CDATA[
+				/* B5B - QoreEngine - End */
+				]]></search>
+			<add><![CDATA[
+      			*/
+				]]></add>
+		</operation>
+	</file>
+</modification>

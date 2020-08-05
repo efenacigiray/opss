@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Base5Builder - Offline Credit Card</id>
+	<version>1.0</version>
+	<vqmver>2.6.0</vqmver>
+	<author>base5builder.com</author>
+	<file name="admin/controller/extension/payment/offline_cc.php">
+		<operation error="skip">
+			<search position="replace"><![CDATA[
+				$classname = str_replace('vq2-' . basename(DIR_APPLICATION) . '_' . strtolower(get_parent_class($this)) . '_' . $extension_type . '_', '', basename(__FILE__, '.php'));
+				]]></search>
+			<add><![CDATA[
+      			$classname = str_replace('vq2-' . basename(DIR_APPLICATION) . '_' . strtolower(get_parent_class($this)) . '_' . str_replace('/', '_', $extension_type) . '_', '', basename(__FILE__, '.php'));
+				]]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/extension/payment/offline_cc.twig">
+		<operation error="skip">
+			<search position="replace"><![CDATA[form-payment-checkout]]></search>
+			<add><![CDATA[form-extension]]></add>
+		</operation>
+	</file>
+</modification>
