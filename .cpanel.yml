@@ -7,6 +7,6 @@ deployment:
     - /bin/cp -R ~/opss/image $DEPLOYPATH
     - /bin/cp -R ~/opss/system $DEPLOYPATH
     - /bin/cp -R ~/opss/vqmod $DEPLOYPATH
-    - /bin/cp ~/opss/.htaccess $DEPLOYPATH
     - /bin/cp ~/opss/index.php $DEPLOYPATH
     - /bin/cp ~/opss/php.ini $DEPLOYPATH
+    - php ~/deploy/deploy_script.php
