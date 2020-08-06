@@ -1,6 +1,6 @@
 .htaccess
 /config.php
-admin/config.php
+control_panel/config.php
 
 !index.html
 
