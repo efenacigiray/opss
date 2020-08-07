@@ -12,7 +12,3 @@ system/logs/
 
 # vQmod log files
 vqmod/logs/*
-# vQmod cache files
-vqmod/vqcache/*
-vqmod/checked.cache
-vqmod/mods.cache

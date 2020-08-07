@@ -1,0 +1,240 @@
+{{ header }}{{ column_left }}
+<div id="content">
+
+<!-- {% for key,value in array_path %}
+	Key : {{ key }}
+	Value : {{ value }}
+{% endfor %} -->
+
+<!-- Load CSS & JS files -->
+{% for css_style in b5b_qore_engine.css_styles %}
+    <link href="{{ css_style }}" rel="stylesheet">
+{% endfor %}
+
+{% for js_script in b5b_qore_engine.js_scripts %}
+    <script src="{{ js_script }}"></script>
+{% endfor %}
+
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<a href="{{ back }}" data-toggle="tooltip" title="{{ b5b_qore_engine.language.button_done }}" class="btn btn-success"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1><i class="icon icon-triple-points"></i> {{ b5b_qore_engine.language.heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+		{% endif %}
+		<div class="row">
+			{% if show_external_themes %}
+				<div class="col-md-12 profile_details" data-theme-name="">
+					<div class="well profile_view clearfix">
+						<div class="col-sm-12">
+							<h4 class="brief">
+								{{ b5b_qore_engine.language.text_premium_theme_promo_text }}
+							</h4>
+							<br />
+							<div class="left col-sm-12">
+								<div class="promo-slider">
+									<ul>
+										{% for external_theme_info in external_themes_info %}
+										<li>
+											<div class="col-md-7">
+												<h2>
+													{{ external_theme_info.theme_name }}
+												</h2>
+												<p>{{ external_theme_info.theme_desc }}</p>
+												<table class="table theme-property">
+													<tr>
+														<td class="theme-property-title">
+															<i class="fa fa-info-circle"></i>
+															{{ b5b_qore_engine.language.text_compatible_with }}:
+														</td>
+														<td class="theme-property-value">
+															OpenCart {{ external_theme_info.theme_compatibility }}
+														</td>
+													</tr>
+													<tr>
+														<td class="theme-property-title">
+															<i class="fa fa-link"></i> {{ b5b_qore_engine.language.text_website }} :
+														</td>
+														<td class="theme-property-value">
+															<a href="{{ external_theme_info.theme_creator_website }} " target="_blank">
+																{{ external_theme_info.theme_creator_website }} 
+															</a>
+														</td>
+													</tr>
+												</table>
+												<a href="{{ external_theme_info.theme_demo_link }} " class="btn btn-danger" target="_blank">
+													<i class="fa fa-eye"> </i> {{ b5b_qore_engine.language.button_try_demo }} 
+												</a>
+											</div>
+											<div class="col-md-5">
+												<a href="{{ external_theme_info.theme_demo_link }} " class="promo-image" target="_blank">
+													<img class="img-responsive" alt="" src="{{ external_theme_info.theme_img }} ">
+												</a>
+											</div>
+										</li>
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ b5b_qore_engine.language.text_edit }} </h3>
+			</div>
+			<div class="panel-body">
+				{% for info in theme_info %}
+					<div class="col-md-12 profile_details" data-theme-name="{{ info.cleanname }}">
+						<div class="well profile_view clearfix">
+							<div class="col-sm-12">
+								<h4 class="brief">
+									{% if info.status %} 
+										<i>{{ b5b_qore_engine.language.entry_status }} : <b class="text-success">{{ b5b_qore_engine.language.text_enabled }} </b></i>
+									{% else %}  
+										<i>{{ b5b_qore_engine.language.entry_status }} : <b class="text-danger">{{ b5b_qore_engine.language.text_disabled }} </b></i>
+									{% endif %}
+								</h4>
+								<div class="right col-sm-4 col-sm-push-8 text-center">
+									<img class="img-circle img-responsive" alt="" src="{{ info.thumb }} ">
+								</div>
+								<div class="left col-sm-8 col-sm-pull-4">
+									<h2>{{ info.name }} </h2>
+									<p>{{ info.description }} </p>
+									<hr />
+									<table class="table theme-property">
+										<tr>
+											<td class="theme-property-title">
+												<i class="fa fa-info-circle"></i>
+												{{ b5b_qore_engine.language.text_version }} :
+											</td>
+											<td class="theme-property-value">
+												{{ info.version }} 
+											</td>
+										</tr>
+										<tr>
+											<td class="theme-property-title">
+												<i class="fa fa-user"></i>
+												{{ b5b_qore_engine.language.text_creator }} :
+											</td>
+											<td class="theme-property-value">
+												{{ info.developer }} 
+											</td>
+										</tr>
+										<tr>
+											<td class="theme-property-title">
+												<i class="fa fa-link"></i> {{ b5b_qore_engine.language.text_website }} :
+											</td>
+											<td class="theme-property-value">
+												<a href="{{ info.website }} " target="_blank">
+													{{ info.website }} 
+												</a>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="col-xs-12 bottom">
+								<div class="col-xs-12 col-sm-6 emphasis">
+									{% if info.status %}
+										{% if info.has_settings %}
+											<a href="{{ info.settings_link }} " class="btn btn-info">
+												<i class="fa fa-cog"> </i> {{ b5b_qore_engine.language.text_settings }} 
+											</a>
+										{% endif %}
+									{% else %} 
+										<a href="#" class="btn btn-primary enable-theme" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enabling Theme...">
+											<i class="fa fa-check"> </i> {{ b5b_qore_engine.language.text_enable }} 
+										</a>
+										{% if info.has_settings %}
+											<button type="button" class="btn btn-info disabled" data-toggle="tooltip" title="{{ b5b_qore_engine.language.text_enable_theme_first }} ">
+												<i class="fa fa-cog"> </i> {{ b5b_qore_engine.language.text_settings }} 
+											</button>
+										{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				<div class="col-md-12 profile_details" data-theme-name="default_opencart_theme">
+					<div class="well profile_view clearfix">
+						<div class="col-sm-12">
+							<h4 class="brief">
+								{% if active_theme == 'default_opencart_theme' %} 
+									<i>{{ b5b_qore_engine.language.entry_status }} : <b class="text-success">{{ b5b_qore_engine.language.text_enabled }} </b></i>
+								{% else %}  
+									<i>{{ b5b_qore_engine.language.entry_status }} : <b class="text-danger">{{ b5b_qore_engine.language.text_disabled }} </b></i>
+								{% endif %}
+							</h4>
+							<div class="right col-sm-4 col-sm-push-8 text-center">
+								<img class="img-circle img-responsive" alt="" src="view/template/b5b_qore_engine/themes/default_opencart_theme/thumb.jpg">
+							</div>
+							<div class="left col-sm-8 col-sm-pull-4">
+								<h2>{{ b5b_qore_engine.language.text_default_theme }} </h2>
+								<p>{{ b5b_qore_engine.language.text_default_theme_desc }} </p>
+								<hr />
+								<table class="table theme-property">
+									<tr>
+										<td class="theme-property-title">
+											<i class="fa fa-info-circle"></i>
+											{{ b5b_qore_engine.language.text_version }} :
+										</td>
+										<td class="theme-property-value">
+											{{ constant('VERSION') }} 
+										</td>
+									</tr>
+									<tr>
+										<td class="theme-property-title">
+											<i class="fa fa-user"></i>
+											{{ b5b_qore_engine.language.text_creator }} :
+										</td>
+										<td class="theme-property-value">
+											{{ b5b_qore_engine.language.text_default_theme_creator }} 
+										</td>
+									</tr>
+									<tr>
+										<td class="theme-property-title">
+											<i class="fa fa-link"></i> {{ b5b_qore_engine.language.text_website }} :
+										</td>
+										<td class="theme-property-value">
+											<a href="{{ b5b_qore_engine.language.text_default_theme_website }} " target="_blank">
+												{{ b5b_qore_engine.language.text_default_theme_website }} 
+											</a>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="col-xs-12 bottom">
+							<div class="col-xs-12 col-sm-6 emphasis">
+								{% if active_theme != 'default_opencart_theme' %} 
+								<a href="#" class="btn btn-primary enable-theme" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enabling Theme...">
+									<i class="fa fa-check"> </i> {{ b5b_qore_engine.language.text_enable }} 
+								</a>
+								{% endif %} 
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}

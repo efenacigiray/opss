@@ -1,0 +1,347 @@
+{% if not redirect %}
+<div class="table-responsive">
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-left">{{ column_name }}</td>
+        <td class="text-left">{{ column_model }}</td>
+        <td class="text-right">{{ column_quantity }}</td>
+        <td class="text-right">{{ column_price }}</td>
+        <td class="text-right">{{ column_total }}</td>
+      </tr>
+    </thead>
+    <tbody>
+    
+    {% for product in products %}
+    <tr>
+      <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />
+        &nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+        {% if product.recurring %} <br />
+        <span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
+      <td class="text-left">{{ product.model }}</td>
+      <td class="text-right">{{ product.quantity }}</td>
+      <td class="text-right">{{ product.price }}</td>
+      <td class="text-right">{{ product.total }}</td>
+    </tr>
+    {% endfor %}
+    {% for voucher in vouchers %}
+    <tr>
+      <td class="text-left">{{ voucher.description }}</td>
+      <td class="text-left"></td>
+      <td class="text-right">1</td>
+      <td class="text-right">{{ voucher.amount }}</td>
+      <td class="text-right">{{ voucher.amount }}</td>
+    </tr>
+    {% endfor %}
+      </tbody>
+    
+    <tfoot>
+    
+    {% for total in totals %}
+    <tr>
+      <td colspan="4" class="text-right"><strong>{{ total.title }}:</strong></td>
+      <td class="text-right">{{ total.text }}</td>
+    </tr>
+    {% endfor %}
+      </tfoot>
+    
+  </table>
+</div>
+{{ payment }}
+ 
+
+                    <div style="margin-top: 70px;""><center><font size="3"><strong>ÖN BİLGİLENDİRME FORMU</strong></font></center> </div>
+                    <div style="margin-top: 5px; margin-bottom: 10px; padding-top:10px; width: 98%; overflow: auto; height: 200px; border-left: 1px solid #9C9C9C; border-top: 1px solid #9C9C9C; border-right: 1px solid #9C9C9C; border-bottom: 1px solid #9C9C9C; padding-left: 5px; padding-bottom: 10px;font-size:11pt;color:#535151; background:#cccccc;">
+                    <div>
+                      <strong>1.KONU</strong><br/><br/>
+                        İşbu Satış Sözleşmesi Ön Bilgi Formu’nun konusu, SATICI' nın, SİPARİŞ VEREN/ALICI' ya satışını yaptığı, aşağıda nitelikleri ve satış fiyatı belirtilen ürün/ürünlerin satışı ve teslimi ile ilgili olarak 6502 sayılı Tüketicilerin Korunması Hakkındaki Kanun - Mesafeli Sözleşmeler Yönetmeliği (RG:27.11.2014/29188) hükümleri gereğince tarafların hak ve yükümlülüklerini kapsamaktadır. İş bu ön bilgilendirme formunu kabul etmekle ALICI, sözleşme konusu siparişi onayladığı takdirde sipariş konusu bedeli ve varsa kargo ücreti, vergi gibi belirtilen ek ücretleri ödeme yükümlülüğü altına gireceğini ve bu konuda bilgilendirildiğini peşinen kabul eder. <br/><br/><br/>
+
+                        <strong>2. SATICI BİLGİLERİ</strong><br/><br/>
+                    <div class="left">
+                         {{ entry_name }} {{ config_name }} <br />
+                         {{ entry_owner }} {{ config_owner }} <br />
+                         {{ entry_address }} {{ config_address }} <br />
+                         {{ entry_email }} {{ config_email }} <br />
+                         {{ entry_telephone }} {{ config_telephone }} <br />
+                         {{ entry_fax }} {{ config_fax }} <br /><br/>
+
+                        <strong>3. ALICI BİLGİLERİ(Bundan sonra ALICI olarak anılacaktır.)</strong><br/><br/>
+                        İsim: {{ firstname }}<br />
+                        Soyisim : {{ lastname }}<br />
+                        Adres   : {{ address_1 }} {{ address_2 }} {{ postcode }} </br>
+						{{ city }} {{ zone }} {{ country }} <br />
+                        Telefon : {{ telephone }}<br />
+                        E-Posta : {{ email }}<br />
+                    <div class="ipaddress"><br />
+      
+						IP Adresiniz : {{ ip_adresi }}
+ 
+                    </div>
+                </div>                        
+                    <br/>
+                    <strong>4. SÖZLEŞME KONUSU ÜRÜN/ÜRÜNLER BİLGİLERİ </strong><br/><br/>
+                        4.1 Malın / Ürün/Ürünlerin / Hizmetin temel özellikleri (türü, miktarı, marka/modeli, rengi, adedi) SATICI’ya ait internet sitesinde yer almaktadır. Ürünün temel özelliklerini kampanya süresince inceleyebilirsiniz. Kampanya tarihine kadar geçerlidir.
+                        4.2 Listelenen ve sitede ilan edilen fiyatlar satış fiyatıdır. İlan edilen fiyatlar ve vaatler güncelleme yapılana ve değiştirilene kadar geçerlidir. Süreli olarak ilan edilen fiyatlar ise belirtilen süre sonuna kadar geçerlidir.
+                        4.3 Sözleşme konusu mal ya da hizmetin tüm vergiler dâhil satış fiyatı aşağıdaki tabloda gösterilmiştir.<br/><br/>
+                    
+
+<!-- .................ÜRÜN LİSTESİ BAŞLANGIÇ.................... -->
+
+                        <div class="table-responsive">
+                          <table class="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <td class="text-left">{{ column_name }}</td>
+                                <td class="text-left">{{ column_model }}</td>
+                                <td class="text-right">{{ column_quantity }}</td>
+                                <td class="text-right">{{ column_price }}</td>
+                                <td class="text-right">{{ column_total }}</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+								   {% for product in products %}
+								<tr>
+								  <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />
+									&nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+									{% if product.recurring %} <br />
+									<span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
+								  <td class="text-left">{{ product.model }}</td>
+								  <td class="text-right">{{ product.quantity }}</td>
+								  <td class="text-right">{{ product.price }}</td>
+								  <td class="text-right">{{ product.total }}</td>
+								</tr>
+								{% endfor %}
+								{% for voucher in vouchers %}
+								<tr>
+								  <td class="text-left">{{ voucher.description }}</td>
+								  <td class="text-left"></td>
+								  <td class="text-right">1</td>
+								  <td class="text-right">{{ voucher.amount }}</td>
+								  <td class="text-right">{{ voucher.amount }}</td>
+								</tr>
+								{% endfor %}>
+                            </tbody>
+                            <tfoot>
+								{% for total in totals %}
+								<tr>
+								  <td colspan="4" class="text-right"><strong>{{ total.title }}:</strong></td>
+								  <td class="text-right">{{ total.text }}</td>
+								</tr>
+								{% endfor %}
+                            </tfoot>
+                          </table>
+                        </div>
+<!-- .................ÜRÜN LİSTESİ BİTİŞ.................... -->
+
+
+                    <div>
+
+                    <strong>5. GENEL HÜKÜMLER</strong><br/><br/>
+
+                    <strong>5.1.</strong> ALICI, SATICI’ya ait internet sitesinde sözleşme konusu ürünün temel nitelikleri, satış fiyatı ve ödeme şekli ile teslimata ilişkin ön bilgileri okuyup, bilgi sahibi olduğunu, elektronik ortamda gerekli teyidi verdiğini kabul, beyan ve taahhüt eder. ALICININ; Ön Bilgilendirmeyi elektronik ortamda teyit etmesi, mesafeli satış sözleşmesinin kurulmasından evvel, SATICI tarafından ALICI' ya verilmesi gereken adresi, siparişi verilen ürünlere ait temel özellikleri, ürünlerin vergiler dâhil fiyatını, ödeme ve teslimat bilgilerini de doğru ve eksiksiz olarak edindiğini kabul, beyan ve taahhüt eder. <br/><br/>
+
+                    <strong>5.2.</strong> Sözleşme konusu her bir ürün, 30 günlük yasal süreyi aşmamak kaydı ile ALICI' nın yerleşim yeri uzaklığına bağlı olarak internet sitesindeki ön bilgiler kısmında belirtilen süre zarfında ALICI veya ALICI’ nın gösterdiği adresteki kişi ve/veya kuruluşa teslim edilir. Bu süre içinde ürünün ALICI’ya teslim edilememesi durumunda, ALICI’nın sözleşmeyi feshetme hakkı saklıdır. <br/><br/>
+
+                    <strong>5.3.</strong> SATICI, sözleşme konusu ürünü eksiksiz, siparişte belirtilen niteliklere uygun ve varsa garanti belgeleri, kullanım kılavuzları ile teslim etmeyi, her türlü ayıptan arî olarak yasal mevzuat gereklerine sağlam, standartlara uygun bir şekilde işin gereği olan bilgi ve belgeler ile işi doğruluk ve dürüstlük esasları dâhilinde ifa etmeyi, hizmet kalitesini koruyup yükseltmeyi, işin ifası sırasında gerekli dikkat ve özeni göstermeyi, ihtiyat ve öngörü ile hareket etmeyi kabul, beyan ve taahhüt eder. 
+                    <strong>5.4.</strong> SATICI, sözleşmeden doğan ifa yükümlülüğünün süresi dolmadan ALICI’yı bilgilendirmek ve açıkça onayını almak suretiyle eşit kalite ve fiyatta farklı bir ürün tedarik edebilir.<br/><br/> 
+
+                    <strong>5.5.</strong> SATICI, sipariş konusu ürün veya hizmetin yerine getirilmesinin imkânsızlaşması halinde sözleşme konusu yükümlülüklerini yerine getiremezse, bu durumu, öğrendiği tarihten itibaren 3 gün içinde yazılı olarak tüketiciye bildireceğini, 14 günlük süre içinde toplam bedeli ALICI’ya iade edeceğini kabul, beyan ve taahhüt eder. <br/><br/>
+
+                    <strong>5.6.</strong> ALICI, sözleşme konusu ürünün teslimatı için işbu Ön Bilgilendirme Formunu elektronik ortamda teyit edeceğini, herhangi bir nedenle sözleşme konusu ürün bedelinin ödenmemesi ve/veya banka kayıtlarında iptal edilmesi halinde, SATICI’ nın sözleşme konusu ürünü teslim yükümlülüğünün sona ereceğini kabul, beyan ve taahhüt eder. <br/><br/>
+
+                    <strong>5.7.</strong> ALICI, Sözleşme konusu ürünün ALICI veya ALICI’nın gösterdiği adresteki kişi ve/veya kuruluşa tesliminden sonra ALICI'ya ait kredi kartının yetkisiz kişilerce haksız kullanılması sonucunda sözleşme konusu ürün bedelinin ilgili banka veya finans kuruluşu tarafından SATICI'ya ödenmemesi halinde, ALICI Sözleşme konusu ürünü 3 gün içerisinde nakliye gideri SATICI’ya ait olacak şekilde SATICI’ya iade edeceğini kabul, beyan ve taahhüt eder. <br/><br/>
+
+                    <strong>5.8.</strong> SATICI, tarafların iradesi dışında gelişen, önceden öngörülemeyen ve tarafların borçlarını yerine getirmesini engelleyici ve/veya geciktirici hallerin oluşması gibi mücbir sebepler halleri nedeni ile sözleşme konusu ürünü süresi içinde teslim edemez ise, durumu ALICI' ya bildireceğini kabul, beyan ve taahhüt eder. ALICI da siparişin iptal edilmesini, sözleşme konusu ürünün varsa emsali ile değiştirilmesini ve/veya teslimat süresinin engelleyici durumun ortadan kalkmasına kadar ertelenmesini SATICI’ dan talep etme hakkına haizdir. ALICI tarafından siparişin iptal edilmesi halinde ALICI’ nın nakit ile yaptığı ödemelerde, ürün tutarı 14 gün içinde kendisine nakden ve defaten ödenir. ALICI’ nın kredi kartı ile yaptığı ödemelerde ise, ürün tutarı, siparişin ALICI tarafından iptal edilmesinden sonra 14 gün içerisinde ilgili bankaya iade edilir. ALICI, SATICI tarafından kredi kartına iade edilen tutarın banka tarafından ALICI hesabına yansıtılmasına ilişkin ortalama sürecin 2 ile 3 haftayı bulabileceğini, bu tutarın bankaya iadesinden sonra ALICI’ nın hesaplarına yansıması halinin tamamen banka işlem süreci ile ilgili olduğundan, ALICI, olası gecikmeler için SATICI’ yı sorumlu tutamayacağını kabul, beyan ve taahhüt eder. <br/><br/>
+
+                   <strong>6. FATURA BİLGİLERİ</strong><br/><br/>
+                    Ad/Soyad/Unvan : {{ firstname }} {{ lastname }}<br/>
+                    Adres : {{ firstname }} {{ address_1 }} {{ address_2 }} {{ postcode }} {{ city }} {{ zone }} {{ country }}<br/>
+                    Telefon : {{ telephone }} <br />
+                    Eposta/kullanıcı adı : {{ email }} <br /><br/>
+                    Fatura teslim : Fatura sipariş teslimatı sırasında fatura adresine sipariş ile birlikte 
+                    teslim edilecektir.<br/><br/>
+
+                    <strong>7. CAYMA HAKKI</strong><br/><br/>
+                   <strong>7.1.</strong> ALICI; mal satışına ilişkin mesafeli sözleşmelerde, ürünün kendisine veya gösterdiği adresteki kişi/kuruluşa teslim tarihinden itibaren 14 (on dört) gün içerisinde, SATICI’ya bildirmek şartıyla hiçbir hukuki ve cezai sorumluluk üstlenmeksizin ve hiçbir gerekçe göstermeksizin malı reddederek sözleşmeden cayma hakkını kullanabilir. Hizmet sunumuna ilişkin mesafeli sözleşmelerde ise, bu süre sözleşmenin imzalandığı tarihten itibaren başlar. Cayma hakkı süresi sona ermeden önce, tüketicinin onayı ile hizmetin ifasına başlanan hizmet sözleşmelerinde cayma hakkı kullanılamaz. Cayma hakkının kullanımından kaynaklanan masraflar SATICI’ ya aittir. ALICI, iş bu sözleşmeyi kabul etmekle, cayma hakkı konusunda bilgilendirildiğini peşinen kabul eder.
+                   <strong>7.2.</strong> Cayma hakkının kullanılması için 14 (ondört) günlük süre içinde SATICI' ya iadeli taahhütlü posta, faks veya eposta ile yazılı bildirimde bulunulması ve ürünün işbu sözleşmede düzenlenen düzenlenen "Cayma Hakkı Kullanılamayacak Ürünler" hükümleri çerçevesinde kullanılmamış olması şarttır. Bu hakkın kullanılması halinde, <br/>
+                    <strong>7.2.1</strong> 3. kişiye veya ALICI’ ya teslim edilen ürünün faturası, (İade edilmek istenen ürünün faturası kurumsal ise, geri iade ederken kurumun düzenlemiş olduğu iade faturası ile birlikte gönderilmesi gerekmektedir. Faturası kurumlar adına düzenlenen sipariş iadeleri İADE FATURASI kesilmediği takdirde tamamlanamayacaktır.) <br/>
+                    <strong>7.2.2.</strong> İade formu,<br/> 
+                    <strong>7.2.3.</strong> İade edilecek ürünlerin kutusu, ambalajı, varsa standart aksesuarları ile birlikte eksiksiz ve hasarsız olarak teslim edilmesi gerekmektedir. <br/>
+                    <strong>7.2.4.</strong> SATICI, cayma bildiriminin kendisine ulaşmasından itibaren en geç 10 günlük süre içerisinde toplam bedeli ve ALICI’ yı borç altına sokan belgeleri ALICI’ ya iade etmek ve 20 günlük süre içerisinde malı iade almakla yükümlüdür. <br/>
+                    <strong>7.2.5.</strong> ALICI’ nın kusurundan kaynaklanan bir nedenle malın değerinde bir azalma olursa veya iade imkânsızlaşırsa ALICI kusuru oranında SATICI’ nın zararlarını tazmin etmekle yükümlüdür. Ancak cayma hakkı süresi içinde malın veya ürünün usulüne uygun kullanılmasın sebebiyle meydana gelen değişiklik ve bozulmalardan ALICI sorumlu değildir. <br/>
+                    <strong>7.2.6.</strong> Cayma hakkının kullanılması nedeniyle SATICI tarafından düzenlenen kampanya limit tutarının altına düşülmesi halinde kampanya kapsamında faydalanılan indirim miktarı iptal edilir. <br/><br/>
+
+                   <strong>8. CAYMA HAKKI KULLANILAMAYACAK ÜRÜNLER</strong><br/><br/>
+
+                    8.1. a) Fiyatı finansal piyasalardaki dalgalanmalara bağlı olarak değişen ve satıcı veya sağlayıcının kontrolünde olmayan mal veya hizmetlere ilişkin sözleşmeler.<br/>
+                    b) Tüketicinin istekleri veya kişisel ihtiyaçları doğrultusunda hazırlanan mallara ilişkin sözleşmeler.<br/>
+                    c) Çabuk bozulabilen veya son kullanma tarihi geçebilecek malların teslimine ilişkin sözleşmeler.<br/>
+                    ç) Tesliminden sonra ambalaj, bant, mühür, paket gibi koruyucu unsurları açılmış olan mallardan; iadesi sağlık ve hijyen açısından uygun olmayanların teslimine ilişkin sözleşmeler.<br/>
+                    d) Tesliminden sonra başka ürünlerle karışan ve doğası gereği ayrıştırılması mümkün olmayan mallara ilişkin sözleşmeler.<br/>
+                    e) Malın tesliminden sonra ambalaj, bant, mühür, paket gibi koruyucu unsurları açılmış olması halinde maddi ortamda sunulan kitap, dijital içerik ve bilgisayar sarf malzemelerine, veri kaydedebilme ve veri depolama cihazlarına  ilişkin sözleşmeler.<br/>
+                    f) Abonelik sözleşmesi kapsamında sağlananlar dışında, gazete ve dergi gibi süreli yayınların teslimine ilişkin sözleşmeler.<br/>
+                    g) Belirli bir tarihte veya dönemde yapılması gereken, konaklama, eşya taşıma, araba kiralama, yiyecek-içecek tedariki ve eğlence veya dinlenme amacıyla yapılan boş zamanın değerlendirilmesine ilişkin sözleşmeler.<br/>
+                    ğ) Elektronik ortamda anında ifa edilen hizmetler veya tüketiciye anında teslim edilen gayrimaddi mallara ilişkin sözleşmeler.<br/>
+                    h) Cayma hakkı süresi sona ermeden önce, tüketicinin onayı ile ifasına başlanan hizmetlere ilişkin sözleşmeler.
+                    Kozmetik ve kişisel bakım ürünleri, iç giyim ürünleri, mayo, bikini, kitap, kopyalanabilir yazılım ve programlar, DVD, VCD, CD ve kasetler ile kırtasiye sarf malzemeleri (toner, kartuş, şerit vb.) iade edilebilmesi için ambalajlarının açılmamış, denenmemiş, bozulmamış ve kullanılmamış olmaları gerekir. <br/>
+                    8.2. SATICI şikâyet ve itirazları konusunda başvurularını,  aşağıdaki kanunda belirtilen parasal sınırlar dâhilinde tüketicinin yerleşim yerinin bulunduğu  veya tüketici işleminin yapıldığı yerdeki  tüketici sorunları hakem heyetine veya tüketici mahkemesine yapabilir. Parasal sınıra ilişkin bilgiler aşağıdadır: 
+                    28/05/2014 tarihinden itibaren geçerli olmak üzere: <br/>
+                    a) 6502 sayılı Tüketicinin Korunması Hakkında Kanun’un 68. Maddesi gereği değeri 2.000,00 (ikibin) TL’nin altında olan uyuşmazlıklarda ilçe tüketici hakem heyetlerine,<br/>
+                    b) Değeri 3.000,00(üçbin)TL’ nin altında bulunan uyuşmazlıklarda il tüketici hakem heyetlerine,<br/>
+                    c) Büyükşehir statüsünde bulunan illerde ise değeri 2.000,00 (ikibin) TL ile 3.000,00(üçbin)TL’  arasındaki uyuşmazlıklarda il tüketici hakem heyetlerine başvuru yapılmaktadır.<br/>
+                    İşbu Sözleşme ticari amaçlarla yapılmaktadır. <br/><br/>
+
+                    <strong>SATICI: {{ config_name }}</strong><br/>
+                    <strong>ALICI: {{ firstname }} {{ lastname }}</strong><br/>
+                    <strong>TARİH: {{ tarih }}</strong> <br/>
+                </div>
+            </div>
+        </div>
+<!---------------------------------- ÖN BİLGİLENDİRME BİTİŞ -------------------------------------------------->
+
+<!---------------------------------- MESAFELİ SATIŞ SÖZLEŞMESİ BAŞLANGIÇ -------------------------------------------------------->                    
+                    <div style="margin-top: 20px;"><center><font size="3"><strong>MESAFELİ SATIŞ SÖZLEŞMESİ</strong></font></center> </div>
+                    <div style="margin-top: 5px; margin-bottom: 10px; padding-top:10px; width: 98%; overflow: auto; height: 200px; border-left: 1px solid #9C9C9C; border-top: 1px solid #9C9C9C; border-right: 1px solid #9C9C9C; border-bottom: 1px solid #9C9C9C; padding-left: 5px; padding-bottom: 10px;font-size:11pt;color:#535151; background:#cccccc;">
+                        <div>
+                            Ben, {{ firstname }} {{ lastname }} {{ store_url }} internet sitesinde sözleşme konusu ürünün temel niteliklerini, satış fiyatını ve ödeme şekli ile teslimata ilişkin ön bilgileri okuyup bilgi sahibi olduğumu ve elektronik ortamda gerekli teyidi verdiğimi beyan ederim. <br/><br/>
+                            <strong>Siparişim elime ne zaman ulaşır?</strong><br/><br/>
+
+                            {{ store_url }} sitesinde alışveriş yapan siz kredi kartı sahiplerinin güvenliğini ön planda tutmakta ve siparişinizi verdiğiniz andan itibaren ödeme/fatura bilgilerinin kontrolünü gerçekleştirmektedir. Bu yüzden, siparişinizin tedarik ve teslimat aşamasına gelebilmesi için öncelikle siparişinizin ödeme/fatura bilgilerinin doğruluğunun onaylanması ve onaylandığına dair e-postanın size yollanması gereklidir. Sipariş onayının saglıklı olarak alınmasından sonra siparişiniz sistem üzerinde " Hazırlanıyor " ibaresi ile paketleme aşamasına geçer. Hazırlanıyor olan siparişler kargoya teslim edildikten sonra en geç 3 iş günü içinde web sitesinde belirttiğiniz teslimat adresine ulaştırılacaktır.<br/><br/>
+
+                            <strong>Adres Bilgileri</strong><br/><br/>
+
+                            Siparişinizin size en çabuk şekilde ulaşması için lütfen adres bilgilerinizi mümkün olduğu kadar açık yazınız. Siparişinizi tamamlamadan önce mutlaka vermiş olduğunuz adresi bir kez daha kontrol ediniz.<br/><br/>
+
+                            <strong>Ödeme</strong><br/><br/>
+
+                            Web sitemizden yapacağınız alışverişleri Posta çeki, Havale ve Kredi kartı ile peşin ya da taksitli olarak ödeyebilirsiniz.<br/><br/>
+
+                            <strong>Kargo</strong><br/><br/>
+
+                            Siparişleriniz kargoya teslim edildikten sonra üye ekranları/hesabım/siparişlerim kısmında, siparişinizin kargoya verilip verilmediğini, onay, tedarik aşaması ya da hazırlanma aşamasında olup olmadığını görüntüleyebilirsiniz. Siparişiniz kargoya teslim edilmiş ise cep telefonunuza kısa mesaj yoluyla bildirim geleceğinden cep telefonu numaranızı eksiksiz ve başına "0” yazmadan sisteme giriniz.
+                            <strong>KARGO ÜCRETLERİ ALICIYA AİTTİR</strong><br/><br/>
+
+                            <strong>Hatalı / Eksik Siparisler</strong><br/><br/>
+
+                            {{ store_url }} internet sitemizden teslim aldığınız paketi kargo görevlisinin yanında açıp, siparişinizi kontrol ediniz. Herhangi bir yanlışlık veya eksiklik gördüğünüz takdirde derhal kargo görevlisine zabıt tutturup, bizimle irtibata geçiniz. Kargo görevlileri zaman zaman paketi açtırmayabilirler. Bu durumda siparişinizi teslim aldıktan sonra derhal kontrol ediniz ve eksik ya da hatalı ürün olması durumunda vakit kaybetmeden bizimle " Bize Ulaşın " bölümünden mesaj göndererek bağlantıya geçiniz. Tüm mesajlar günlük düzenli olarak okunmakta ve kayıtlı olduklarından, telefon bildirimlerinden çok daha hızlı ve doğru şekilde takip edilip çözüme ulaştırılmaktadır.<br/><br/>
+
+                            MADDE 1- TARAFLAR
+                            <strong>2. SATICI BİLGİLERİ</strong><br/><br/>
+                            <div class="left">
+						 {{ entry_name }} {{ config_name }} <br />
+                         {{ entry_owner }} {{ config_owner }} <br />
+                         {{ entry_address }} {{ config_address }} <br />
+                         {{ entry_email }} {{ config_email }} <br />
+                         {{ entry_telephone }} {{ config_telephone }} <br />
+                         {{ entry_fax }} {{ config_fax }} <br /><br/>
+
+                                <strong>3. ALICI BİLGİLERİ</strong><br/><br/>
+                        İsim: {{ firstname }}<br />
+                        Soyisim : {{ lastname }}<br />
+                        Adres   : {{ address_1 }} {{ address_2 }} {{ postcode }} </br>
+						{{ city }} {{ zone }} {{ country }} <br />
+                        Telefon : {{ telephone }}<br />
+                        E-Posta : {{ email }}<br />      
+						IP Adresiniz : {{ ip_adresi }}
+ 
+                            </div>
+                        </div>
+
+                        <strong>MADDE 2- KONU</strong><br/><br/>
+
+                        İşbu sözleşmenin konusu, ALICI'nın SATICI'ya ait {{ store_url }} internet sitesinden elektronik ortamda siparişini yaptığı aşağıda nitelikleri ve satış fiyatı belirtilen ürünün satışı ve teslimi ile ilgili olarak 4077 sayılı Tüketicilerin Korunması Hakkındaki Kanun ve Mesafeli Sözleşmeleri Uygulama Esas ve Usulleri Hakkında Yönetmelik hükümleri gereğince tarafların hak ve yükümlülüklerinin saptanmasıdır. <br/><br/>
+
+                        <strong>MADDE 3- SÖZLEŞME KONUSU ÜRÜN</strong><br/><br/>   
+<!-- .................ÜRÜN LİSTESİ BAŞLANGIÇ.................... -->
+
+                        <div class="table-responsive">
+                          <table class="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <td class="text-left">{{ column_name }}</td>
+                                <td class="text-left">{{ column_model }}</td>
+                                <td class="text-right">{{ column_quantity }}</td>
+                                <td class="text-right">{{ column_price }}</td>
+                                <td class="text-right">{{ column_total }}</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+								   {% for product in products %}
+								<tr>
+								  <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />
+									&nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+									{% if product.recurring %} <br />
+									<span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
+								  <td class="text-left">{{ product.model }}</td>
+								  <td class="text-right">{{ product.quantity }}</td>
+								  <td class="text-right">{{ product.price }}</td>
+								  <td class="text-right">{{ product.total }}</td>
+								</tr>
+								{% endfor %}
+								{% for voucher in vouchers %}
+								<tr>
+								  <td class="text-left">{{ voucher.description }}</td>
+								  <td class="text-left"></td>
+								  <td class="text-right">1</td>
+								  <td class="text-right">{{ voucher.amount }}</td>
+								  <td class="text-right">{{ voucher.amount }}</td>
+								</tr>
+								{% endfor %}>
+                            </tbody>
+                            <tfoot>
+								{% for total in totals %}
+								<tr>
+								  <td colspan="4" class="text-right"><strong>{{ total.title }}:</strong></td>
+								  <td class="text-right">{{ total.text }}</td>
+								</tr>
+								{% endfor %}
+                            </tfoot>
+                          </table>
+                        </div>
+<!-- .................ÜRÜN LİSTESİ BİTİŞ.................... -->
+                        <strong>MADDE 4- GENEL HÜKÜMLER</strong><br/><br/>
+                         
+                        4.1- ALICI, {{ store_url }} internet sitesinde sözleşme konusu ürünün temel nitelikleri, satış fiyatı ve ödeme şekli ile teslimata ilişkin ön bilgileri okuyup bilgi sahibi olduğunu ve elektronik ortamda gerekli teyidi verdiğini beyan eder. <br/>
+                        4.2- Sözleşme konusu ürün, yasal 30 günlük süreyi aşmamak koşulu ile her bir ürün için ALICI'nın yerleşim yerinin uzaklığına bağlı olarak internet sitesinde ön bilgiler içinde açıklanan süre içinde ALICI veya gösterdiği adresteki kişi/kuruluşa teslim edilir. <br/>
+                        4.3- Sözleşme konusu ürün, ALICI'dan başka bir kişi/kuruluşa teslim edilecek ise, teslim edilecek kişi/kuruluşun teslimatı kabul etmemesininden SATICI sorumlu tutulamaz. <br/>
+                        4.4- SATICI, sözleşme konusu ürünün sağlam, eksiksiz, siparişte belirtilen niteliklere uygun ve varsa garanti belgeleri ve kullanım klavuzları ile teslim edilmesinden sorumludur. <br/>
+                        4.5- Sözleşme konusu ürünün teslimatı için işbu sözleşmenin imzalı nüshasının SATICI'ya ulaştırılmış olması ve bedelinin ALICI'nın tercih ettiği ödeme şekli ile ödenmiş olması şarttır. Herhangi bir nedenle ürün bedeli ödenmez veya banka kayıtlarında iptal edilir ise, SATICI ürünün teslimi yükümlülüğünden kurtulmuş kabul edilir. <br/>
+                        4.6- Ürünün tesliminden sonra ALICI'ya ait kredi kartının ALICI'nın kusurundan kaynaklanmayan bir şekilde yetkisiz kişilerce haksız veya hukuka aykırı olarak kullanılması nedeni ile ilgili banka veya finans kuruluşun ürün bedelini SATICI'ya ödememesi halinde, ALICI'nın kendisine teslim edilmiş olması kaydıyla ürünün 3 gün içinde SATICI'ya gönderilmesi zorunludur. Bu takdirde nakliye giderleri ALICI'ya aittir. 
+                        4.7- SATICI mücbir sebepler veya nakliyeyi engelleyen hava muhalefeti, ulaşımın kesilmesi gibi olağanüstü durumlar nedeni ile sözleşme konusu ürünü süresi içinde teslim edemez ise, durumu ALICI'ya bildirmekle yükümlüdür. Bu takdirde ALICI siparişin iptal edilmesini, sözleşme konusu ürünün varsa emsali ile değiştirilmesini, ve/veya teslimat süresinin engelleyici durumun ortadan kalkmasına kadar ertelenmesi haklarından birini kullanabilir. ALICI'nın siparişi iptal etmesi halinde ödediği tutar 10 gün içinde kendisine nakten ve defaten ödenir.<br/> 
+                        4.8- Garanti belgesi ile satılan ürünlerden olan veya olmayan ürünlerin arızalı veya bozuk olanlar, garanti şartları içinde gerekli onarımın yapılması için SATICI'ya gönderilebilir, bu takdirde kargo giderleri SATICI tarafından karşılanacaktır.<br/><br/> 
+
+                        <strong>MADDE 5- CAYMA HAKKI </strong><br/><br/>
+
+                        ALICI, sözleşme konusu ürünün kendisine veya gösterdiği adresteki kişi/kuruluşa tesliminden itibaren 7 gün içinde cayma hakkına sahiptir. Cayma hakkının kullanılması için bu süre içinde SATICI'ya faks, email veya telefon ile bildirimde bulunulması ve ürünün 6. madde hükümleri çercevesinde kullanılmamış olması şarttır. Bu hakkın kullanılması halinde, 3. kişiye veya ALICI'ya teslim edilen ürünün SATICI'ya gönderildiğine ilişkin kargo teslim tutanağı örneği ile fatura aslının iadesi zorunludur. Bu belgelerin ulaşmasını takip eden 7 gün içinde ürün bedeli ALICI'ya iade edilir. Fatura aslı gönderilmez ise KDV ve varsa sair yasal yükümlülükler iade edilemez. Cayma hakkı nedeni ile iade edilen ürünün kargo bedeli SATICI tarafından karşılanır. <br/><br/>
+
+                        <strong>MADDE 6- CAYMA HAKKI KULLANILAMAYACAK ÜRÜNLER</strong> <br/><br/>
+                        Niteliği itibarıyla iade edilemeyecek ürünler, tek kullanımlık ürünler, kopyalanabilir yazılım ve programlar, hızlı bozulan veya son kullanım tarihi geçen ürünler için cayma hakkı kullanılamaz. <br/><br/>
+
+                        -Tüm soğanlı ürünler<br/>
+                        - Mevsimlik ve çok yıllık canlı bitki ve fideler.<br/>
+                        - Paketi açılmış orijinal paketli tüm ürünler, tohumlar ve gübreler.<br/><br/>
+                         
+
+                        <strong>MADDE 7- YETKİLİ MAHKEME</strong><br/><br/>
+
+                        İşbu sözleşmenin uygulanmasında, Sanayi ve Ticaret Bakanlığınca ilan edilen değere kadar Tüketici Hakem Heyetleri ile ALICI'nın veya SATICI'nın yerleşim yerindeki Tüketici Mahkemeleri yetkilidir. <br/><br/>
+
+                        Siparişin gerçekleşmesi durumunda ALICI işbu sözleşmenin tüm koşullarını kabul etmiş sayılır. <br/><br/>
+
+                        <strong>SATICI </strong><br/>
+                        {{ config_name }}<br/><br/>
+
+                        <strong>ALICI</strong><br/>
+
+                        {{ firstname }} {{ lastname }}<br/>                   
+
+                        </div>
+                    </div>
+
+
+             
+{% else %} 
+<script type="text/javascript"><!--
+location = '{{ redirect }}';
+//--></script> 
+{% endif %} 
