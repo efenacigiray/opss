@@ -2,11 +2,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=~/public_html/
-    - /bin/cp -R ~/opss/control_panel $DEPLOYPATH
-    - /bin/cp -R ~/opss/catalog $DEPLOYPATH
-    - /bin/cp -R ~/opss/image $DEPLOYPATH
-    - /bin/cp -R ~/opss/system $DEPLOYPATH
-    - /bin/cp -R ~/opss/vqmod $DEPLOYPATH
-    - /bin/cp ~/opss/index.php $DEPLOYPATH
-    - /bin/cp ~/opss/php.ini $DEPLOYPATH
+    - rsync -a ~/opss/ /public_html/
     - php ~/deploy/deploy_script.php
