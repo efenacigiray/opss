@@ -547,7 +547,7 @@ class ControllerExtensionModulePorto extends Controller {
                     if (isset($this->request->post['store_id'])) {
                         $data['store_id'] = $this->request->post['store_id'];
                     } else {
-                        $data['store_id'] = 0;
+                        $data['store_id'] = 2;
                     }
                 }
             }

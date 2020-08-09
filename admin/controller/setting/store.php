@@ -27,12 +27,9 @@ class ControllerSettingStore extends Controller {
 			$this->load->model('setting/setting');
 
 			$this->model_setting_setting->editSetting('config', $this->request->post, $store_id);
+            $this->model_setting_setting->editSetting('porto_skin', array('porto_skin' => 'Index 2 - New'), $store_id);
 
-            $grid = $this->model_setting_setting->getSetting('advanced_grid');
-            $this->model_setting_setting->editSetting('advanced_grid', $grid, $store_id);
-
-            $custom_module = $this->model_setting_setting->getSetting('custom_module');
-            $this->model_setting_setting->editSetting('custom_module', $custom_module, $store_id);
+            $this->recurse_copy(DIR_CATALOG . "view/theme/porto/skins/store_default", DIR_CATALOG . "view/theme/porto/skins/store_" . $store_id);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
@@ -41,6 +38,22 @@ class ControllerSettingStore extends Controller {
 
 		$this->getForm();
 	}
+
+    public function recurse_copy($src, $dst) {
+        $dir = opendir($src);
+        @mkdir($dst);
+        while(false !== ( $file = readdir($dir)) ) {
+            if (( $file != '.' ) && ( $file != '..' )) {
+                if ( is_dir($src . '/' . $file) ) {
+                    recurse_copy($src . '/' . $file,$dst . '/' . $file);
+                }
+                else {
+                    copy($src . '/' . $file,$dst . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+    }
 
 	public function edit() {
 		$this->load->language('setting/store');
@@ -313,10 +326,10 @@ class ControllerSettingStore extends Controller {
 		}
 
 		$data['themes'] = array();
-		
+
 		// Create a new language container so we don't pollute the current one
 		$language = new Language($this->config->get('config_language'));
-		
+
 		$this->load->model('setting/extension');
 
 		$extensions = $this->model_setting_extension->getInstalled('theme');
@@ -389,7 +402,7 @@ class ControllerSettingStore extends Controller {
 		} else {
 			$data['config_telephone'] = '';
 		}
-		
+
 		if (isset($this->request->post['config_fax'])) {
 			$data['config_fax'] = $this->request->post['config_fax'];
 		} elseif (isset($store_info['config_fax'])) {
@@ -397,7 +410,7 @@ class ControllerSettingStore extends Controller {
 		} else {
 			$data['config_fax'] = '';
 		}
-		
+
 		if (isset($this->request->post['config_image'])) {
 			$data['config_image'] = $this->request->post['config_image'];
 		} elseif (isset($store_info['config_image'])) {
