@@ -28,6 +28,12 @@ class ControllerSettingStore extends Controller {
 
 			$this->model_setting_setting->editSetting('config', $this->request->post, $store_id);
 
+            $grid = $this->model_setting_setting->getSetting('advanced_grid');
+            $this->model_setting_setting->editSetting('advanced_grid', $grid, $store_id);
+
+            $custom_module = $this->model_setting_setting->getSetting('custom_module');
+            $this->model_setting_setting->editSetting('custom_module', $custom_module, $store_id);
+
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$this->response->redirect($this->url->link('setting/store', 'user_token=' . $this->session->data['user_token'], true));
