@@ -27,7 +27,7 @@ class ControllerSettingStore extends Controller {
 			$this->load->model('setting/setting');
 
 			$this->model_setting_setting->editSetting('config', $this->request->post, $store_id);
-            $this->model_setting_setting->editSetting('porto_skin', array('porto_skin' => 'Index 2 - New'), $store_id);
+            $this->model_setting_setting->editSetting('porto_skin', array('porto_skin' => 'Index2 - New'), $store_id);
 
             $this->recurse_copy(DIR_CATALOG . "view/theme/porto/skins/store_default", DIR_CATALOG . "view/theme/porto/skins/store_" . $store_id);
 
