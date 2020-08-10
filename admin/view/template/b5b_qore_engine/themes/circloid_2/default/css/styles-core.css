@@ -329,7 +329,7 @@ a.btn-link:focus {
 #content .page-header > .container-fluid > .pull-right > .btn,
 .btn-group-lg > .btn,
 .btn-lg {
-  padding: 16px 20px;
+  padding: 10px 15px;
 }
 .btn-primary {
   background: #1f91f3;
