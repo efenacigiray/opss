@@ -87,6 +87,7 @@ class ModelToolBackup extends Model {
             }
 
             $query = $this->db->query("SELECT c.category_id FROM category c LEFT JOIN category_description cd ON c.category_id = cd.category_id WHERE cd.name = '" . $this->db->escape($cat_name) . "' " . $parent_query . " LIMIT 1;");
+            var_dump("SELECT c.category_id FROM category c LEFT JOIN category_description cd ON c.category_id = cd.category_id WHERE cd.name = '" . $this->db->escape($cat_name) . "' " . $parent_query . " LIMIT 1;");
             if ($query->num_rows)
                 $category_ids[] = $query->row['category_id'];
         }
@@ -256,13 +257,10 @@ class ModelToolBackup extends Model {
         foreach ($query->rows as $product) {
             $product_id = $product['product_id'];
             $this->db->query("DELETE FROM product_to_store where product_id = " . $product_id);
-            echo "DELETE FROM product_to_store where product_id = " . $product_id . "<br>";
             foreach ($stores_query->rows as $store) {
                 $this->db->query("INSERT INTO product_to_store SET product_id = " . $product_id . ", store_id = " . $store['store_id']);
-                echo "INSERT INTO product_to_store SET product_id = " . $product_id . ", store_id = " . $store['store_id'] . "<br>";
             }
             $this->db->query("INSERT INTO product_to_store SET product_id = " . $product_id . ", store_id = 0");
-            echo "INSERT INTO product_to_store SET product_id = " . $product_id . ", store_id = 0<br>";
         }
     }
 }
