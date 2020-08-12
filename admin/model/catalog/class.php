@@ -101,7 +101,6 @@ class ModelCatalogClass extends Model {
         }
 
         $sort_data = array(
-            'name',
             'sort_order'
         );
 

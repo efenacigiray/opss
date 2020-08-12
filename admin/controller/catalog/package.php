@@ -522,15 +522,45 @@ class ControllerCatalogPackage extends Controller {
             $filter_data = array(
                 'filter_name' => $this->request->get['filter_name'],
                 'start'       => 0,
-                'limit'       => 5
+                'limit'       => 30
             );
 
             $results = $this->model_catalog_package->getPackages($filter_data);
 
+            $this->load->model('localisation/tax_class');
+            $this->load->model('localisation/tax_rate');
+            $this->load->model('catalog/product');
+
             foreach ($results as $result) {
+                $package_products = $this->model_catalog_package->getPackageProducts($result['package_id']);
+                $package_total = 0;
+
+                foreach ($package_products as $product) {
+                    $product_info = $this->model_catalog_product->getProduct($product["product_id"]);
+                    $specials = $this->model_catalog_product->getProductSpecials($product["product_id"]);
+
+                    foreach ($specials as $special) {
+                        $product_info['price'] = $special['price'];
+                    }
+
+                    if ($product_info) {
+                        $taxed_price = $product_info['price'];
+
+                        $rules = $this->model_localisation_tax_class->getTaxRules($product_info['tax_class_id']);
+                        foreach ($rules as $tax_rule) {
+                            $tax_rate = $this->model_localisation_tax_rate->getTaxRate($tax_rule['tax_rate_id']);
+                            $taxed_price = round(($taxed_price * $tax_rate['rate'] / 100) + $taxed_price, 2);
+                            $taxed_price = number_format((float)$taxed_price, 2, '.', '');
+                        }
+
+                        $package_total += ($product['package_price'] > 0 ? $product['package_price'] : $product_info['price']);
+                    }
+                }
+
                 $json[] = array(
                     'package_id' => $result['package_id'],
-                    'name'            => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))
+                    'name'       => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8')),
+                    'price'      => $this->currency->format($package_total, $this->config->get('config_currency'))
                 );
             }
         }

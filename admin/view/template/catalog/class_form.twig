@@ -122,8 +122,8 @@
             success: function(json) {
                 response($.map(json, function(item) {
                     return {
-                        label: item['name'],
-                        value: item['package_id']
+                        label: item['name'] + " -- " + item['price'],
+                        value: item['package_id'],
                     }
                 }));
             }
@@ -131,9 +131,7 @@
     },
     select: function(item) {
         $('input[name=\'package_name\']').val('');
-
         $('#featured-package' + item['value']).remove();
-
         $('#featured-package').append('<div id="featured-package' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="package[]" value="' + item['value'] + '" /></div>');
     }
   });
