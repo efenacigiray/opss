@@ -927,6 +927,7 @@
     function fillSeo (value) {
         value = value.toString().toLowerCase().split(/\&+/).join("-ve-");
         value = turkishToEnglish(value).split(/[^a-z0-9]/).join("-").split(/-+/).join("-").trim('-');
+        value += '_' + Math.random().toString(36).substr(2, 9);
 
         $(document).find('.input-seo').each(function(index, element) {
             $(element).val(value);

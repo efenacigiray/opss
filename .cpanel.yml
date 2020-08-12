@@ -10,4 +10,5 @@ deployment:
     - /bin/cp -R ~/opss/vqmod $DEPLOYPATH
     - /bin/cp ~/opss/index.php $DEPLOYPATH
     - /bin/cp ~/opss/php.ini $DEPLOYPATH
+    - /bin/cp ~/opss/.htaccess $DEPLOYPATH
     - php ~/deploy/deploy_script.php
