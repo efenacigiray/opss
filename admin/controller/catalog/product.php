@@ -12,6 +12,68 @@ class ControllerCatalogProduct extends Controller {
         $this->getList();
     }
 
+    public function quickeditopencartsu() {
+        if(isset($_POST['pk']))
+            $setid=$_POST['pk'];
+        if(isset($_POST['name']))
+            $setname=$_POST['name'];
+        else
+            $setname="";
+
+        if(isset($_POST['value'])) {
+            $setvalue=$_POST['value'];
+            $setvalue = stripslashes($setvalue);
+            $setvalue = trim($setvalue);
+            $setvalue = htmlspecialchars($setvalue);
+            $setvalue = str_replace("'","`", $setvalue);
+            $setvalue = str_replace('"',' ', $setvalue);
+        }
+
+        if(isset($_POST['lang']))
+            $lang=$_POST['lang'];
+
+        $dbname="product";
+        $idname="product_id";
+        $andset=""; $andlang="";
+
+        function Getfloat($str) {
+            $str = preg_replace("/[^0-9\.]/", '', $str);
+            return $str;
+        }
+
+        if(strstr($setname,"name:")) {
+            $arrsetname=explode(":",$setname);
+            $setname=$arrsetname[0];
+            $lang=$arrsetname[1];
+            $dbname="product_description";
+
+            if($lang=="alllang")
+                $andset=",`meta_title`='$setvalue'";
+            elseif($lang>=1)
+                $andlang=" AND `language_id`='$lang'";
+        }
+        elseif($setname=="special") {
+            $dbname="product_special";
+            $setname="price";
+            $setvalue=Getfloat($setvalue);
+        }
+        elseif($setname=="price") {
+            $setvalue=Getfloat($setvalue);
+        }
+
+        if(!isset($setid,$setname,$setvalue))
+            header("HTTP/1.1 400 not set value $setid,$setname,$setvalue");
+        elseif (!$this->user->hasPermission('modify', 'catalog/product')) {
+            header("HTTP/1.1 400 access denied for demo");
+        }
+        else {
+            if ($this->db->query("UPDATE " . DB_PREFIX . "$dbname SET `$setname`='$setvalue' $andset WHERE `$idname`='$setid' $andlang") == 1)
+                header("HTTP/1.1 200 ok");
+            else
+                header("HTTP/1.1 400 mysql error on update (see log)");
+        }
+    }
+
     public function add() {
         $this->load->language('catalog/product');
 
