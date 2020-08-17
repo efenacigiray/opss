@@ -94,10 +94,10 @@ class ModelCatalogClass extends Model {
     }
 
     public function getClasses($data = array()) {
-        $sql = "SELECT * FROM " . DB_PREFIX . "class";
+        $sql = "SELECT * FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id)";
 
         if (!empty($data['filter_name'])) {
-            $sql .= " WHERE name LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+            $sql .= " WHERE c.name LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
         }
 
         $sort_data = array(
@@ -105,9 +105,9 @@ class ModelCatalogClass extends Model {
         );
 
         if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-            $sql .= " ORDER BY " . $data['sort'];
+            $sql .= " ORDER BY c." . $data['sort'];
         } else {
-            $sql .= " ORDER BY name";
+            $sql .= " ORDER BY c.name";
         }
 
         if (isset($data['order']) && ($data['order'] == 'DESC')) {
@@ -158,7 +158,7 @@ class ModelCatalogClass extends Model {
     }
 
     public function getTotalClasses() {
-        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "class");
+        $query = $this->db->query("SELECT COUNT(c.*) AS total FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id)");
 
         return $query->row['total'];
     }

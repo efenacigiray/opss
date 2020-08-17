@@ -7,6 +7,10 @@ class ControllerProductPackage extends Controller {
             $this->response->redirect($this->url->link('account/login', '', true));
         }
 
+        if (!$this->customer->class_verified) {
+            $this->response->redirect($this->url->link('account/edit', '', true));
+        }
+
         $this->cart->clear();
 
         $this->load->language('product/package');
