@@ -344,6 +344,10 @@ class ModelCatalogProduct extends Model {
         if ($query->num_rows) {
             $data = $query->row;
 
+            $data['model'] = '';
+            for ($i = 0; $i < 12; $i++) {
+                $data['model'] .= mt_rand(0, 9);
+            }
             $data['sku'] = '';
             $data['upc'] = '';
             $data['viewed'] = '0';
