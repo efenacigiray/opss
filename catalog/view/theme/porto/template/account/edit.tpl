@@ -29,10 +29,18 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-class">Sınıf </label>
             <div class="col-sm-10">
+                <?php if ($class_verified){ ?>
               <input type="text" name="class" readonly value="<?php echo $class['name']; ?>" placeholder="<?php echo $entry_firstname; ?>" id="input-class" class="form-control" />
               <input type="hidden" value="<?php echo $class['class_id']?>" name="class_id">
-              <?php if($error_firstname) { ?>
-              <div class="text-danger"><?php echo $error_firstname; ?></div>
+                <?php if($error_firstname) { ?>
+                <div class="text-danger"><?php echo $error_firstname; ?></div>
+                <?php } ?>
+              <?php } else { ?>
+              <select name="class_id">
+                <?php foreach($classes as $c) ?>
+                <option value="<?php echo $class[class_id] ?>"><?php echo $class[name] ?></option>
+                <?php ?>
+              </select>
               <?php } ?>
             </div>
           </div>

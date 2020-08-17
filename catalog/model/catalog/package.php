@@ -1,5 +1,10 @@
 <?php
 class ModelCatalogPackage extends Model {
+    public function getClasses($name) {
+        $query = $this->db->query("SELECT * FROM class WHERE name LIKE '%" . $this->db->escape($name) . "%'");
+
+        return $query->rows;
+    }
     public function getClass($class_id) {
         $query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "class WHERE class_id = '" . (int)$class_id . "'");
 

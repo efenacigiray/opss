@@ -31,6 +31,7 @@ class Customer {
                 $this->address_id = $customer_query->row['address_id'];
                 $this->class_id = $customer_query->row['class_id'];
                 $this->information_verified = (bool)$customer_query->row['information_verified'];
+                $this->class_verified = (bool)$customer_query->row['class_verified'];
 
                 $this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int)$this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");
 
@@ -72,6 +73,7 @@ class Customer {
             $this->address_id = $customer_query->row['address_id'];
             $this->class_id = $customer_query->row['class_id'];
             $this->information_verified = (bool)$customer_query->row['information_verified'];
+            $this->class_verified = (bool)$customer_query->row['class_verified'];
 
             $this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int)$this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");
 

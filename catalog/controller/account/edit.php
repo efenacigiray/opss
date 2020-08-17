@@ -126,11 +126,18 @@ class ControllerAccountEdit extends Controller {
         $this->load->model('catalog/package');
 
         if (!empty($customer_info)) {
-            $data['class'] = $this->model_catalog_package->getClass($customer_info['class_id']);
             $data['information_verified'] = $customer_info['information_verified'];
+            $data['class_verified'] = $customer_info['class_verified'];
+            $data['class'] = $this->model_catalog_package->getClass($customer_info['class_id']);
         } else {
             $data['class'] = $this->model_catalog_package->getClass($this->request->post['class_id']);
             $data['information_verified'] = false;
+            $data['class_verified'] = false;
+        }
+
+        $data['classes'] = array();
+        if ($data['class']) {
+            $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
         }
 
         // Custom Fields
