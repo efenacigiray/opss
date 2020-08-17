@@ -1,7 +1,7 @@
 <?php
 class ModelCatalogPackage extends Model {
     public function getClasses($name) {
-        $query = $this->db->query("SELECT * FROM class WHERE name LIKE '%" . $this->db->escape($name) . "%'");
+        $query = $this->db->query("SELECT * FROM class WHERE name LIKE '%" . $this->db->escape($name) . "%' AND name != '%" . $this->db->escape($name) . "%'");
 
         return $query->rows;
     }

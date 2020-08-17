@@ -36,7 +36,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
                 <div class="text-danger"><?php echo $error_firstname; ?></div>
                 <?php } ?>
               <?php } else { ?>
-              <select name="class_id">
+              <select name="class_id" class="form-control">
                 <?php foreach($classes as $c) ?>
                 <option value="<?php echo $class[class_id] ?>"><?php echo $class[name] ?></option>
                 <?php ?>
@@ -44,6 +44,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
               <?php } ?>
             </div>
           </div>
+          <?php if ($class_verified) { ?>
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-email"><?php echo $entry_email; ?></label>
             <div class="col-sm-10">
@@ -62,6 +63,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
               <?php } ?>
             </div>
           </div>
+          <?php } ?>
           <?php foreach ($custom_fields as $custom_field) { ?>
           <?php if($custom_field['type'] == 'select') { ?>
           <div class="form-group<?php if($custom_field['required']) { ?> required <?php } ?> custom-field" data-sort="<?php echo $custom_field['sort_order']; ?>">
