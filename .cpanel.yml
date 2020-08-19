@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=~/public_html/
+    - export DEPLOYPATH=`cat /deploy/deploy_path`
     - /bin/cp -R ~/opss/admin $DEPLOYPATH
     - /bin/cp -R ~/opss/catalog $DEPLOYPATH
     - /bin/cp -R ~/opss/image $DEPLOYPATH
