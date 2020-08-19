@@ -158,7 +158,7 @@ class ModelCatalogClass extends Model {
     }
 
     public function getTotalClasses() {
-        $query = $this->db->query("SELECT COUNT(c.*) AS total FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id)");
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id)");
 
         return $query->row['total'];
     }

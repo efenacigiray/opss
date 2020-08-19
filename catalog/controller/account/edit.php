@@ -135,7 +135,6 @@ class ControllerAccountEdit extends Controller {
             $data['class_verified'] = false;
         }
 
-        $data['classes'] = array();
         $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
 
         // Custom Fields

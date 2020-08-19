@@ -38,7 +38,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
               <?php } else { ?>
               <select name="class_id" class="form-control">
                 <?php foreach($classes as $c) ?>
-                <option value="<?php echo $class[class_id] ?>"><?php echo $class[name] ?></option>
+                <option value="<?php echo $c[class_id] ?>"><?php echo $c[name] ?></option>
                 <?php ?>
               </select>
               <?php } ?>
