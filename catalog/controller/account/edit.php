@@ -125,17 +125,11 @@ class ControllerAccountEdit extends Controller {
 
         $this->load->model('catalog/package');
 
-        if (!empty($customer_info)) {
-            $data['information_verified'] = $customer_info['information_verified'];
-            $data['class_verified'] = $customer_info['class_verified'];
-            $data['class'] = $this->model_catalog_package->getClass($customer_info['class_id']);
-        } else {
-            $data['class'] = $this->model_catalog_package->getClass($this->request->post['class_id']);
-            $data['information_verified'] = false;
-            $data['class_verified'] = false;
-        }
-
+        $data['class'] = $this->model_catalog_package->getClass($customer_info['class_id']);
         $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
+
+        $data['information_verified'] = $customer_info['information_verified'];
+        $data['class_verified'] = $customer_info['class_verified'];
 
         // Custom Fields
         $data['custom_fields'] = array();
@@ -179,16 +173,22 @@ class ControllerAccountEdit extends Controller {
             $this->error['lastname'] = $this->language->get('error_lastname');
         }
 
-        if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
-            $this->error['email'] = $this->language->get('error_email');
-        }
+        if (!isset($this->request->post['class_verified'])) {
+            if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
+                $this->error['email'] = $this->language->get('error_email');
+            }
 
-        if (($this->customer->getEmail() != $this->request->post['email']) && $this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
-            $this->error['warning'] = $this->language->get('error_exists');
-        }
+            if (($this->customer->getEmail() != $this->request->post['email']) && $this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
+                $this->error['warning'] = $this->language->get('error_exists');
+            }
 
-        if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
-            $this->error['telephone'] = $this->language->get('error_telephone');
+            if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
+                $this->error['telephone'] = $this->language->get('error_telephone');
+            }
+        } else {
+            if ($this->request->post['class_id'] < 1) {
+                $this->error['telephone'] = $this->language->get('error_telephone');
+            }
         }
 
         // Custom field validation
