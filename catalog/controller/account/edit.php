@@ -130,7 +130,7 @@ class ControllerAccountEdit extends Controller {
 
         if (count($data['classes']) > 1) {
             foreach ($data['classes'] as $key => $value) {
-                if ($value['name'] == $data['class']['name'] || $value['name'] == $data['class']['name'] . " DE" ||) {
+                if ($value['name'] == $data['class']['name'] || $value['name'] == $data['class']['name'] . " DE") {
                     unset($data['classes'][$key]);
                 }
             }
