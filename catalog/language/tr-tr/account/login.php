@@ -16,6 +16,7 @@ $_['text_forgotten']               = 'Parolamı Unuttum';
 
 // Entry
 $_['entry_email']                  = 'TC Kimlik veya Öğrenci Numarası';
+$_['entry_email_7']                = 'TC Kimlik (Son 7 Hane) veya Öğrenci Numarası';
 $_['entry_password']               = 'Parola';
 
 // Error

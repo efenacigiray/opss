@@ -46,6 +46,11 @@ class ControllerAccountLogin extends Controller {
         }
 
         $this->load->language('account/login');
+        $storename = $this->config->get('config_name');
+
+        if (strpos($storename, "ODTU") !== false) {
+            $data['entry_email'] = $data['entry_email_7'];
+        }
 
         $this->document->setTitle($this->language->get('heading_title'));
 
@@ -118,7 +123,6 @@ class ControllerAccountLogin extends Controller {
         $data['register'] = $this->url->link('account/register', '', true);
         $data['forgotten'] = $this->url->link('account/forgotten', '', true);
 
-        // Added strpos check to pass McAfee PCI compliance test (http://forum.opencart.com/viewtopic.php?f=10&t=12043&p=151494#p151295)
         if (isset($this->request->post['redirect']) && (strpos($this->request->post['redirect'], $this->config->get('config_url')) !== false || strpos($this->request->post['redirect'], $this->config->get('config_ssl')) !== false)) {
             $data['redirect'] = $this->request->post['redirect'];
         } elseif (isset($this->session->data['redirect'])) {

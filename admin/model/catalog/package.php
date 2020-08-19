@@ -168,7 +168,7 @@ class ModelCatalogPackage extends Model {
 
 
     public function getTotalPackages() {
-        $query = $this->db->query("SELECT COUNT(p.*) AS total FROM " . DB_PREFIX . "package p LEFT JOIN package_to_store pts ON (p.package_id = pts.package_id)");
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "package p LEFT JOIN package_to_store pts ON (p.package_id = pts.package_id)");
 
         return $query->row['total'];
     }

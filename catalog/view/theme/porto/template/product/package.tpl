@@ -3,6 +3,7 @@ $theme_options = $registry->get('theme_options');
 $config = $registry->get('config');
 include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_theme') . '_directory') . '/template/new_elements/wrapper_top.tpl'); ?>
 <div class="table-responsive cart-info">
+    <h3>SINIFINIZ İÇİN SATIŞA SUNULAN AŞAĞIDAKİ TÜM ÜRÜNLER VE ADETLERİ, OKULUNUZCA VE ÖĞRETMENLERİNİZ TARAFINDAN BELİRLENMİŞTİR.</h3>
     <?php foreach ($packages as $package) { ?>
     <h4><?php echo $package['name']; ?></h4>
     <table class="table table-bordered package-table">
