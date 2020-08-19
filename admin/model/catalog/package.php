@@ -76,6 +76,7 @@ class ModelCatalogPackage extends Model {
         $this->db->query("DELETE FROM `" . DB_PREFIX . "package_to_store` WHERE package_id = '" . (int)$package_id . "'");
         $this->db->query("DELETE FROM `" . DB_PREFIX . "seo_url` WHERE query = 'package_id=" . (int)$package_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "package_product WHERE package_id = '" . (int)$package_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "class_package WHERE package_id = '" . (int)$package_id . "'");
 
         $this->cache->delete('package');
     }
