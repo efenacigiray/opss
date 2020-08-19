@@ -1377,6 +1377,9 @@ class ControllerCatalogProduct extends Controller {
             $this->error['warning'] = $this->language->get('error_warning');
         }
 
+        if ($this->error)
+            var_dump($this->error);
+
         return !$this->error;
     }
 
