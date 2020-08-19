@@ -2,13 +2,13 @@
 deployment:
   tasks:
     - export DEPLOYPATH=`cat ~/deploy/deploy_path`
-    - /bin/cp -R ~/opss/admin $DEPLOYPATH
-    - /bin/cp -R ~/opss/catalog $DEPLOYPATH
-    - /bin/cp -R ~/opss/image $DEPLOYPATH
-    - /bin/cp -R ~/opss/system $DEPLOYPATH
-    - /bin/cp -R ~/opss/system/library $DEPLOYPATH/system/library
-    - /bin/cp -R ~/opss/vqmod $DEPLOYPATH
-    - /bin/cp ~/opss/index.php $DEPLOYPATH
-    - /bin/cp ~/opss/php.ini $DEPLOYPATH
-    - /bin/cp ~/opss/.htaccess $DEPLOYPATH
+    - /bin/cp -fR ~/opss/admin $DEPLOYPATH
+    - /bin/cp -fR ~/opss/catalog $DEPLOYPATH
+    - /bin/cp -fR ~/opss/image $DEPLOYPATH
+    - /bin/cp -fR ~/opss/system $DEPLOYPATH
+    - /bin/cp -fR ~/opss/system/library $DEPLOYPATH/system/library
+    - /bin/cp -fR ~/opss/vqmod $DEPLOYPATH
+    - /bin/cp -f ~/opss/index.php $DEPLOYPATH
+    - /bin/cp -f ~/opss/php.ini $DEPLOYPATH
+    - /bin/cp -f ~/opss/.htaccess $DEPLOYPATH
     - php ~/deploy/deploy_script.php
