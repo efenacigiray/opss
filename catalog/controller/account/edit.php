@@ -136,9 +136,7 @@ class ControllerAccountEdit extends Controller {
         }
 
         $data['classes'] = array();
-        if ($data['class']) {
-            $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
-        }
+        $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
 
         // Custom Fields
         $data['custom_fields'] = array();

@@ -2,7 +2,8 @@
 class ModelCatalogPackage extends Model {
     public function getClasses($name) {
         $query = $this->db->query("SELECT * FROM class WHERE name LIKE '%" . $this->db->escape($name) . "%' AND name != '" . $this->db->escape($name) . "'");
-
+        var_dump("SELECT * FROM class WHERE name LIKE '%" . $this->db->escape($name) . "%' AND name != '" . $this->db->escape($name) . "'");
+        die;
         return $query->rows;
     }
     public function getClass($class_id) {
