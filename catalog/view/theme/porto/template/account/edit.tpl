@@ -44,6 +44,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
                 <?php } ?>
               </select>
               <input type="hidden" name="class_verified" value="1">
+              <input type="hidden" name="to_package" value="1">
               <?php } ?>
             </div>
           </div>
