@@ -128,6 +128,14 @@ class ControllerAccountEdit extends Controller {
         $data['class'] = $this->model_catalog_package->getClass($customer_info['class_id']);
         $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
 
+        if (count($data['classes']) > 1) {
+            foreach ($data['classes'] as $key => $value) {
+                if ($value['name'] == $data['class']['name']) {
+                    unset($data[$key]);
+                }
+            }
+        }
+
         $data['information_verified'] = $customer_info['information_verified'];
         $data['class_verified'] = $customer_info['class_verified'];
 
