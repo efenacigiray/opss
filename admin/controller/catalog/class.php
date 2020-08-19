@@ -173,7 +173,7 @@ class ControllerCatalogClass extends Controller {
 
         foreach ($results as $result) {
             $data['classes'][] = array(
-                'class_id' => $result['class_id'],
+                'class_id'        => $result['class_id'],
                 'name'            => $result['name'],
                 'sort_order'      => $result['sort_order'],
                 'edit'            => $this->url->link('catalog/class/edit', 'user_token=' . $this->session->data['user_token'] . '&class_id=' . $result['class_id'] . $url, true)

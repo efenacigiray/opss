@@ -94,10 +94,10 @@ class ModelCatalogClass extends Model {
     }
 
     public function getClasses($data = array()) {
-        $sql = "SELECT * FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id)";
+        $sql = "SELECT *, c.class_id as class_id FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id) WHERE cts.class_id IN (" . $this->session->data['stores_query'] . ")";
 
         if (!empty($data['filter_name'])) {
-            $sql .= " WHERE c.name LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+            $sql .= " AND c.name LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
         }
 
         $sort_data = array(
@@ -158,7 +158,7 @@ class ModelCatalogClass extends Model {
     }
 
     public function getTotalClasses() {
-        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id)");
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id) WHERE cts.class_id IN (" . $this->session->data['stores_query'] . ")");
 
         return $query->row['total'];
     }
