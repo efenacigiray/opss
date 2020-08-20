@@ -298,7 +298,7 @@ a.btn-link:focus {
 }
 .btn-group .btn.dropdown-toggle{
   width: 22px;
-  padding: 10px 0px;
+  padding: 6px 0px;
 }
 .fc-button,
 .btn:not(.btn-link) {
