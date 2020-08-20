@@ -1,0 +1,43 @@
+.tabela1{
+    border: solid 1px;
+}
+.style1 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+.style2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+.style4 {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+.style6 {font-family: Arial, Helvetica, sans-serif; font-size: 18px; }
+
+.right{
+    width: 391px;
+    margin-top: 2px;
+}
+
+.bot{
+    cursor: pointer;
+	width:80px;
+	height:30px;
+	color:#fff;
+	background-color:#279fe0;
+	border:none;
+}
+
+.bot:hover{
+	background-color:#1e91cf;
+}
+
+.transforme{
+    text-transform: uppercase;
+}
+
+.paypal, .pagseguro{
+float: left;
+}

@@ -1,0 +1,30 @@
+<modification>
+<file name="admin/controller/sale/order.php">
+    <operation>
+      <search position="after"><![CDATA[$data['shipping'] = $this->url->link('sale/order/shipping', 'user_token=' . $this->session->data['user_token'], true);]]></search>
+      <add>
+        <![CDATA[$data['kargo_etiket'] = $this->url->link('sale/kargo_etiket', 'user_token=' . $this->session->data['user_token'], true);]]>
+      </add>
+    </operation>
+    <operation>
+      <search position="after"><![CDATA[$data['shipping'] = $this->url->link('sale/order/shipping', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);]]></search>
+      <add>
+        <![CDATA[$data['kargo_etiket'] = $this->url->link('sale/kargo_etiket', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);]]>
+      </add>
+    </operation>
+</file>
+	<file name="admin/view/template/sale/order_list.twig">
+    <operation>
+	 <search position="after"><![CDATA[<button type="submit" id="button-shipping" form="form-order" formaction="{{ shipping }}" formtarget="_blank" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fa fa-truck"></i></button>]]></search>
+	  <add><![CDATA[<button type="submit" id="button-kargo-etiket" form="form-order" formaction="{{ kargo_etiket }}" formtarget="_blank" data-toggle="tooltip" title="Kargo Etiket Yaz" class="btn btn-info"><i class="fa fa-barcode"></i> KARGO ETİKET</button>]]></add>
+    </operation>
+</file>
+	<file name="admin/view/template/sale/order_info.twig">
+    <operation>
+	 <search position="before"><![CDATA[<a href="{{ invoice }}" target="_blank"]]></search>
+	  <add><![CDATA[
+	  <a href="{{ kargo_etiket }}" target="_blank" data-toggle="tooltip" title="Kargo Etiketi Yaz" class="btn btn-info"><i class="fa fa-barcode"></i></a>
+	  ]]></add>
+    </operation>
+</file>
+</modification>
