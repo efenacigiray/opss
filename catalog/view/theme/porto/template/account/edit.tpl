@@ -29,23 +29,16 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-class">Sınıf </label>
             <div class="col-sm-10">
-              <?php /* if ($class_verified){ */ ?>
-<!--                 <input type="text" name="class" readonly value="<?php echo $class['name']; ?>" placeholder="<?php echo $entry_firstname; ?>" id="input-class" class="form-control" />
-                <input type="hidden" value="<?php echo $class['class_id']?>" name="class_id">
-                <input type="hidden" name="information_verified" value="1">
-                <?php if($error_firstname) { ?>
-                <div class="text-danger"><?php echo $error_firstname; ?></div> -->
-                <?php } ?>
-              <?php /* } else { */ ?>
               <select name="class_id" class="form-control">
+                <?php if (!$class_verified) { ?>
                 <option value="-1">Lütfen sınıf seçiniz</option>
+                <?php } ?>
                 <?php foreach($classes as $c) { ?>
-                <option value="<?php echo $c[class_id] ?>" <?php if ($class_id == c['class_id']) echo 'selected="selected"' ?> ><?php echo $c[name] ?></option>
+                <option value="<?php echo $c[class_id] ?>" <?php if ($class['class_id'] == $c['class_id']) echo 'selected="selected"' ?> ><?php echo $c[name] ?></option>
                 <?php } ?>
               </select>
               <input type="hidden" name="class_verified" value="1">
               <input type="hidden" name="to_package" value="1">
-              <?php /* } */ ?>
             </div>
           </div>
           <?php if ($class_verified) { ?>

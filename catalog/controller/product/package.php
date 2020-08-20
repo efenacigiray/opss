@@ -61,6 +61,8 @@ class ControllerProductPackage extends Controller {
             }
 
             foreach ($data['packages'] as &$package) {
+                $replace = array(" + ALMANCA", " + FRANSIZCA", " + İSPANYOLCA", " + İTALYANCA");
+                $package['name'] = str_replace($replace, "", $package['name']);
                 $cart_ids = array();
                 if ($package['image']) {
                     $package['thumb'] = $this->model_tool_image->resize($package['image'], $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_width'), $this->config->get('theme_' . $this->config->get('config_theme') . '_image_category_height'));

@@ -1,6 +1,7 @@
 <?php
 class ModelCatalogPackage extends Model {
     public function getClasses($name) {
+        $name = explode(" + ", $name)[0];
         $query = $this->db->query("SELECT * FROM class WHERE name LIKE '%" . $this->db->escape($name) . "%'");
         return $query->rows;
     }

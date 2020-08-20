@@ -129,8 +129,9 @@ class ControllerAccountEdit extends Controller {
         $data['classes'] = $this->model_catalog_package->getClasses($data['class']['name']);
 
         if (count($data['classes']) > 1) {
+            $base_class_name = explode(" + ", $data['class']['name'])[0];
             foreach ($data['classes'] as $key => $value) {
-                if ($value['name'] == $data['class']['name'] || $value['name'] == $data['class']['name'] . " DE") {
+                if ($base_class_name == $value['name'] || $value['name'] == $base_class_name . " DE") {
                     unset($data['classes'][$key]);
                 }
             }
