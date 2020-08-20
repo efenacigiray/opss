@@ -23,4 +23,4 @@ $_['error_lastname']     = 'Soyad 1 ile 32 karakter arasında olmalı!';
 $_['error_email']        = 'Geçerli bir E-Posta adresi yazınız!';
 $_['error_telephone']    = 'Telefon alanı 3 ile 32 karakter arasında olmalı!';
 $_['error_custom_field'] = '%s gerekli!';
-$_['error_verify_info']  = 'Lütfen isim, soyisim, kimlik numarası ve sınıf bilgilerinizi kontrol edip onaylayın, e-posta ve telefon bilgilerini doldurun!';
+$_['error_verify_info']  = 'Lütfen isim, soyisim, iletişim ve sınıf bilgilerinizi kontrol edip onaylayın!';

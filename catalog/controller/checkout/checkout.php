@@ -2,7 +2,7 @@
 class ControllerCheckoutCheckout extends Controller {
     public function index() {
         if (empty($this->customer->getEmail())) {
-            $this->response->redirect($this->url->link('account/edit'));
+            $this->response->redirect($this->url->link('account/edit', 'to_checkout=1'));
         }
         // Validate cart has products and has stock.
         if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {

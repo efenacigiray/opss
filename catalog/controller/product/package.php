@@ -33,8 +33,6 @@ class ControllerProductPackage extends Controller {
         );
 
         $data['packages'] = $this->model_catalog_package->getClassPackages($this->customer->getClassId());
-        //var_dump($this->customer->getClassId());
-        //var_dump($data[''])
 
         foreach ($data['packages'] as &$package) {
             foreach ($package['products'] as &$product) {

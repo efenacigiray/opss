@@ -98,7 +98,6 @@ final class Tax {
 
 	public function getRates($value, $tax_class_id) {
 		$tax_rate_data = array();
-
 		if (isset($this->tax_rates[$tax_class_id])) {
 			foreach ($this->tax_rates[$tax_class_id] as $tax_rate) {
 				if (isset($tax_rate_data[$tax_rate['tax_rate_id']])) {

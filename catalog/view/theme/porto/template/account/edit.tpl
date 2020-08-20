@@ -3,7 +3,7 @@ $theme_options = $registry->get('theme_options');
 $config = $registry->get('config');
 include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_theme') . '_directory') . '/template/new_elements/wrapper_top.tpl'); ?>
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
-        <?php if (!$information_verified) { ?>
+        <?php if (!$information_verified || !$class_verified) { ?>
         <div class="alert alert-danger"><?php echo $error_verify_info; ?></div>
         <?php } ?>
         <fieldset>
@@ -29,7 +29,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-class">Sınıf </label>
             <div class="col-sm-10">
-              <select name="class_id" class="form-control">
+              <select name="class_id" class="form-control" <?php echo $to_checkout > 0 ? 'readonly="readonly"' : '' ?>>
                 <?php if (!$class_verified) { ?>
                 <option value="-1">Lütfen sınıf seçiniz</option>
                 <?php } ?>
@@ -37,7 +37,9 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
                 <option value="<?php echo $c[class_id] ?>" <?php if ($class['class_id'] == $c['class_id']) echo 'selected="selected"' ?> ><?php echo $c[name] ?></option>
                 <?php } ?>
               </select>
+              <?php if(!$class_verified) { ?>
               <input type="hidden" name="class_verified" value="1">
+              <?php } ?>
               <input type="hidden" name="to_package" value="1">
             </div>
           </div>

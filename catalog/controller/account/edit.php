@@ -5,8 +5,12 @@ class ControllerAccountEdit extends Controller {
     public function index() {
         if (!$this->customer->isLogged()) {
             $this->session->data['redirect'] = $this->url->link('account/edit', '', true);
-
             $this->response->redirect($this->url->link('account/login', '', true));
+        }
+
+        $data['to_checkout'] = 0;
+        if (isset($this->request->get['to_checkout'])) {
+            $data['to_checkout'] = 1;
         }
 
         $this->load->language('account/edit');
@@ -24,6 +28,9 @@ class ControllerAccountEdit extends Controller {
             $this->model_account_customer->editCustomer($this->customer->getId(), $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
+            if ($data['to_checkout']) {
+                $this->response->redirect($this->url->link('checkout/checkout', '', true));
+            }
 
             if (isset($this->request->post['to_package'])) {
                 $this->response->redirect($this->url->link('product/package', '', true));
@@ -86,10 +93,10 @@ class ControllerAccountEdit extends Controller {
         }
 
         $data['action'] = $this->url->link('account/edit', '', true);
+        if ($data['to_checkout'])
+            $data['action'] = $this->url->link('account/edit', 'to_checkout=1', true);
 
-        if ($this->request->server['REQUEST_METHOD'] != 'POST') {
-            $customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
-        }
+        $customer_info = $this->model_account_customer->getCustomer($this->customer->getId());
 
         if (isset($this->request->post['firstname'])) {
             $data['firstname'] = $this->request->post['firstname'];
@@ -194,10 +201,10 @@ class ControllerAccountEdit extends Controller {
             if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
                 $this->error['telephone'] = $this->language->get('error_telephone');
             }
-        } else {
-            if ($this->request->post['class_id'] < 1) {
-                $this->error['telephone'] = $this->language->get('error_telephone');
-            }
+        }
+
+        if ($this->request->post['class_id'] < 1) {
+            $this->error['error_warning'] = $this->language->get('error_verify_info');
         }
 
         // Custom field validation
