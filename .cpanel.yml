@@ -8,6 +8,9 @@ deployment:
     - /bin/cp -fR ~/opss/system $DEPLOYPATH
     - /bin/cp -fR ~/opss/system/library $DEPLOYPATH/system/library
     - /bin/cp -fR ~/opss/vqmod $DEPLOYPATH
+    - /bin/rm -rf ~/opss/vqmod/vqcache/* $DEPLOYPATH
+    - /bin/rm -f ~/opss/vqmod/checked.cache $DEPLOYPATH
+    - /bin/rm -f ~/opss/vqmod/mods.cache $DEPLOYPATH
     - /bin/cp -f ~/opss/index.php $DEPLOYPATH
     - /bin/cp -f ~/opss/php.ini $DEPLOYPATH
     - /bin/cp -f ~/opss/.htaccess $DEPLOYPATH
