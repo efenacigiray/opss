@@ -11,7 +11,7 @@ deployment:
     - /bin/cp -f ~/opss/php.ini $DEPLOYPATH
     - /bin/cp -f ~/opss/.htaccess $DEPLOYPATH
     - /bin/cp -fR ~/opss/vqmod $DEPLOYPATH
-    - /bin/rm -rf ~/opss/vqmod/vqcache/*
-    - /bin/rm -f ~/opss/vqmod/checked.cache
-    - /bin/rm -f ~/opss/vqmod/mods.cache
+    - /bin/rm -rf $DEPLOYPATH/vqmod/vqcache/*
+    - /bin/rm -f $DEPLOYPATH/vqmod/checked.cache
+    - /bin/rm -f $DEPLOYPATH/vqmod/mods.cache
     - php ~/deploy/deploy_script.php
