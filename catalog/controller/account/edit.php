@@ -194,10 +194,6 @@ class ControllerAccountEdit extends Controller {
                 $this->error['email'] = $this->language->get('error_email');
             }
 
-            if (($this->customer->getEmail() != $this->request->post['email']) && $this->model_account_customer->getTotalCustomersByEmail($this->request->post['email'])) {
-                $this->error['warning'] = $this->language->get('error_exists');
-            }
-
             if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
                 $this->error['telephone'] = $this->language->get('error_telephone');
             }
