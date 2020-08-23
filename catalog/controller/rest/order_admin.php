@@ -144,6 +144,7 @@ class ControllerRestOrderAdmin extends RestAdminController
                     'product_id' => $product['product_id'],
                     'name' => $product['name'],
                     'model' => $product['model'],
+                    'image' => $origProduct['image'],
                     'sku' => (!empty($origProduct['sku']) ? $origProduct['sku'] : ""),
                     'option' => $option_data,
                     'quantity' => $product['quantity'],

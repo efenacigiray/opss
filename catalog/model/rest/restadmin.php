@@ -2269,7 +2269,8 @@ class ModelRestRestAdmin extends Model {
         } else {
             $sql .= " WHERE order_status_id > '0'";
         }
-
+		
+		$sql .= " AND o.customer_group_id != 0";
 
         if (!empty($data['filter_order_id'])) {
             $sql .= " AND o.order_id = '" . (int)$data['filter_order_id'] . "'";
@@ -2358,6 +2359,22 @@ class ModelRestRestAdmin extends Model {
         $orders_query = $this->db->query($sql);
         $orders = array();
         $index = 0;
+		
+		//Store custom field id in variables
+		$customSql = "SELECT * FROM `" . DB_PREFIX . "custom_field_description`";
+		$custom_query = $this->db->query($customSql);
+		$vergi_tckn_id = "";
+		$vergi_dairesi_id = "";
+
+		foreach ($custom_query->rows as $custom_row) {
+			
+			if(strcmp($custom_row['name'],"Vergi No / TC Kimlik No") == 0){
+				$vergi_tckn_id .= $custom_row['custom_field_id'];
+			}
+			elseif(strcmp($custom_row['name'],"Vergi Dairesi") == 0){
+				$vergi_dairesi_id .= $custom_row['custom_field_id'];
+			}
+		}
 
         $this->load->model('localisation/language');
 
@@ -2409,6 +2426,10 @@ class ModelRestRestAdmin extends Model {
                 $language_filename = '';
                 $language_directory = '';
             }
+			
+			//convert string to json which order's custom field column variable
+			$order_custom_field = $order['custom_field'];
+			$order_custom_field = json_decode($order_custom_field, true);
 
             $orders[$index] =  array(
                 'order_id'                => $order['order_id'],
@@ -2418,6 +2439,8 @@ class ModelRestRestAdmin extends Model {
                 'store_name'              => $order['store_name'],
                 'store_url'               => $order['store_url'],
                 'customer_id'             => $order['customer_id'],
+                'Vergi_Tc_No'             => $order_custom_field[$vergi_tckn_id],
+                'Vergi_Dairesi'           => $order_custom_field[$vergi_dairesi_id],
                 'firstname'               => $order['firstname'],
                 'lastname'                => $order['lastname'],
                 'telephone'               => $order['telephone'],
