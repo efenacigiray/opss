@@ -277,7 +277,7 @@ class ControllerSaleOrder extends Controller {
         $data['stores'] = $store_results = $this->model_setting_store->getStores();
 
         foreach ($data['stores'] as $key => $value) {
-            if (!in_array($value['store_id'] , $this->session->data['stores'])) 
+            if (!in_array($value['store_id'] , $this->session->data['stores']))
                 unset($data['stores'][$key]);
         }
 
@@ -352,14 +352,14 @@ class ControllerSaleOrder extends Controller {
 
             $data['ovrl_total'] += $result['total'];
 
-            $packages = $this->model_catalog_package->getCustomerPackages($result['customer_id']);
+            // $packages = $this->model_catalog_package->getCustomerPackages($result['customer_id']);
 
-            foreach ($packages as $package) {
-                if (isset($data['package_data'][$package['name']]))
-                    $data['package_data'][$package['name']]++;
-                else
-                    $data['package_data'][$package['name']] = 1;
-            }
+            // foreach ($packages as $package) {
+            //     if (isset($data['package_data'][$package['name']]))
+            //         $data['package_data'][$package['name']]++;
+            //     else
+            //         $data['package_data'][$package['name']] = 1;
+            // }
 
             $data['orders'][] = array(
                 'order_id'      => $result['order_id'],
@@ -368,6 +368,7 @@ class ControllerSaleOrder extends Controller {
                 'store'         => $stores[$result['store_id']],
                 'payment_type'  => $result['payment_method'],
                 'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
+                'order_status_id'  => $result['order_status_id'],
                 'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
                 'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
                 'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
@@ -379,7 +380,7 @@ class ControllerSaleOrder extends Controller {
 
         $data['user_token'] = $this->session->data['user_token'];
 
-        arsort($data['package_data']);
+        // arsort($data['package_data']);
 
         foreach ($data['total_data'] as $key => $value) {
             $data['total_data'][$key]['total'] = $this->currency->format($data['total_data'][$key]['total'], $result['currency_code'], $result['currency_value']);

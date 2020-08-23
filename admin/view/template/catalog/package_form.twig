@@ -78,7 +78,7 @@
                           <option value="3" {{ product.type == 3 ? 'selected=selected' : '' }}>Zorunlu (çıkarılamaz)</option>
                       </select>
                       <input type="text" readonly="true" style="width: 60px" name="product[{{ product.product_id }}][price]" value="{{ product.price }}">
-                      <input type="text" class="package_price" name="product[{{ product.product_id }}][package_price]" value="{{ product.package_price }}">
+                      <input type="text" class="package_price hidden" name="product[{{ product.product_id }}][package_price]" value="{{ product.package_price }}">
                     </div>
                     {% endfor %}
                   </div>
