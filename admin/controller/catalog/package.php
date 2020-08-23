@@ -370,6 +370,8 @@ class ControllerCatalogPackage extends Controller {
                     $taxed_price = number_format((float)$taxed_price, 2, '.', '');
                 }
 
+                $product['package_price'] = 0;
+
                 $data['products'][] = array(
                     'product_id' => $product_info['product_id'],
                     'name'       => $product_info['name'],
@@ -553,6 +555,7 @@ class ControllerCatalogPackage extends Controller {
                             $taxed_price = number_format((float)$taxed_price, 2, '.', '');
                         }
 
+                        $product['package_price'] = 0;
                         $package_total += ($product['package_price'] > 0 ? $product['package_price'] : $product_info['price']);
                     }
                 }
