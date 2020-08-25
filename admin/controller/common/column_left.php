@@ -265,7 +265,7 @@ class ControllerCommonColumnLeft extends Controller {
             if ($this->user->hasPermission('access', 'sale/order')) {
                 $sale[] = array(
                     'name'     => $this->language->get('text_order'),
-                    'href'     => $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'], true),
+                    'href'     => $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&filter_order_status_id=-1', true),
                     'children' => array()
                 );
             }

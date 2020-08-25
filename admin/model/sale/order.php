@@ -159,7 +159,7 @@ class ModelSaleOrder extends Model {
         } elseif (isset($data['filter_order_status_id']) && $data['filter_order_status_id'] !== '') {
             $sql .= " WHERE o.order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
         } else {
-            $sql .= " WHERE o.order_status_id > '-1'";
+            $sql .= " WHERE o.order_status_id > '0'";
         }
 
         if (!empty($data['filter_payment_type'])) {
@@ -268,7 +268,7 @@ class ModelSaleOrder extends Model {
 
         return $query->rows;
     }
-    
+
     public function getTotalOrders($data = array()) {
         $sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order`";
 
@@ -285,9 +285,13 @@ class ModelSaleOrder extends Model {
                 $sql .= " WHERE (" . implode(" OR ", $implode) . ")";
             }
         } elseif (isset($data['filter_order_status_id']) && $data['filter_order_status_id'] !== '') {
-            $sql .= " WHERE order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
+            if ($data['filter_order_status_id'] == -1) {
+                $sql .= " WHERE order_status_id > '0'";
+            } else {
+                $sql .= " WHERE order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
+            }
         } else {
-            $sql .= " WHERE order_status_id > '-1'";
+            $sql .= " WHERE order_status_id > '0'";
         }
 
         if (!empty($data['filter_order_id'])) {
@@ -389,7 +393,7 @@ class ModelSaleOrder extends Model {
 
         return $query->row['total'];
     }
-    
+
     public function getTotalSales($data = array()) {
         $sql = "SELECT SUM(total) AS total FROM `" . DB_PREFIX . "order`";
 
@@ -435,7 +439,7 @@ class ModelSaleOrder extends Model {
 
         return $query->row['total'];
     }
-    
+
     public function createInvoiceNo($order_id) {
         $order_info = $this->getOrder($order_id);
 
@@ -479,7 +483,7 @@ class ModelSaleOrder extends Model {
 
         return $query->row['total'];
     }
-    
+
     public function getEmailsByProductsOrdered($products, $start, $end) {
         $implode = array();
 

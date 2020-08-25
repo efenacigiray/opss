@@ -4389,6 +4389,12 @@ ul.collapse  ul.collapse{
   margin-right: 234px;
   min-height: 180px;
 }
+
+#form-order .dropdown-menu {
+    min-width: 110px !important;
+    left: -50px !important;
+}
+
 .nav-tabs.tabs-alt-1 .dropdown-menu {
   margin-top: -17px;
 }
