@@ -265,8 +265,8 @@ class ControllerSaleOrder extends Controller {
             'filter_stores'          => $this->session->data['stores_query'],
             'sort'                   => $sort,
             'order'                  => $order,
-            'start'                  => ($page - 1) * $this->config->get('config_limit_admin'),
-            'limit'                  => $this->config->get('config_limit_admin')
+            'start'                  => ($page - 1) * 250,
+            'limit'                  => 250
         );
 
         $this->load->model('catalog/class');
@@ -324,9 +324,6 @@ class ControllerSaleOrder extends Controller {
                 }
             }
         }
-
-        $filter_data['start'] = 0;
-        $filter_data['limit'] = 250;
 
         $order_total = $this->model_sale_order->getTotalOrders($filter_data);
         $results = $this->model_sale_order->getOrders($filter_data);
