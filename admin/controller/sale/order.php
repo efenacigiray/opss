@@ -329,7 +329,6 @@ class ControllerSaleOrder extends Controller {
         $filter_data['limit'] = 250;
 
         $order_total = $this->model_sale_order->getTotalOrders($filter_data);
-
         $results = $this->model_sale_order->getOrders($filter_data);
 
         $data['total_data'] = array();
@@ -370,8 +369,8 @@ class ControllerSaleOrder extends Controller {
                 'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
                 'order_status_id'  => $result['order_status_id'],
                 'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-                'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-                'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
+                'date_added'    => date('d-m-Y H:i:s', strtotime($result['date_added'])),
+                'date_modified' => date('d-m-Y H:i:s', strtotime($result['date_modified'])),
                 'shipping_code' => $result['shipping_code'],
                 'view'          => $this->url->link('sale/order/info', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true),
                 'edit'          => $edit
