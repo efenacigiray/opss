@@ -153,11 +153,15 @@ class ModelSaleOrder extends Model {
                 $implode[] = "o.order_status_id = '" . (int)$order_status_id . "'";
             }
 
-        if ($implode) {
-            $sql .= " WHERE (" . implode(" OR ", $implode) . ")";
-        }
+            if ($implode) {
+                $sql .= " WHERE (" . implode(" OR ", $implode) . ")";
+            }
         } elseif (isset($data['filter_order_status_id']) && $data['filter_order_status_id'] !== '') {
-            $sql .= " WHERE o.order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
+            if ($data['filter_order_status_id'] == -1) {
+                $sql .= " WHERE order_status_id > '-1'";
+            } else {
+                $sql .= " WHERE order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
+            }
         } else {
             $sql .= " WHERE o.order_status_id > '0'";
         }
@@ -286,7 +290,7 @@ class ModelSaleOrder extends Model {
             }
         } elseif (isset($data['filter_order_status_id']) && $data['filter_order_status_id'] !== '') {
             if ($data['filter_order_status_id'] == -1) {
-                $sql .= " WHERE order_status_id > '0'";
+                $sql .= " WHERE order_status_id > '-1'";
             } else {
                 $sql .= " WHERE order_status_id = '" . (int)$data['filter_order_status_id'] . "'";
             }

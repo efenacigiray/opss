@@ -1,6 +1,6 @@
-<?php echo $header; 
+<?php echo $header;
 $theme_options = $registry->get('theme_options');
-$config = $registry->get('config'); 
+$config = $registry->get('config');
 include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_theme') . '_directory') . '/template/new_elements/wrapper_top.tpl'); ?>
 <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
   <div class="table-responsive cart-info">
@@ -43,9 +43,9 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
             <?php } ?></td>
           <td class="text-center hidden-xs"><?php echo $product['model']; ?></td>
           <td class="text-center">
-              <input type="text" disabled="true" readonly="readonly" name="quantity[<?php echo $product['cart_id']; ?>]" value="<?php echo $product['quantity']; ?>" size="1" />
+              <input type="text" name="quantity[<?php echo $product['cart_id']; ?>]" value="<?php echo $product['quantity']; ?>" size="1" />
               &nbsp;
-              <!--<input type="image" src="catalog/view/theme/<?php echo $config->get('theme_' . $config->get('config_theme') . '_directory'); ?>/img/update.png" alt="<?php echo $button_update; ?>" title="<?php echo $button_update; ?>" />-->
+              <input type="image" src="catalog/view/theme/<?php echo $config->get('theme_' . $config->get('config_theme') . '_directory'); ?>/img/update.png" alt="<?php echo $button_update; ?>" title="<?php echo $button_update; ?>" />
               &nbsp;<a onclick="check_package_status('<?php echo $product['cart_id']; ?>', '<?php echo $product['package_status'];?>')"><img src="catalog/view/theme/<?php echo $config->get('theme_' . $config->get('config_theme') . '_directory'); ?>/img/remove.png" alt="<?php echo $button_remove; ?>" title="<?php echo $button_remove; ?>" /></a>
           </td>
           <td class="text-right hidden-xs"><?php echo $product['price']; ?></td>
