@@ -46,79 +46,79 @@
 	<file name="admin/view/template/catalog/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-cube"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-cube"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/customers/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-user"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-user"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/design/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-brush"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-brush"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/error/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-exclamation"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-exclamation"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/extension/*.twig,admin/view/template/extension/*/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-triple-points"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-triple-points"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/localisation/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-sound-on"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-sound-on"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/mail/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-mail"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-mail"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/marketing/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-star"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-star"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/report/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-bars"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-bars"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/sale/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-dollar"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-dollar"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/setting/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-settings"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-settings"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/tool/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-settings"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-settings"></i> ]]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/user/*.twig">
 		<operation error="skip">
 			<search position="iafter"><![CDATA[<h1>]]></search>
-			<add><![CDATA[<i class="icon icon-user"></i> ]]></add>
+			<add><![CDATA[<i class="icon  icon-user"></i> ]]></add>
 		</operation>
 	</file>
 	<!-- Update datetimepicker for DateTimePicker 4.17.47 & Jquery 3 -->
