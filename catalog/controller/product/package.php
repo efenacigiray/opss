@@ -51,7 +51,7 @@ class ControllerProductPackage extends Controller {
             $this->load->model('account/order');
 
             $data['package_totals'] = array();
-            $orders = $this->model_account_order->getOrders(0, 100);
+            $orders = $this->model_account_order->getOrders(0, 100, true);
             $store_status = $this->config->get('config_store_status');
 
             foreach ($orders as $key => $order) {
