@@ -365,6 +365,7 @@ class ControllerSaleOrder extends Controller {
                 'payment_type'  => $result['payment_method'],
                 'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
                 'order_status_id'  => $result['order_status_id'],
+                // 'raw_total'     => 
                 'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
                 'date_added'    => date('d-m-Y H:i:s', strtotime($result['date_added'])),
                 'date_modified' => date('d-m-Y H:i:s', strtotime($result['date_modified'])),
