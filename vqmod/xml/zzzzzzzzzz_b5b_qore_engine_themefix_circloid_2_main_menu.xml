@@ -7,39 +7,39 @@
 	<file name="admin/controller/common/column_left.php">
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-dashboard']]></search>
-			<add><![CDATA['icon-grid-big']]></add>
+			<add><![CDATA[' icon-grid-big']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-tags']]></search>
-			<add><![CDATA['icon-cube']]></add>
+			<add><![CDATA[' icon-cube']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-puzzle-piece']]></search>
-			<add><![CDATA['icon-triple-points']]></add>
+			<add><![CDATA[' icon-triple-points']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-television']]></search>
-			<add><![CDATA['icon-brush']]></add>
+			<add><![CDATA[' icon-brush']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-shopping-cart']]></search>
-			<add><![CDATA['icon-dollar']]></add>
+			<add><![CDATA[' icon-dollar']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-user']]></search>
-			<add><![CDATA['icon-user']]></add>
+			<add><![CDATA[' icon-user']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-share-alt']]></search>
-			<add><![CDATA['icon-star']]></add>
+			<add><![CDATA[' icon-star']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-cog']]></search>
-			<add><![CDATA['icon-settings']]></add>
+			<add><![CDATA[' icon-settings']]></add>
 		</operation>
 		<operation error="skip">
 			<search position="replace"><![CDATA['fa-bar-chart-o']]></search>
-			<add><![CDATA['icon-bars']]></add>
+			<add><![CDATA[' icon-bars']]></add>
 		</operation>
 	</file>
 	<file name="admin/view/template/common/column_left.twig">

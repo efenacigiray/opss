@@ -378,10 +378,10 @@ class ControllerCatalogPackage extends Controller {
                     'quantity'   => $product['quantity'],
                     'type'       => $product['type'],
                     'price'      => $taxed_price,
-                    'package_price' => $product['package_price'] > 0 ? number_format($product['package_price'], 2, '.', '') : $taxed_price
+                    'package_price' => 0
                 );
 
-                $data['package_total'] += ($product['package_price'] > 0 ? $product['package_price'] : $product_info['price']);
+                $data['package_total'] += $product_info['price'];
             }
         }
         $data['package_total'] = $this->currency->format($data['package_total'], $this->config->get('config_currency'));

@@ -72,7 +72,8 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
         <td class="text-right" style="white-space: nowrap;"><?php if ($product['reorder']) { ?>
           <a href="<?php echo $product['reorder']; ?>" data-toggle="tooltip" title="<?php echo $button_reorder; ?>" class="btn btn-primary"><i class="fa fa-shopping-cart"></i></a>
           <?php } ?>
-          <a href="<?php echo $product['return']; ?>" data-toggle="tooltip" title="<?php echo $button_return; ?>" class="btn btn-danger"><i class="fa fa-reply"></i></a></td>
+          <!-- <a href="<?php echo $product['return']; ?>" data-toggle="tooltip" title="<?php echo $button_return; ?>" class="btn btn-danger"><i class="fa fa-reply"></i></a> -->
+        </td>
       </tr>
       <?php } ?>
       <?php foreach ($vouchers as $voucher) { ?>

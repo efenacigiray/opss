@@ -265,8 +265,8 @@ class ControllerSaleOrder extends Controller {
             'filter_stores'          => $this->session->data['stores_query'],
             'sort'                   => $sort,
             'order'                  => $order,
-            'start'                  => ($page - 1) * $this->config->get('config_limit_admin'),
-            'limit'                  => $this->config->get('config_limit_admin')
+            'start'                  => ($page - 1) * 250,
+            'limit'                  => 250
         );
 
         $this->load->model('catalog/class');
@@ -325,9 +325,6 @@ class ControllerSaleOrder extends Controller {
             }
         }
 
-        $filter_data['start'] = 0;
-        $filter_data['limit'] = 250;
-
         $order_total = $this->model_sale_order->getTotalOrders($filter_data);
         $results = $this->model_sale_order->getOrders($filter_data);
 
@@ -368,6 +365,7 @@ class ControllerSaleOrder extends Controller {
                 'payment_type'  => $result['payment_method'],
                 'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
                 'order_status_id'  => $result['order_status_id'],
+                // 'raw_total'     => 
                 'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
                 'date_added'    => date('d-m-Y H:i:s', strtotime($result['date_added'])),
                 'date_modified' => date('d-m-Y H:i:s', strtotime($result['date_modified'])),
