@@ -11,20 +11,9 @@ class ControllerB5bQoreEngineDashTotalOrdersMini extends Controller{
 
 		$data['user_token'] = $this->session->data['user_token'];
 
-		// Total Orders
-		$this->load->model('sale/order');
-
-		$today = $this->model_sale_order->getTotalOrders(array('filter_date_added' => date('Y-m-d', strtotime('-1 day'))));
-
-		$yesterday = $this->model_sale_order->getTotalOrders(array('filter_date_added' => date('Y-m-d', strtotime('-2 day'))));
-
-		$difference = $today - $yesterday;
-
-		if ($difference && $today) {
-			$data['percentage'] = round(($difference / $today) * 100);
-		} else {
-			$data['percentage'] = 0;
-		}
+        $completed = $this->config->get('config_complete_status');
+        $processing = $this->config->get('config_processing_status');
+        $statuses = array_merge($completed, $processing);
 
 		$order_total = $this->model_sale_order->getTotalOrders();
 
