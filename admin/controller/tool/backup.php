@@ -322,6 +322,35 @@ class ControllerToolBackup extends Controller {
         $this->model_tool_backup->trimCustomerNames();
     }
 
+    public function sinvfix() {
+        $this->load->model('tool/backup');
+        $this->load->model('catalog/product');
+
+        $packages = $this->model_tool_backup->getSNVPackages();
+
+        foreach ($packages as $p) {
+            echo "Processing: " . $p['name'] . "<br>". "<br>";
+
+            $products = $this->model_tool_backup->getPackageProducts($p['package_id']);
+            foreach ($products as $product) {
+                $product_data = $this->model_catalog_product->getProduct($product['product_id']);
+
+                $code = $product_data['model'];
+                $name = $product_data['name'];
+
+                if (strpos($code, 'SNV') !== false) {
+                    echo "Already SNV: " . $product_data['product_id'] . " " . $product_data['model']. "<br>";
+                    continue;
+                }
+
+                $snv_product = $this->model_tool_backup->getSinavProduct($name);
+                echo "NEW SNV: " . $product_data['product_id'] . " " . $product_data['model'] . " ||| " . $snv_product['product_id'] . " " . $snv_product['model'] . "<br>";
+
+                //$this->model_tool_backup->replaceSinvProduct($p['package_id'], $product['product_id'], $snv_product['product_id']);
+            }
+        }
+    }
+
     public function ozer() {
         // $data = array(
         //     array("code" => "500001", "name" => "25*35 CM RESİM DEFTERİ 120 GR","manufacturer" => "TALENS", "package_quantity" => "2", "price" => "17.50", "tax" => 8, "class" => "5 Yaş", "package" => "GÖRSEL SANATLAR SETİ", "categories" => "GÖRSEL SANATLAR", "store" => "SINAV KOLEJI ANKARA MERKEZ", "store_id" => 6),
