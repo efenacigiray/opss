@@ -16,6 +16,26 @@ class ModelToolBackup extends Model {
         return $table_data;
     }
 
+    public function getSNVPackages() {
+        $query = $this->db->query("SELECT * FROM package WHERE name like '%SINAV ANKARA MERKEZ%'");
+        return $query->rows;
+    }
+
+    public function getPackageProducts($package_id) {
+        $query = $this->db->query("SELECT product_id FROM package_product WHERE package_id = " . $package_id);
+        return $query->rows;
+    }
+
+    public function getSinavProduct($name) {
+        $query = $this->db->query("SELECT product_id FROM product WHERE name = '" . $name . "' AND model LIKE 'SNV%'");
+        return $query->row;
+    }
+
+    public function replaceSinvProduct($package_id, $old_product_id, $new_product_id) {
+        $query = $this->db->query("DELETE FROM package_product WHERE package_id = " . $package_id . " AND product_id = " . $old_product_id);
+        $query = $this->db->query("INSERT INTO package_product SET package_id = " . $package_id . " AND product_id = " . $new_product_id);
+    }
+
     public function getManufacturer($manufacturer_name, $stores) {
         $query = $this->db->query("SELECT manufacturer_id FROM manufacturer WHERE name = '" . $this->db->escape($manufacturer_name) . "' LIMIT 1");
 

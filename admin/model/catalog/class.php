@@ -94,7 +94,7 @@ class ModelCatalogClass extends Model {
     }
 
     public function getClasses($data = array()) {
-        $sql = "SELECT *, c.class_id as class_id FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id) WHERE cts.store_id IN (" . $this->session->data['stores_query'] . ")";
+        $sql = "SELECT *, c.class_id as class_id FROM " . DB_PREFIX . "class c WHERE c.class_id = (SELECT class_id from class_to_store WHERE class_id = c.class_id AND store_id IN (" . $this->session->data['stores_query'] . ") LIMIT 1)";
 
         if (!empty($data['filter_name'])) {
             $sql .= " AND c.name LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
@@ -158,7 +158,7 @@ class ModelCatalogClass extends Model {
     }
 
     public function getTotalClasses() {
-        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "class c LEFT JOIN class_to_store cts ON (c.class_id = cts.class_id) WHERE cts.store_id IN (" . $this->session->data['stores_query'] . ")");
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "class c WHERE (SELECT class_id from class_to_store WHERE class_id = c.class_id AND store_id IN (" . $this->session->data['stores_query'] . ") LIMIT 1)");
 
         return $query->row['total'];
     }
