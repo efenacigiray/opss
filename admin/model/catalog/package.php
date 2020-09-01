@@ -27,7 +27,7 @@ class ModelCatalogPackage extends Model {
         }
 
         foreach ($data['product'] as $product) {
-            $this->db->query("INSERT INTO " . DB_PREFIX . "package_product SET package_id = " . (int)$package_id . ", product_id = " . (int)$product['product_id'] . ", quantity = " . (int)$product["quantity"] . ", type = " . (int)$product["type"] . ", sort_order = " . (int)$product['sort_order']) . ", package_price = 0";
+            $this->db->query("INSERT INTO " . DB_PREFIX . "package_product SET package_id = " . (int)$package_id . ", product_id = " . (int)$product['product_id'] . ", quantity = " . (int)$product["quantity"] . ", type = " . (int)$product["type"] . ", sort_order = " . (int)$product['sort_order']) . ", package_price = 0");
         }
 
         $this->cache->delete('package');
@@ -53,7 +53,7 @@ class ModelCatalogPackage extends Model {
         $this->db->query("DELETE FROM " . DB_PREFIX . "package_product WHERE package_id = '" . (int)$package_id . "'");
 
         foreach ($data['product'] as $product) {
-            $this->db->query("INSERT INTO " . DB_PREFIX . "package_product SET package_id = " . (int)$package_id . ", product_id = " . (int)$product['product_id'] . ", quantity = " . (int)$product["quantity"] . ", type = " . (int)$product["type"] . ", sort_order = " . (int)$product['sort_order'] . ", package_price = 0";
+            $this->db->query("INSERT INTO " . DB_PREFIX . "package_product SET package_id = " . (int)$package_id . ", product_id = " . (int)$product['product_id'] . ", quantity = " . (int)$product["quantity"] . ", type = " . (int)$product["type"] . ", sort_order = " . (int)$product['sort_order'] . ", package_price = 0");
         }
 
         $this->db->query("DELETE FROM `" . DB_PREFIX . "seo_url` WHERE query = 'package_id=" . (int)$package_id . "'");
