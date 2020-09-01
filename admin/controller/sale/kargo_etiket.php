@@ -53,36 +53,15 @@ class ControllerSaleKargoEtiket extends Controller {
                 $kargo_bak = $this->db->query("SELECT * FROM " . DB_PREFIX . "kargo_entegrasyon WHERE order_id = '" . (int) $order_id . "'");
                 $chechRecord = $kargo_bak->row;
 
+                $musteri_no = $this->config->get('config_yt_code');
+
                 if ($chechRecord) {
-
-                    if ($chechRecord['kargo_adi'] == 'aras') {
-
-                        $barkod = $siparis_ontag.$order_id;
-                        $kargo_adi = $chechRecord['kargo_adi'];
-                        $musteri_no = '203027064';
-                        $baslik = 'ARAS KARGO ETİKETİ';
-
-                    } elseif ($chechRecord['kargo_adi'] == 'ptt') {
-
-                        $barkod = $chechRecord['barkod'];
-                        $kargo_adi = $chechRecord['kargo_adi'];
-                        $musteri_no = '203027064';
-                        $baslik = 'PTT KARGO ETİKETİ';
-
-                    }else {
-
-                        $barkod = $siparis_ontag.$order_id;
-                        $kargo_adi = $chechRecord['kargo_adi'];
-                        $musteri_no = $this->config->get('config_yt_code');
-                        $baslik = 'YURTİÇİ KARGO ETİKETİ';
-
-                    }
-
+                    $barkod = $siparis_ontag.$order_id;
+                    $kargo_adi = $chechRecord['kargo_adi'];
+                    $baslik = 'YURTİÇİ KARGO ETİKETİ';
                 } else {
-
                     $barkod = false;
                     $kargo_adi = false;
-                    $musteri_no = '-';
                     $baslik = '-';
                 }
 

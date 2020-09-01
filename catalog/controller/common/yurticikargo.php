@@ -26,8 +26,8 @@ class ControllerCommonYurticikargo extends Controller {
         $siparis_no = $ontag.''.$order_id;
 
         $data = array_merge(
-          array("wsUserName"        => $this->config->get('config_yt_uname');,
-                "wsPassword"        => $this->config->get('config_yt_pass');,
+          array("wsUserName"        => $this->config->get('config_yt_uname'),
+                "wsPassword"        => $this->config->get('config_yt_pass'),
                 "wsLanguage"        => "TR",
                 "keys"              => $siparis_no,
                 "keyType"           => 0,
