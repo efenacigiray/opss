@@ -892,6 +892,36 @@ class ControllerSettingSetting extends Controller {
             $data['config_error_filename'] = $this->config->get('config_error_filename');
         }
 
+        if (isset($this->request->post['config_yt_code'])) {
+            $data['config_yt_code'] = $this->request->post['config_yt_code'];
+        } else {
+            $data['config_yt_code'] = $this->config->get('config_yt_code');
+        }
+
+        if (isset($this->request->post['config_yt_uname'])) {
+            $data['config_yt_uname'] = $this->request->post['cyt_uname_password'];
+        } else {
+            $data['config_yt_uname'] = $this->config->get('config_yt_uname');
+        }
+
+        if (isset($this->request->post['config_yt_pass'])) {
+            $data['config_yt_pass'] = $this->request->post['config_yt_pass'];
+        } else {
+            $data['config_yt_pass'] = $this->config->get('_yt_pass');
+        }
+
+        if (isset($this->request->post['config_mng_uname'])) {
+            $data['config_mng_uname'] = $this->request->post['config_mng_uname'];
+        } else {
+            $data['config_mng_uname'] = $this->config->get('config_mng_uname');
+        }
+
+        if (isset($this->request->post['config_mng_pass'])) {
+            $data['config_mng_pass'] = $this->request->post['config_mng_pass'];
+        } else {
+            $data['config_mng_pass'] = $this->config->get('config_mng_pass');
+        }
+
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
