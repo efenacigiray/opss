@@ -104,7 +104,7 @@ class ControllerExtensionReportSaleOrder extends Controller {
         if (isset($this->request->get['filter_order_status_id'])) {
             $filter_order_status_id = $this->request->get['filter_order_status_id'];
         } else {
-            $filter_order_status_id = 0;
+            $filter_order_status_id = -3;
         }
 
         if (isset($this->request->get['page'])) {
@@ -142,8 +142,13 @@ class ControllerExtensionReportSaleOrder extends Controller {
             'limit'                  => $this->config->get('config_limit_admin')
         );
 
-        $order_total = $this->model_extension_report_sale->getTotalOrders($filter_data);
+        if ($filter_data['filter_order_status_id'] == -3) {
+            $completed = $this->config->get('config_complete_status');
+            $processing = $this->config->get('config_processing_status');
+            $filter_data['filter_order_status_id'] = array_merge($completed, $processing);
+        }
 
+        $order_total = $this->model_extension_report_sale->getTotalOrders($filter_data);
         $results = $this->model_extension_report_sale->getOrders($filter_data);
 
         foreach ($results as $result) {

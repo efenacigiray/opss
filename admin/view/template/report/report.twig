@@ -2,9 +2,6 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="float-right">
-        <button type="button" data-toggle="tooltip" title="{{ button_filter }}" onclick="$('#filter-report').toggleClass('d-none');" class="btn btn-light d-md-none d-lg-none"><i class="fas fa-filter"></i></button>
-      </div>
       <h1>{{ heading_title }}</h1>
       <ol class="breadcrumb">
         {% for breadcrumb in breadcrumbs %}
@@ -29,7 +26,6 @@
                   {% endif %}
                 {% endfor %}
               </select>
-              <div class="input-group-append"><span class="input-group-text"><i class="fas fa-filter"></i>&nbsp;{{ text_filter }}</span></div>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <?php
-/* Turkceye Ceviren Opencart-TR - http://www.opencart-tr.com */
+/* Turkceye Ceviren eka7a - http://e-piksel.com */
 
 // Heading
 $_['heading_title']     = 'Vergi Raporu';
