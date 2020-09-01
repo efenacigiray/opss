@@ -907,7 +907,7 @@ class ControllerSettingSetting extends Controller {
         if (isset($this->request->post['config_yt_pass'])) {
             $data['config_yt_pass'] = $this->request->post['config_yt_pass'];
         } else {
-            $data['config_yt_pass'] = $this->config->get('_yt_pass');
+            $data['config_yt_pass'] = $this->config->get('config_yt_pass');
         }
 
         if (isset($this->request->post['config_mng_uname'])) {
