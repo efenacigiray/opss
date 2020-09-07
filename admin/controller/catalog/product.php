@@ -394,6 +394,7 @@ class ControllerCatalogProduct extends Controller {
             $rules = $this->model_localisation_tax_class->getTaxRules($result['tax_class_id']);
             foreach ($rules as $tax_rule) {
                 $tax_rate = $this->model_localisation_tax_rate->getTaxRate($tax_rule['tax_rate_id']);
+                $tax_rate_name = $tax_rate['name'];
                 $taxed_price = round(($taxed_price * $tax_rate['rate'] / 100) + $taxed_price, 2);
                 $taxed_price = number_format((float)$taxed_price, 2, '.', '');
             }
@@ -413,6 +414,7 @@ class ControllerCatalogProduct extends Controller {
                 'model'      => $result['model'],
                 'price'      => $this->currency->format($result['price'], $this->config->get('config_currency')),
                 'taxed_price'=> $this->currency->format($taxed_price, $this->config->get('config_currency')),
+                'tax_name'   => $tax_rate_name,
                 'special'    => $special,
                 'quantity'   => $result['quantity'],
                 'status'     => $result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
