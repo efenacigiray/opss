@@ -391,7 +391,7 @@ class ControllerCatalogProduct extends Controller {
                 $price = $special['price'];
             }
 
-            $rules = $this->model_localisation_tax_class->getTaxRules($product_info['tax_class_id']);
+            $rules = $this->model_localisation_tax_class->getTaxRules($result['tax_class_id']);
             foreach ($rules as $tax_rule) {
                 $tax_rate = $this->model_localisation_tax_rate->getTaxRate($tax_rule['tax_rate_id']);
                 $taxed_price = round(($taxed_price * $tax_rate['rate'] / 100) + $taxed_price, 2);
