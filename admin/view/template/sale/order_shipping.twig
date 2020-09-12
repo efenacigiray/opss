@@ -59,44 +59,37 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <td><b>{{ column_location }}</b></td>
-          <td><b>{{ column_reference }}</b></td>
+          <td style="width: 50%;"><b>Öğrenci</b></td>
+          <td style="width: 50%;"><b>Sınıf</b></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ order.customer }}</td>
+          <td>{{ order.class }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
           <td><b>{{ column_product }}</b></td>
-          <td><b>{{ column_weight }}</b></td>
           <td><b>{{ column_model }}</b></td>
           <td class="text-right"><b>{{ column_quantity }}</b></td>
+          <td class="text-right">Fiyat</b></td>
         </tr>
       </thead>
       <tbody>
         {% for product in order.product %}
         <tr>
-          <td>{{ product.location }}</td>
-          <td>{% if product.sku %}
-            {{ text_sku }} {{ product.sku }}<br />
-            {% endif %}
-            {% if product.upc %}
-            {{ text_upc }} {{ product.upc }}<br />
-            {% endif %}
-            {% if product.ean %}
-            {{ text_ean }} {{ product.ean }}<br />
-            {% endif %}
-            {% if product.jan %}
-            {{ text_jan }} {{ product.jan }}<br />
-            {% endif %}
-            {% if product.isbn %}
-            {{ text_isbn }} {{ product.isbn }}<br />
-            {% endif %}
-            {% if product.mpn %}
-            {{ text_mpn }}{{ product.mpn }}<br />
-            {% endif %}</td>
           <td>{{ product.name }}
             {% for option in product.option %}
             <br />
             &nbsp;<small> - {{ option.name }}: {{ option.value }}</small>
             {% endfor %}</td>
-          <td>{{ product.weight }}</td>
           <td>{{ product.model }}</td>
           <td class="text-right">{{ product.quantity }}</td>
+          <td class="text-right">{{ product.price }}</td>
         </tr>
         {% endfor %}
       </tbody>

@@ -80,7 +80,7 @@ class ControllerExtensionReportProductViewed extends Controller {
 		
 		$data['reset'] = $this->url->link('extension/report/product_viewed/reset', 'user_token=' . $this->session->data['user_token'] . '&page={page}', true);
 
-		$this->load->model('extension/report/product');
+		$this->load->model('catalog/product');
 
 		$filter_data = array(
 			'start' => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -89,24 +89,14 @@ class ControllerExtensionReportProductViewed extends Controller {
 
 		$data['products'] = array();
 
-		$product_viewed_total = $this->model_extension_report_product->getTotalProductViews();
-
-		$product_total = $this->model_extension_report_product->getTotalProductsViewed();
-
-		$results = $this->model_extension_report_product->getProductsViewed($filter_data);
+        $results = $this->model_catalog_product->getProducts(filter_data);
+		$product_total = $this->model_catalog_product->getTotalProducts(filter_data);
 
 		foreach ($results as $result) {
-			if ($result['viewed']) {
-				$percent = round($result['viewed'] / $product_viewed_total * 100, 2);
-			} else {
-				$percent = 0;
-			}
-
 			$data['products'][] = array(
 				'name'    => $result['name'],
 				'model'   => $result['model'],
-				'viewed'  => $result['viewed'],
-				'percent' => $percent . '%'
+				'quantity'  => $result['quantity'],
 			);
 		}
 		

@@ -335,7 +335,7 @@ class ControllerSaleOrder extends Controller {
 
         foreach ($results as $result) {
             $edit = $this->url->link('sale/order/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true);
-            if (!is_null($result['user_id'])) {
+            if (isset($result['user_id']) && !is_null($result['user_id'])) {
                 $edit = $this->url->link('sale/store_order/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true);
             }
 
@@ -1925,6 +1925,8 @@ class ControllerSaleOrder extends Controller {
         $this->load->model('catalog/product');
 
         $this->load->model('setting/setting');
+        $this->load->model('customer/customer');
+        $this->load->model('catalog/class');
 
         $data['orders'] = array();
 
@@ -1938,6 +1940,8 @@ class ControllerSaleOrder extends Controller {
 
         foreach ($orders as $order_id) {
             $order_info = $this->model_sale_order->getOrder($order_id);
+            $customer = $this->model_customer_customer->getCustomer($order_info['customer_id']);
+            $class = $this->model_catalog_class->getClass($customer['class_id']);
 
             // Make sure there is a shipping method
             if ($order_info && $order_info['shipping_code']) {
@@ -1994,17 +1998,26 @@ class ControllerSaleOrder extends Controller {
                 $shipping_address = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
                 $this->load->model('tool/upload');
+                $this->load->model('localisation/tax_class');
+                $this->load->model('localisation/tax_rate');
 
                 $product_data = array();
 
                 $products = $this->model_sale_order->getOrderProducts($order_id);
-
+                
                 foreach ($products as $product) {
                     $option_weight = '';
 
                     $product_info = $this->model_catalog_product->getProduct($product['product_id']);
-
                     if ($product_info) {
+                        $taxed_price = $product['price'];
+                        $rules = $this->model_localisation_tax_class->getTaxRules($product_info['tax_class_id']);
+                        foreach ($rules as $tax_rule) {
+                            $tax_rate = $this->model_localisation_tax_rate->getTaxRate($tax_rule['tax_rate_id']);
+                            $taxed_price = round(($taxed_price * $tax_rate['rate'] / 100) + $taxed_price, 2);
+                            $taxed_price = number_format((float)$taxed_price, 2, '.', '');
+                        }
+
                         $option_data = array();
 
                         $options = $this->model_sale_order->getOrderOptions($order_id, $product['order_product_id']);
@@ -2039,18 +2052,11 @@ class ControllerSaleOrder extends Controller {
                         }
 
                         $product_data[] = array(
+                            'price'    => $this->currency->format($taxed_price, $this->config->get('config_currency')),
                             'name'     => $product_info['name'],
                             'model'    => $product_info['model'],
                             'option'   => $option_data,
                             'quantity' => $product['quantity'],
-                            'location' => $product_info['location'],
-                            'sku'      => $product_info['sku'],
-                            'upc'      => $product_info['upc'],
-                            'ean'      => $product_info['ean'],
-                            'jan'      => $product_info['jan'],
-                            'isbn'     => $product_info['isbn'],
-                            'mpn'      => $product_info['mpn'],
-                            'weight'   => $this->weight->format(($product_info['weight'] + (float)$option_weight) * $product['quantity'], $product_info['weight_class_id'], $this->language->get('decimal_point'), $this->language->get('thousand_point'))
                         );
                     }
                 }
@@ -2069,7 +2075,9 @@ class ControllerSaleOrder extends Controller {
                     'shipping_address' => $shipping_address,
                     'shipping_method'  => $order_info['shipping_method'],
                     'product'          => $product_data,
-                    'comment'          => nl2br($order_info['comment'])
+                    'comment'          => nl2br($order_info['comment']),
+                    'class'            => $class['name'],
+                    'customer'         => $customer['firstname'] . " " . $customer['lastname']
                 );
             }
         }
