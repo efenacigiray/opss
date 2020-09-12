@@ -2,9 +2,8 @@
 class ControllerCommonMngkargo extends Controller {
 
     public function index() {
-
         $kargoya_verildi_id = '3';
-        $teslim_edildi_id = '5';
+        $teslim_edildi_id = '19';
         $kargo_kontrol = $this->db->query("select * from kargo_takip where durum in(1, 10)");
 
         if ($kargo_kontrol->rows) {
@@ -25,17 +24,17 @@ class ControllerCommonMngkargo extends Controller {
                     $takipno = $kargoDurumu['CH_FATURA_SERI'] . $kargoDurumu['CH_FATURA_NO'];
                 }
 
+                echo "Sipariş No: " . $row['order_id'] . ", " . $kargoDurumu['KARGO_STATU_ACIKLAMA'] . "<br />";
+
                 if ((int) $kargoDurumu['KARGO_STATU'] == 5 || (int) $kargoDurumu['KARGO_STATU'] == 7) {
+                    echo "orderid: ".$row['order_id'].", statusid: Tamamlandı<br />";
                     $this->updateSiparis($row['order_id'], $teslim_edildi_id, $takipno);
                     $this->db->query("update kargo_takip set durum = '100' where order_id = '".$row['order_id']."'");
-                    echo "orderid: ".$row['order_id'].", statusid: Tamamlandı<br />";
                 } elseif ((int) $kargoDurumu['KARGO_STATU'] == 1 || (int) $kargoDurumu['KARGO_STATU'] == 2 ||
                           (int) $kargoDurumu['KARGO_STATU'] == 3 || (int) $kargoDurumu['KARGO_STATU'] == 4) {
+                    echo "Sipariş No: ".$row['order_id'].", Takip No: ".$takipno.", Başarılı.<br />";
                     $this->updateSiparis($row['order_id'], $kargoya_verildi_id, $takipno);
                     $this->db->query("update kargo_takip set takip_no = '".$takipno."', durum = '10' where order_id = '".$row['order_id']."'");
-                    echo "Sipariş No: ".$row['order_id'].", Takip No: ".$takipno.", Başarılı.<br />";
-                } else {
-                    echo "Sipariş No: ".$row['order_id'].", ".$kargoDurumu['KARGO_STATU_ACIKLAMA']."<br />";
                 }
             }
         } else {
@@ -69,15 +68,12 @@ class ControllerCommonMngkargo extends Controller {
 
     }
 
-public function updateSiparis($sipid, $durum, $takip_no) {
- $xq = $this->db->query("select * from order_history where order_id = '".$sipid."' and order_status_id = '".$durum."'");
-		if ($xq->num_rows >= 1) { // aynı kargo durumu var, es geç
-
-}else{
- $result = $this->db->query("UPDATE order SET order_status_id = '" . $durum . "' WHERE order_id= '" . (int) $sipid . "'");
- $this->db->query("insert into order_history set order_id = '".$sipid."', order_status_id = '" . $durum . "', notify = '0', date_added = NOW()");
-
-}
-
-}
+    public function updateSiparis($sipid, $durum, $takip_no) {
+        $xq = $this->db->query("select * from order_history where order_id = '" . $sipid . "' and order_status_id = '" . $durum . "'");
+        if ($xq->num_rows >= 1) {
+        } else {
+            $result = $this->db->query("UPDATE `order` SET order_status_id = '" . $durum . "' WHERE order_id= '" . (int) $sipid . "'");
+            $this->db->query("insert into order_history set order_id = '" . $sipid . "', order_status_id = '" . $durum . "', notify = '0', date_added = NOW()");
+        }
+    }
 }
