@@ -466,7 +466,7 @@ class ControllerCatalogPackage extends Controller {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        if ((utf8_strlen($this->request->post['name']) < 1) || (utf8_strlen($this->request->post['name']) > 64)) {
+        if ((utf8_strlen($this->request->post['name']) < 1) || (utf8_strlen($this->request->post['name']) > 255)) {
             $this->error['name'] = $this->language->get('error_name');
         }
 

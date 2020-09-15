@@ -70,7 +70,7 @@ include('catalog/view/theme/' . $config->get('theme_' . $config->get('config_the
     </table>
   </div>
 </form>
-<?php if ($modules && 1==2) { ?>
+<?php if ($modules) { ?>
 <h2><?php echo $text_next; ?></h2>
 <p style="padding-bottom: 10px"><?php echo $text_next_choice; ?></p>
 <div class="panel-group" id="accordion">
