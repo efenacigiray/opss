@@ -118,7 +118,7 @@ class ControllerSaleOrder extends Controller {
         if (isset($this->request->get['filter_store_id'])) {
             $filter_store_id = $this->request->get['filter_store_id'];
         } else {
-            $filter_store_id = '';
+            $filter_store_id = -1;
         }
 
         if (isset($this->request->get['filter_payment_type'])) {
@@ -285,6 +285,7 @@ class ControllerSaleOrder extends Controller {
             $stores[$store['store_id']] = $store['name'];
         }
 
+        $data['stores'][] = ['store_id' => 0, 'name' => $this->config->get('config_name')];
         $stores[0] = $this->config->get('config_name');
 
         $extensions = $this->model_setting_extension->getInstalled('payment');
@@ -365,7 +366,7 @@ class ControllerSaleOrder extends Controller {
                 'payment_type'  => $result['payment_method'],
                 'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
                 'order_status_id'  => $result['order_status_id'],
-                // 'raw_total'     => 
+                // 'raw_total'     =>
                 'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
                 'date_added'    => date('d-m-Y H:i:s', strtotime($result['date_added'])),
                 'date_modified' => date('d-m-Y H:i:s', strtotime($result['date_modified'])),
@@ -710,7 +711,7 @@ class ControllerSaleOrder extends Controller {
 
             $data['customer'] = $order_info['customer'];
             $data['customer_id'] = $order_info['customer_id'];
-            $data['customer_group_id'] = $order_info['customer_group_id'];
+
             $data['firstname'] = $order_info['firstname'];
             $data['lastname'] = $order_info['lastname'];
             $data['email'] = $order_info['email'];
@@ -718,6 +719,8 @@ class ControllerSaleOrder extends Controller {
             $data['account_custom_field'] = $order_info['custom_field'];
 
             $this->load->model('customer/customer');
+            $customer = $this->model_customer_customer->getCustomer($data['customer_id']);
+            $data['customer_group_id'] = $customer['customer_group_id'];
 
             $data['addresses'] = $this->model_customer_customer->getAddresses($order_info['customer_id']);
 
@@ -2004,7 +2007,7 @@ class ControllerSaleOrder extends Controller {
                 $product_data = array();
 
                 $products = $this->model_sale_order->getOrderProducts($order_id);
-                
+
                 foreach ($products as $product) {
                     $option_weight = '';
 

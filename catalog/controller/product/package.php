@@ -247,7 +247,7 @@ class ControllerProductPackage extends Controller {
             }
 
             $data['breadcrumbs'][] = array(
-                'text' => $this->language->get('text_error'),
+                'text' => 'Paket bilgisi bulunamadı. Lütfen <a href="/account/edit">buradan (Hesap Sayfası) sınıf bilginizi güncelleyin!</a>',
                 'href' => $this->url->link('product/product', $url . '&product_id=' . $product_id)
             );
 

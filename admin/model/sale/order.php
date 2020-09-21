@@ -142,7 +142,7 @@ class ModelSaleOrder extends Model {
     }
 
     public function getOrders($data = array()) {
-        $sql = "SELECT  
+        $sql = "SELECT
                     o.*,
                     o.order_id,
                     CONCAT(o.firstname, ' ', o.lastname) AS customer,
@@ -185,7 +185,7 @@ class ModelSaleOrder extends Model {
             $sql .= " AND o.order_id = '" . (int)$data['filter_order_id'] . "'";
         }
 
-        if (!empty($data['filter_store_id'])) {
+        if ($data['filter_store_id'] != '' && $data['filter_store_id'] > -1) {
             $sql .= " AND o.store_id = '" . (int)$data['filter_store_id'] . "'";
         } else {
             if (isset($data['filter_stores']))
@@ -248,6 +248,7 @@ class ModelSaleOrder extends Model {
 
             $sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
         }
+
 
         $query = $this->db->query($sql);
 
@@ -317,7 +318,7 @@ class ModelSaleOrder extends Model {
             $sql .= " AND customer_id IN (SELECT customer_id FROM customer WHERE class_id IN (SELECT class_id FROM class WHERE name LIKE '%" . $data['filter_class'] . "%'))";
         }
 
-        if (!empty($data['filter_store_id'])) {
+        if ($data['filter_store_id'] != '' && $data['filter_store_id'] > -1) {
             $sql .= " AND store_id = '" . (int)$data['filter_store_id'] . "'";
         }  else {
             if (isset($data['filter_stores']))
